@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:include="~{layouts/master::head('Crowd Donating | Home')}">
-    <title>Title</title>
+<head>
+    <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
 </head>
 <body id="top" class="has-header-search">
-<div th:replace="~{layouts/master::header}"></div>
+<th:block th:replace="~{layouts/master::header}"/>
 
 <!--<section class="page-title ptb-50">-->
     <!--<div class="container">-->
@@ -604,7 +604,7 @@
     </div>
 </section>
 
-<div th:replace="~{layouts/master::footer}"></div>
-<div th:replace="~{layouts/master::js}"></div>
+<th:block th:replace="~{layouts/master::footer}"/>
+<th:block th:include="~{layouts/master::js}"/>
 </body>
 </html>
