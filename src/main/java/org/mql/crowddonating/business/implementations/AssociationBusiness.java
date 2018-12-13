@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 @Service
@@ -21,22 +23,22 @@ public class AssociationBusiness implements IPublicServices, IAssociationBusines
     }
 
     public Case updateCase(Case aCase) {
-        return null;
+        return caseDao.save(aCase);
     }
 
     public void deleteCase(long id) {
-
+    	caseDao.deleteById(id);
     }
 
-    public Page<Case> getAll() {
-        return null;
+    public List<Case> getAllCases() {
+        return caseDao.findAll();
     }
 
     public Case getById(long id) {
-        return null;
+        return caseDao.findById(id).get();
     }
 
-    public Page<Case> getByName(String name) {
-        return null;
+    public List<Case> getByName(String name) {
+        return caseDao.findByName(name);
     }
 }
