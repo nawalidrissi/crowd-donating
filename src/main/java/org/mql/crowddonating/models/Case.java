@@ -19,7 +19,7 @@ public class Case {
     private String description;
 
     @Column
-    private Date deadLine;
+    private String deadLine;
 
     @Column
     private double amount;
@@ -76,15 +76,16 @@ public class Case {
         this.description = description;
     }
 
-    public Date getDeadLine() {
-        return deadLine;
-    }
+  
+    public String getDeadLine() {
+		return deadLine;
+	}
 
-    public void setDeadLine(Date deadLine) {
-        this.deadLine = deadLine;
-    }
+	public void setDeadLine(String deadLine) {
+		this.deadLine = deadLine;
+	}
 
-    public double getAmount() {
+	public double getAmount() {
         return amount;
     }
 
@@ -123,4 +124,13 @@ public class Case {
     public void setTypes(List<Type> types) {
         this.types = types;
     }
+
+	@Override
+	public String toString() {
+		return "Case [id=" + id + ", label=" + label + ", description=" + description + ", deadLine=" + deadLine
+				+ ", amount=" + amount + ", association=" + association + ", files=" + files + ", donations="
+				+ donations + ", types=" + types + "]";
+	}
+    
+    
 }
