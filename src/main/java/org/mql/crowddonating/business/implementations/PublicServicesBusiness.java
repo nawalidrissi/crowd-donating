@@ -16,27 +16,32 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PublicServicesBusiness implements IPublicServices {
 
-	@Autowired
-	private CaseRepository caseDao;
+    @Autowired
+    private CaseRepository caseDao;
 
-	@Autowired
-	private TypeRepository typeDao;
+    @Autowired
+    private TypeRepository typeDao;
 
 
-	public List<Case> getAllCases() {
-		return caseDao.findAll();
-	}
+    public List<Case> getAllCases() {
+        return caseDao.findAll();
+    }
 
-	public Case getCaseById(long id) {
-		return caseDao.findById(id).get();
-	}
+    public Case getCaseById(long id) {
+        return caseDao.findById(id).get();
+    }
 
-	public List<Case> getCasesByName(String name) {
-		return caseDao.findByNameLike(name);
-	}
+    public List<Case> getCasesByName(String name) {
+        return caseDao.findByNameLike(name);
+    }
 
-	public List<Type> getAllTypes() {
-		return typeDao.findAll();
-	}
+    @Override
+    public Case getCaseBySlug(String slug) {
+        return caseDao.findBySlug(slug);
+    }
+
+    public List<Type> getAllTypes() {
+        return typeDao.findAll();
+    }
 
 }
