@@ -34,6 +34,11 @@ public class Association extends User {
     public Association() {
     }
 
+    public Association(long id) {
+        super();
+        this.id = id;
+    }
+
     public void addCase(Case aCase) {
         cases.add(aCase);
     }

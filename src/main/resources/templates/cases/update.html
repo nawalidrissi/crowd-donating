@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
     <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
 </head>
 <body id="top" class="has-header-search">
@@ -10,12 +9,12 @@
 <section class="page-title ptb-50">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col s12">
                 <h2>Cases</h2>
                 <ol class="breadcrumb">
                     <li><a th:href="@{/}">Home</a></li>
                     <li><a th:href="@{/cases}">Cases</a></li>
-                    <li class="active">Add</li>
+                    <li class="active">Update</li>
                 </ol>
             </div>
         </div>
@@ -27,9 +26,11 @@
         <div class="row">
             <div class="col s12">
                 <div class="row">
-                    <form th:action="@{/cases}" method="post" th:object="${aCase}"
+                    <form th:action="@{/cases}" th:method="put" th:object="${aCase}"
                           enctype="multipart/form-data"
                           class="col s8 offset-s2">
+                        <input type="hidden" id="id" name="id" th:value="${aCase.id}" th:if="${update}"/>
+                        <input type="hidden" id="slug" name="slug" th:value="${aCase.slug}" th:if="${update}"/>
                         <div class="input-field">
                             <input type="text" name="name" th:value="${aCase.name}" id="name"
                                    th:class="|validate ${errors.containsKey('name') ? 'invalid' : ''}|">
@@ -44,20 +45,13 @@
                         </div>
                         <div class="input-field">
                             <!--<input type="date" name="deadLine" class="validate datepicker" id="deadline"-->
-                            <!--th:value="${#calendars.format(aCase.deadLine,'yyyy-MM-dd')}">-->
+                                   <!--th:value="${#calendars.format(aCase.deadLine,'yyyy-MM-dd')}">-->
                             <input type="text" class="validate datepicker" name="deadLine" id="deadline">
                             <label for="deadline">Dead line</label>
                         </div>
                         <div class="input-field">
                             <input type="number" name="amount" class="validate" id="amount" th:value="${aCase.amount}">
                             <label for="amount">Amount</label>
-                        </div>
-                        <div class="input-field">
-                            <select class="select2-tags" name="caseTypes" id="types" multiple="multiple">
-                                <option th:each="type:${types}" th:value="${type.label}"
-                                        th:text="${type.label}"></option>
-                            </select>
-                            <label for="types">Types</label>
                         </div>
                         <div class="input-field file-field">
                             <div class="btn">
@@ -93,6 +87,6 @@
 
 <th:block th:replace="~{layouts/master::footer}"/>
 <th:block th:include="~{layouts/master::js}"/>
-<script th:src="@{/js/select2.min.js}"></script>
+
 </body>
 </html>

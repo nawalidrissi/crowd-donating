@@ -10,7 +10,7 @@ public class Type {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column
+	@Column(unique = true)
 	private String label;
 
 	@ManyToMany(mappedBy = "types")
@@ -19,7 +19,11 @@ public class Type {
 	public Type() {
 	}
 
-	public void addCase(Case aCase){
+    public Type(long id) {
+		this.id = id;
+    }
+
+    public void addCase(Case aCase){
 		cases.add(aCase);
 	}
 
@@ -45,5 +49,13 @@ public class Type {
 
 	public void setCases(List<Case> cases) {
 		this.cases = cases;
+	}
+
+	@Override
+	public String toString() {
+		return "Type{" +
+				"id=" + id +
+				", label='" + label + '\'' +
+				'}';
 	}
 }
