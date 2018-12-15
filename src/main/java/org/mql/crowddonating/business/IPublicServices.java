@@ -7,12 +7,11 @@ import org.mql.crowddonating.models.Type;
 
 
 public interface IPublicServices {
-	
+	  // Cases
     List<Case> getAllCases();
     Case getCaseById(long id);
     List<Case> getCasesByName(String name);
-    
+    Case getCasesBySlug(String slug);
     List<Type> getAllTypes();
-    
-    
+   
 }
