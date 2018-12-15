@@ -8,8 +8,12 @@ public class Association extends User {
 
     @Column
     private String phone;
+
     @Column
     private String address;
+
+    @Column
+    private String cover = "cover.jpg";
 
     @OneToMany(mappedBy = "association", fetch = FetchType.LAZY)
     private List<Case> cases;
@@ -92,5 +96,13 @@ public class Association extends User {
 
     public void setDomains(List<Domain> domains) {
         this.domains = domains;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 }

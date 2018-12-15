@@ -13,9 +13,6 @@ public class File {
 	private String path;
 
 	@Column
-	private int owner;
-
-	@Column
 	private String type;
 
 	@ManyToOne
@@ -43,14 +40,6 @@ public class File {
 
 	public void setPath(String path) {
 		this.path = path;
-	}
-
-	public int getOwner() {
-		return owner;
-	}
-
-	public void setOwner(int owner) {
-		this.owner = owner;
 	}
 
 	public String getType() {

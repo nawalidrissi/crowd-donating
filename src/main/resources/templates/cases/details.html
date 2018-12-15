@@ -1,53 +1,108 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<th:block th:include="~{layouts/master::head('Crowd Donating | Home')}" />
+    <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
 </head>
 <body id="top" class="has-header-search">
-	<th:block th:replace="~{layouts/master::header}" />
+<th:block th:replace="~{layouts/master::header}"/>
 
-	<section class="page-title ptb-50">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h2>Hna kaykoun title dial l page (Optional)</h2>
-					<ol class="breadcrumb">
-						<li><a th:href="@{/}">Home</a></li>
-						<li><a th:href="@{/cases}">Cases</a></li>
-						<li class="active">Add new case</li>
-					</ol>
-				</div>
-			</div>
-		</div>
-	</section>
+<section class="page-title ptb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 th:text="${case.name}"></h2>
+                <ol class="breadcrumb">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/cases}">Cases</a></li>
+                    <li class="active">Details</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
 
-	<section class="section-padding">
-		<div class="container">
-			<div class="row">
-				<div class="col s12">
+<section class="blog-section section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="posts-content single-post">
+                    <article class="post-wrapper">
+                        <header class="entry-header-wrapper clearfix">
+                            <div class="author-thumb waves-effect waves-light">
+                                <a href="#">
+                                    <img th:src="@{'/images/users/' + ${case.association.avatar}}"
+                                         alt="">
+                                </a>
+                            </div>
+                            <div class="entry-header">
+                                <h2 class="entry-title" th:text="${case.name}"></h2>
+                                <div class="entry-meta">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <i class="fa fa-clock-o"></i>
+                                            <a href="#" th:text="${case.postedDate}"></a>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-heart-o"></i><a href="#"><span>1</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </header>
+                        <div class="thumb-wrapper">
+                            <img th:src="@{'/images/cases/' + ${case.image}}"
+                                 class="img-responsive" alt="">
+                        </div>
+                        <div class="entry-content">
+                            <p th:text="${case.description}"></p>
+                        </div>
+                        <footer class="entry-footer">
+                            <div class="post-tags">
+                                <span class="tags-links">
+                                    <i class="fa fa-tags"></i>
+                                    <a href="#" th:each="type:${case.types}" rel="tag"
+                                       th:text="${type.label}"></a>
+                                </span>
+                            </div>
+                        </footer>
+                    </article>
+
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="tt-sidebar-wrapper" role="complementary">
+                    <div class="widget widget_search">
+                        <form role="search" method="get" class="search-form">
+                            <input type="text" class="form-control" value="" name="s" id="s"
+                                   placeholder="Write any keywords">
+                            <button type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="widget widget_tt_author_widget">
+                        <div class="author-info-wrapper">
+                            <div class="author-cover">
+                                <img th:src="@{'/images/users/' + ${case.association.cover}}" alt="">
+                            </div>
+                            <div class="author-avatar">
+                                <img th:src="@{'/images/users/' + ${case.association.avatar}}" alt="">
+                                <h2 th:text="${case.association.name}"></h2>
+                                <span th:text="${case.association.email}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
-					<div class="row" th:if="${aCase}">
-						<div class="col s12">
-
-							<label th:text="${aCase.label}"></label>
-							<label th:text="${aCase.amount}"></label>
-							<label th:text="${aCase.description}"></label>
-							<label th:text="${aCase.deadLine}"></label>
-
-						</div>
-
-
-					</div>
-				</div>
-
-
-			</div>
-		</div>
-	</section>
-
-	<th:block th:replace="~{layouts/master::footer}" />
-	<th:block th:include="~{layouts/master::js}" />
+<th:block th:replace="~{layouts/master::footer}"/>
+<th:block th:include="~{layouts/master::js}"/>
 </body>
 </html>
