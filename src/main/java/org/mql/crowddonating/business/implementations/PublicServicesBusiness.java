@@ -1,37 +1,42 @@
 package org.mql.crowddonating.business.implementations;
 
-import org.mql.crowddonating.business.IAssociationBusiness;
+import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.dao.CaseRepository;
 import org.mql.crowddonating.dao.TypeRepository;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Type;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class AssociationBusiness extends PublicServicesBusiness implements IAssociationBusiness {
-
+public class PublicServicesBusiness implements IPublicServices {
 
 	@Autowired
 	private CaseRepository caseDao;
 
-	public Case addCase(Case aCase) {
-		return caseDao.save(aCase);
+	@Autowired
+	private TypeRepository typeDao;
+
+
+	public List<Case> getAllCases() {
+		return caseDao.findAll();
 	}
 
-	public Case updateCase(Case aCase) {
-		return caseDao.save(aCase);
+	public Case getCaseById(long id) {
+		return caseDao.findById(id).get();
 	}
 
-	public void deleteCase(long id) {
-		caseDao.deleteById(id);
+	public List<Case> getCasesByName(String name) {
+		return caseDao.findByNameLike(name);
+	}
+
+	public List<Type> getAllTypes() {
+		return typeDao.findAll();
 	}
 
 }
