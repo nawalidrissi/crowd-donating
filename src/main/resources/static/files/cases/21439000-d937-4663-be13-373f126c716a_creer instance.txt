@@ -1,0 +1,24 @@
+                                           Création instance
+1)Créer dossier avec le nom de l’instance dans :D:\app\windownet\oradata
+
+2)Créer initinstance.ora dans : D:\app\windownet\product\11.2.0\dbhome_1\database
+
+3)Executer cmd en administrateur et tapez : C:\>ORADIM -NEW -SID orcl4 -INTPWD orcl -STARTMODE auto -PFILE “D:\app\Zed\product\11.2.0\dbhome_1\database\initorcl4.ora" 
+
+instance créer
+
+4)Création du fichier SPFILE C:\>SET ORACLE_SID=instance
+			     C:\>sqlplus / as sysdba 
+			     SQL> 
+CREATE SPFILE = 'D:\app\Zed\product\11.2.0\dbhome_1\database\SPFILEorcl4.ORA' FROM PFILE='D:\app\Zed\product\11.2.0\dbhome_1\database\initorcl4.ora';
+
+5)SQL> STARTUP NOMOUNT; 
+  SQL> SHUTDOWN IMMEDIATE 
+  SQL> STARTUP NOMOUNT
+
+6)ouvrir le fichier bd.txt
+
+7)Création Dictionnaire de données Oracle. 
+
+	SQL> @D:/app/Zed/product/11.2.0/dbhome_1/RDBMS/ADMIN/catalog.sql   -->Procédure PL/SQL terminée avec succès. 
+	SQL> @D:/app/Zed/product/11.2.0/dbhome_1/RDBMS/ADMIN/catproc.sql   -->Procédure PL/SQL terminée avec succès.

@@ -1,0 +1,13 @@
+db_block_size=8192 
+db_file_multiblock_read_count=16
+control_files=("D:\app\Zed\oradata\orcl4\control01.ctl")
+open_cursors=300
+compatible=11.2.0.1.0
+job_queue_processes=10
+db_domain=""
+db_name=orcl4
+sga_target=200455552 pga_aggregate_target=96468992
+processes=150
+undo_management=AUTO
+undo_tablespace=UNDOTBS1
+remote_login_passwordfile=EXCLUSIVE 

@@ -11,7 +11,7 @@ public interface IPublicServices {
     List<Case> getAllCases();
     Case getCaseById(long id);
     List<Case> getCasesByName(String name);
-    Case getCasesBySlug(String slug);
+    Case getCaseBySlug(String slug);
     List<Type> getAllTypes();
    
 }
