@@ -93,10 +93,10 @@ hr {
 }
 
 .btn {
-    height: 50px;
-    padding: 12px 20px;
+    /*height: 50px;*/
+    /*padding: 12px 20px;*/
+    /*line-height: 26px !important;*/
     font-size: 16px;
-    line-height: 26px;
     border-radius: 2px;
     background-color: #03a9f4;
     border: 0
@@ -1198,7 +1198,7 @@ thead {
 
 @media (min-width: 992px) {
     .error-wrapper {
-        padding: 200px 0
+        padding: 145px 0
     }
 }
 
@@ -1472,7 +1472,7 @@ button.mfp-close:focus, button.mfp-arrow {
 }
 
 .gallery-thumb .flex-direction-nav a.flex-prev::before, .gallery-thumb .flex-direction-nav a.flex-next::before {
-    font-family: material icons;
+    font-family: material icons, sans-serif;
     font-size: 20px;
     color: #fff
 }
@@ -1655,7 +1655,6 @@ nav ul a {
     -webkit-font-smoothing: subpixel-antialiased !important;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden
 }
 
 .tt-animate.ltr i:hover::before {
@@ -1852,11 +1851,10 @@ nav ul a {
     right: 0;
     width: 100%;
     height: 100%;
-    background-repeat: no-repeat;
     -webkit-background-size: contain;
     -moz-background-size: contain;
     background-size: contain;
-    background-image: url(assets/img/device-mockups/macbook.png)
+    background: url(assets/img/device-mockups/macbook.png) no-repeat;
 }
 
 .device-mockup > .device > .screen {
@@ -2210,4 +2208,10 @@ nav ul a {
 
 #preloader .progress .indeterminate {
     background: #03a9f4
+}
+
+/****************************************************/
+
+.spacer{
+    flex:1;
 }

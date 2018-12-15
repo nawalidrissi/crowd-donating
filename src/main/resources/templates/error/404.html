@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+</head>
+<body id="top" class="has-header-search">
+<th:block th:replace="~{layouts/master::header}"/>
+
+<section class="error-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <i class="fa fa-dropbox"></i>
+            </div>
+            <div class="col-sm-7">
+                <div class="error-info">
+                    <h1 class="mb-30">404</h1>
+                    <span class="error-sub">OOPS! PAGE NOT FOUND</span>
+                    <p>Sorry, but we can’t seem to find the page you are looking for.</p>
+                    <a class="btn btn-lg waves-effect waves-light height-50" th:href="@{/}">Take Me Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<th:block th:replace="~{layouts/master::footer}"/>
+<th:block th:include="~{layouts/master::js}"/>
+</body>
+</html>

@@ -4,6 +4,7 @@ import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.dao.CaseRepository;
 import org.mql.crowddonating.models.Case;
+import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,12 @@ public class AssociationBusiness implements IPublicServices, IAssociationBusines
     private CaseRepository caseDao;
 
     public Case addCase(Case aCase) {
+        aCase.setSlug(Utility.toSlug(aCase.getName()));
         return caseDao.save(aCase);
     }
 
     public Case updateCase(Case aCase) {
-        return null;
+        return caseDao.save(aCase);
     }
 
     public void deleteCase(long id) {
@@ -33,7 +35,12 @@ public class AssociationBusiness implements IPublicServices, IAssociationBusines
     }
 
     public Case getById(long id) {
-        return null;
+        return caseDao.getOne(id);
+    }
+
+    @Override
+    public Case getBySlug(String slug) {
+        return caseDao.findBySlug(slug);
     }
 
     public Page<Case> getByName(String name) {

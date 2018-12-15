@@ -1,5 +1,7 @@
 package org.mql.crowddonating.models;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -13,16 +15,25 @@ public class Case {
     private long id;
 
     @Column
-    private String label;
+    private String name;
+
+    @Column(unique = true)
+    private String slug;
+
+    @Column(columnDefinition = "text")
+    private String description;
 
     @Column
-    private String description;
+    private double amount;
 
     @Column
     private Date deadLine;
 
     @Column
-    private double amount;
+    private Date postedDate = new Date();
+
+    @Column
+    private String image;
 
     @ManyToOne
     @JoinColumn(name = "association_id")
@@ -35,7 +46,8 @@ public class Case {
     private List<Donation> donations;
 
     @ManyToMany
-    @JoinTable(name = "case_type",
+    @JoinTable(
+            name = "case_type",
             joinColumns = @JoinColumn(name = "type_id"),
             inverseJoinColumns = @JoinColumn(name = "case_id")
     )
@@ -60,12 +72,28 @@ public class Case {
         this.id = id;
     }
 
-    public String getLabel() {
-        return label;
+    public String getName() {
+        return name;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getDescription() {
@@ -90,6 +118,14 @@ public class Case {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public Date getPostedDate() {
+        return postedDate;
+    }
+
+    public void setPostedDate(Date postedDate) {
+        this.postedDate = postedDate;
     }
 
     public Association getAssociation() {
@@ -122,5 +158,19 @@ public class Case {
 
     public void setTypes(List<Type> types) {
         this.types = types;
+    }
+
+    @Override
+    public String toString() {
+        return "Case{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", slug='" + slug + '\'' +
+                ", description='" + description + '\'' +
+                ", amount=" + amount +
+                ", deadLine=" + deadLine +
+                ", postedDate=" + postedDate +
+                ", image='" + image + '\'' +
+                '}';
     }
 }
