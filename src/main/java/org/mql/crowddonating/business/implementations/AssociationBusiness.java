@@ -21,6 +21,9 @@ public class AssociationBusiness extends PublicServicesBusiness implements IAsso
     @Autowired
     private CaseRepository caseDao;
 
+    @Autowired
+    private TypeRepository typeDao;
+
     public Case addCase(Case aCase) {
         aCase.setSlug(Utility.toSlug(aCase.getName()));
         return caseDao.save(aCase);
@@ -30,9 +33,15 @@ public class AssociationBusiness extends PublicServicesBusiness implements IAsso
         return caseDao.save(aCase);
     }
 
-	public void deleteCase(long id) {
-		caseDao.deleteById(id);
-	}
+    public void deleteCase(long id) {
+        caseDao.deleteById(id);
+    }
 
+    public Type addType(Type type) {
+        return typeDao.save(type);
+    }
 
+    public Type findTypeByLabel(String label) {
+        return typeDao.findByLabel(label);
+    }
 }
