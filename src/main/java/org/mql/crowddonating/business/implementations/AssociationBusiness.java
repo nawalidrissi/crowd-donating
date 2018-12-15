@@ -3,17 +3,21 @@ package org.mql.crowddonating.business.implementations;
 import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.dao.CaseRepository;
+import org.mql.crowddonating.dao.TypeRepository;
 import org.mql.crowddonating.models.Case;
+import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class AssociationBusiness implements IPublicServices, IAssociationBusiness {
+public class AssociationBusiness extends PublicServicesBusiness implements IAssociationBusiness {
     @Autowired
     private CaseRepository caseDao;
 
@@ -26,24 +30,8 @@ public class AssociationBusiness implements IPublicServices, IAssociationBusines
         return caseDao.save(aCase);
     }
 
-    public void deleteCase(long id) {
+	public void deleteCase(long id) {
+		caseDao.deleteById(id);
+	}
 
-    }
-
-    public Page<Case> getAll() {
-        return null;
-    }
-
-    public Case getById(long id) {
-        return caseDao.getOne(id);
-    }
-
-    @Override
-    public Case getBySlug(String slug) {
-        return caseDao.findBySlug(slug);
-    }
-
-    public Page<Case> getByName(String name) {
-        return null;
-    }
 }

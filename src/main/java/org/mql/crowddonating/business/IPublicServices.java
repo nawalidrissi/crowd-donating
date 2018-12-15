@@ -1,11 +1,17 @@
 package org.mql.crowddonating.business;
 
+import java.util.List;
+
 import org.mql.crowddonating.models.Case;
-import org.springframework.data.domain.Page;
+import org.mql.crowddonating.models.Type;
+
 
 public interface IPublicServices {
-    Page<Case> getAll();
-    Case getById(long id);
-    Case getBySlug(String slug);
-    Page<Case> getByName(String name);
+	  // Cases
+    List<Case> getAllCases();
+    Case getCaseById(long id);
+    List<Case> getCasesByName(String name);
+    Case getCasesBySlug(String slug);
+    List<Type> getAllTypes();
+   
 }

@@ -1,8 +1,10 @@
 package org.mql.crowddonating.controllers;
 
-import org.mql.crowddonating.business.implementations.AssociationBusiness;
+import org.mql.crowddonating.business.IAssociationBusiness;
+import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.models.Case;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.ui.Model;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,8 +21,32 @@ import java.util.Map;
 
 @Controller
 public class CaseController {
-    @Autowired
-    private AssociationBusiness associationBusiness;
+
+	@Autowired
+	@Qualifier("associationBusiness")
+	private IAssociationBusiness associationBusiness;
+
+	@Autowired
+	@Qualifier("publicServicesBusiness")
+	private IPublicServices publicServices;
+
+	@GetMapping("/cases")
+	public String cases(Model model, String... name) {
+		model.addAttribute("types", publicServices.getAllTypes());
+		if (name == null || name.length == 0)
+			model.addAttribute("cases", publicServices.getAllCases());
+		else {
+			model.addAttribute("name", name[0]);
+			model.addAttribute("cases", publicServices.getCasesByName("%" + name[0] + "%"));
+		}
+		return "cases/cases";
+	}
+
+	@DeleteMapping("/cases/{id}")
+	public String delete(@PathVariable long id, Model model) {
+		associationBusiness.deleteCase(id);
+		return "cases/cases";
+	}
 
     @GetMapping("/cases/add")
     public String addForm(ModelMap map) {
@@ -64,10 +90,6 @@ public class CaseController {
             errors.put("name", "A case with the same name already exists!");
             return "cases/add";
         }
-//        catch (Exception ex) {
-//            if (ex.getClass() == org.springframework.dao.DataIntegrityViolationException.class)
-//
-//        }
         return aCase.toString();
     }
 
