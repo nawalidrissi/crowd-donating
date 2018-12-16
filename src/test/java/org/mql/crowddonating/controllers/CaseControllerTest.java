@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -65,7 +66,7 @@ public class CaseControllerTest {
 	
 	private HomeController homeController;
 	
-	@Before
+	@BeforeEach
 	private void setup() {
 		homeController = new HomeController();
 		mockMvc = MockMvcBuilders.standaloneSetup(homeController).build();

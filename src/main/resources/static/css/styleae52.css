@@ -2211,7 +2211,7 @@ nav ul a {
 }
 
 /****************************************************/
-
-.spacer{
-    flex:1;
+.select2 {
+    width: 100% !important;
+    margin-left: 0;
 }
