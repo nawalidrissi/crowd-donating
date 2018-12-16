@@ -15,6 +15,9 @@ public class Association extends User {
     @Column
     private String cover = "cover.jpg";
 
+    @Column(columnDefinition = "text")
+    private String description;
+
     @OneToMany(mappedBy = "association", fetch = FetchType.LAZY)
     private List<Case> cases;
 
@@ -61,6 +64,14 @@ public class Association extends User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAddress() {
