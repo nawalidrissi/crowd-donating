@@ -2215,3 +2215,7 @@ nav ul a {
     width: 100% !important;
     margin-left: 0;
 }
+
+.delete-file{
+    float: right;
+}

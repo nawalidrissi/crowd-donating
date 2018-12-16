@@ -21,9 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class CaseController {
@@ -41,14 +43,18 @@ public class CaseController {
     private IPublicServices publicServices;
 
     @GetMapping("/cases")
-    public String cases(Model model, String... name) {
+    public String cases(Model model) {
         model.addAttribute("types", publicServices.getAllTypes());
-        if (name == null || name.length == 0)
-            model.addAttribute("cases", publicServices.getAllCases());
-        else {
-            model.addAttribute("name", name[0]);
-            model.addAttribute("cases", publicServices.getCasesByName("%" + name[0] + "%"));
-        }
+        model.addAttribute("cases", publicServices.getAllCases());
+        return "cases/cases";
+    }
+
+    @GetMapping("/cases/search/{name}")
+    public String cases(Model model, @PathVariable String name) {
+        model.addAttribute("types", publicServices.getAllTypes());
+        model.addAttribute("name", name);
+        model.addAttribute("cases", publicServices.getCasesByName("%" + name + "%"));
+
         return "cases/cases";
     }
 
@@ -81,10 +87,13 @@ public class CaseController {
     // @ResponseBody
     @GetMapping("/cases/update/{slug}")
     public String updateForm(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
-        map.put("update", true);
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
         Case aCase = publicServices.getCaseBySlug(slug);
+        List<Type> types = publicServices.getAllTypes().stream()
+                .filter(type -> !aCase.getTypes().contains(type))
+                .collect(Collectors.toList());
+        map.put("types", types);
         if (aCase == null) {
             response.setStatus(404);
             return "error/404";
@@ -94,21 +103,28 @@ public class CaseController {
     }
 
     @PutMapping("/cases")
-    public String update(ModelMap map, Case aCase, @RequestParam MultipartFile imageFile, @RequestParam MultipartFile[] documents) {
+    public String update(ModelMap map, Case aCase, @RequestParam MultipartFile imageFile,
+                         @RequestParam MultipartFile[] documents) {
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
         map.put("aCase", aCase);
         try {
+            if (!imageFile.isEmpty()) {
+                aCase.setImage(Utility.upload("images/cases/", imageFile));
+            } else aCase.setImage(publicServices.getCaseBySlug(aCase.getSlug()).getImage());
+            associationBusiness.updateCase(aCase);
+            uploadDocuments(aCase, documents);
             associationBusiness.updateCase(aCase);
         } catch (DataIntegrityViolationException ex) {
             errors.put("name", "A case with the same name already exists!");
-            return "cases/add";
+            return "cases/update";
         }
         return "redirect:cases/" + aCase.getSlug();
     }
 
     @PostMapping("/cases")
-    public String add(ModelMap map, Case aCase, String[] caseTypes, @RequestParam MultipartFile imageFile, @RequestParam MultipartFile[] documents) {
+    public String add(ModelMap map, Case aCase, String[] caseTypes, @RequestParam MultipartFile imageFile,
+                      @RequestParam MultipartFile[] documents) {
         for (String ct : caseTypes) {
             Type type = new Type();
             type.setLabel(ct);
@@ -124,22 +140,34 @@ public class CaseController {
         map.put("aCase", aCase);
         try {
             associationBusiness.addCase(aCase);
-            aCase.setImage(Utility.upload("images/cases/", imageFile));
+            if (imageFile.isEmpty())
+                aCase.setImage("blog-1.jpg");
+            else aCase.setImage(Utility.upload("images/cases/", imageFile));
             associationBusiness.updateCase(aCase);
 
-            for (MultipartFile doc : documents) {
-                File file = new File();
-                file.setPath(Utility.upload("files/cases/", doc));
-                file.setType("document");
-                file.setCase(aCase);
-                userBusiness.saveFile(file);
-            }
+            uploadDocuments(aCase, documents);
 
         } catch (DataIntegrityViolationException ex) {
             errors.put("name", "A case with the same name already exists!");
             return "cases/add";
         }
         return "redirect:cases/" + aCase.getSlug();
+    }
+
+    @DeleteMapping("/cases/files/{id}")
+    public String deleteFile(@PathVariable long id, HttpServletRequest request) {
+        userBusiness.deleteFile(id, "/files/cases/");
+        return "redirect:" + request.getHeader("Referer");
+    }
+
+    private void uploadDocuments(Case aCase, MultipartFile[] documents) {
+        for (MultipartFile doc : documents) {
+            File file = new File();
+            file.setPath(Utility.upload("files/cases/", doc));
+            file.setType("document");
+            file.setCase(aCase);
+            userBusiness.saveFile(file);
+        }
     }
 
     @InitBinder

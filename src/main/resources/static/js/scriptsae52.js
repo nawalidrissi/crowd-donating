@@ -307,12 +307,16 @@ jQuery(function ($) {
         $(document).on("focus", ".select2-search__field", function () {
             $("label.select2-tags-label").addClass("active");
         });
+
         // Removing the class active onBlur when no tags are added to return the label to it's initial place.
         $(document).on("blur", ".select2-search__field", function () {
             if ($(".select2-selection__choice").length === 0)
                 $("label.select2-tags-label").removeClass("active");
         });
 
+        // Adding active class to the select2 associated label to move upward in update page.
+        if ($(".select2-selection__choice").length > 0)
+            $("label.select2-tags-label").addClass("active");
 
     });
 });
