@@ -145,7 +145,6 @@ public class CaseController {
     @InitBinder
     private void DateBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
         binder.registerCustomEditor(Date.class, editor);
     }
@@ -161,7 +160,7 @@ public class CaseController {
         assoc.setBanned(false);
         assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
 
-        userBusiness.addAssociation(assoc);
+        publicServices.addAssociation(assoc);
 
         System.out.println("Assoc added.");
     }

@@ -12,19 +12,20 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class UserBusiness implements IUserServices {
+public class UserBusiness extends PublicServicesBusiness implements IUserServices {
     @Autowired
     private FileRepository fileDao;
-    @Autowired
-    private UserRepository userDao;
 
     @Override
     public File saveFile(File file) {
         return fileDao.save(file);
     }
 
-    @Override
-    public Association addAssociation(Association association) {
-        return userDao.save(association);
-    }
+	@Override
+	public File deleteFile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }
