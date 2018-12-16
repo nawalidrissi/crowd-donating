@@ -57,7 +57,7 @@ public class Case {
     public Case() {
         this.association = new Association(1);
         this.types = new ArrayList<>();
-        this.types.add(new Type(1));
+//        this.types.add(new Type(1));
     }
 
     public void addDonation(Donation donation) {

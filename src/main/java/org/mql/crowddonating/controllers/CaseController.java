@@ -125,15 +125,17 @@ public class CaseController {
     @PostMapping("/cases")
     public String add(ModelMap map, Case aCase, String[] caseTypes, @RequestParam MultipartFile imageFile,
                       @RequestParam MultipartFile[] documents) {
-        for (String ct : caseTypes) {
-            Type type = new Type();
-            type.setLabel(ct);
-            try {
-                associationBusiness.addType(type);
-            } catch (Exception ex) {
-                type = associationBusiness.findTypeByLabel(ct);
+        if (caseTypes.length > 0) {
+            for (String ct : caseTypes) {
+                Type type = new Type();
+                type.setLabel(ct);
+                try {
+                    associationBusiness.addType(type);
+                } catch (Exception ex) {
+                    type = associationBusiness.findTypeByLabel(ct);
+                }
+                aCase.addType(type);
             }
-            aCase.addType(type);
         }
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
