@@ -12,18 +12,6 @@ import org.springframework.stereotype.Service;
 public class AdminBusiness extends UserBusiness implements IAdminBusiness {
 
 	@Override
-	public File saveFile(File file) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public File deleteFile() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public void banUser(long id) {
 		// TODO Auto-generated method stub
 
