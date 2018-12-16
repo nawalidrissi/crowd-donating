@@ -291,9 +291,32 @@ jQuery(function ($) {
             gallery: {enabled: true}
         });
     });
+
+    // Mouad's code
     $(document).ready(function () {
         $('.datepicker').datepicker();
         $('.select2').select2();
         $('.select2-tags').select2({tags: true});
+
+        // Fixing when focusing datepicker using tab the modal doesn't trigger.
+        $(document).on("focus", ".datepicker", function () {
+            $(this).trigger("click");
+        });
+
+        // Adding active class to the select2 associated label to move upward.
+        $(document).on("focus", ".select2-search__field", function () {
+            $("label.select2-tags-label").addClass("active");
+        });
+
+        // Removing the class active onBlur when no tags are added to return the label to it's initial place.
+        $(document).on("blur", ".select2-search__field", function () {
+            if ($(".select2-selection__choice").length === 0)
+                $("label.select2-tags-label").removeClass("active");
+        });
+
+        // Adding active class to the select2 associated label to move upward in update page.
+        if ($(".select2-selection__choice").length > 0)
+            $("label.select2-tags-label").addClass("active");
+
     });
 });
