@@ -7,6 +7,6 @@ public interface IUserServices {
 	
 	/* *** files *** */
     File saveFile(File file);
-    File deleteFile();
+    void deleteFile(long id, String path);
     
 }

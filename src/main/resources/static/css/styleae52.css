@@ -2211,7 +2211,11 @@ nav ul a {
 }
 
 /****************************************************/
+.select2 {
+    width: 100% !important;
+    margin-left: 0;
+}
 
-.spacer{
-    flex:1;
+.delete-file{
+    float: right;
 }

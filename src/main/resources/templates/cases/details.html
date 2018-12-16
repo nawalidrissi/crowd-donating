@@ -3,84 +3,105 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+    <link th:href="@{/css/shortcodes/blog.css}" rel="stylesheet">
 </head>
 <body id="top" class="has-header-search">
 <th:block th:replace="~{layouts/master::header}"/>
 
-<section class="page-title ptb-50">
+<section class="blog-section pt-50 pb-50">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <h2 th:text="${case.name}"></h2>
-                <ol class="breadcrumb">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/cases}">Cases</a></li>
-                    <li class="active">Details</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="blog-section section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="posts-content single-post">
-                    <article class="post-wrapper">
-                        <header class="entry-header-wrapper clearfix">
-                            <div class="author-thumb waves-effect waves-light">
-                                <a href="#">
-                                    <img th:src="@{'/images/users/' + ${case.association.avatar}}"
-                                         alt="">
-                                </a>
-                            </div>
-                            <div class="entry-header">
-                                <h2 class="entry-title" th:text="${case.name}"></h2>
-                                <div class="entry-meta">
-                                    <ul class="list-inline">
-                                        <li>
-                                            <i class="fa fa-clock-o"></i>
-                                            <a href="#" th:text="${case.postedDate}"></a>
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-heart-o"></i><a href="#"><span>1</span></a>
-                                        </li>
-                                    </ul>
+            <div class="col m8">
+                <div class="col m12">
+                    <div class="posts-content single-post">
+                        <article class="post-wrapper">
+                            <header class="entry-header-wrapper clearfix">
+                                <div class="author-thumb waves-effect waves-light">
+                                    <a href="#">
+                                        <img th:src="@{'/images/users/' + ${case.association.avatar}}" alt="">
+                                    </a>
                                 </div>
+                                <div class="entry-header">
+                                    <h2 class="entry-title mb-0" th:text="${case.name}"></h2>
+                                    <div class="entry-meta">
+                                        <ul class="display-inline-flex m-0">
+                                            <li>
+                                                <i class="fa fa-user"></i>
+                                                <a href="#" th:text="${case.association.name}"></a>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-clock-o"></i>
+                                                <a th:text="${#calendars.format(case.deadLine,'MMM dd, yyyy')}"
+                                                   href="#"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="thumb-wrapper">
+                                <img th:src="@{'/images/cases/' + ${case.image}}"
+                                     class="img-responsive" alt="">
                             </div>
-                        </header>
-                        <div class="thumb-wrapper">
-                            <img th:src="@{'/images/cases/' + ${case.image}}"
-                                 class="img-responsive" alt="">
-                        </div>
-                        <div class="entry-content">
-                            <p th:text="${case.description}"></p>
-                        </div>
-                        <footer class="entry-footer">
-                            <div class="post-tags">
+                            <div class="entry-content">
+                                <p th:text="${case.description}"></p>
+                            </div>
+                            <footer class="entry-footer">
+                                <div class="post-tags">
                                 <span class="tags-links">
                                     <i class="fa fa-tags"></i>
                                     <a href="#" th:each="type:${case.types}" rel="tag"
                                        th:text="${type.label}"></a>
                                 </span>
+                                </div>
+                            </footer>
+                        </article>
+                    </div>
+                </div>
+                <div class="col m12">
+                    <div class="posts-content single-post">
+                        <div class="col s6">
+                        <article class="post-wrapper">
+                            <div class="featured-item border-box radius-4 hover brand-hover"
+                                 data-vivaldi-spatnav-clickable="1">
+                                <div class="icon mb-30">
+                                    <i class="material-icons brand-icon"></i>
+                                </div>
+                                <div class="desc">
+                                    <h2>We are awesome</h2>
+                                    <p>Porttitor communicate pandemic data rather than enabled niche pandemic data
+                                        rather markets neque pulvinar vitae.</p>
+                                </div>
                             </div>
-                        </footer>
-                    </article>
-
+                        </article>
+                        </div>
+                        <div class="col s6">
+                        <article class="post-wrapper">
+                            <div class="featured-item border-box radius-4 hover brand-hover"
+                                 data-vivaldi-spatnav-clickable="1">
+                                <div class="icon mb-30">
+                                    <i class="material-icons brand-icon"></i>
+                                </div>
+                                <div class="desc">
+                                    <h2>We are awesome</h2>
+                                    <p>Porttitor communicate pandemic data rather than enabled niche pandemic data
+                                        rather markets neque pulvinar vitae.</p>
+                                </div>
+                            </div>
+                        </article>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
+            <div class="col m4">
                 <div class="tt-sidebar-wrapper" role="complementary">
-                    <div class="widget widget_search">
-                        <form role="search" method="get" class="search-form">
-                            <input type="text" class="form-control" value="" name="s" id="s"
-                                   placeholder="Write any keywords">
-                            <button type="submit">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </form>
+                    <div class="card mt-0">
+                        <!--<div class="card-content">-->
+                        <!--<p>I am a very simple card. I am good at containing small bits of information.-->
+                        <!--I am convenient because I require little markup to use effectively.</p>-->
+                        <!--</div>-->
+                        <a href="#" class="card-action pink lighten-1 center display-block">
+                            <span class="grey-text text-lighten-5 mr-0">Donate now!</span>
+                        </a>
                     </div>
 
                     <div class="widget widget_tt_author_widget">
@@ -92,6 +113,26 @@
                                 <img th:src="@{'/images/users/' + ${case.association.avatar}}" alt="">
                                 <h2 th:text="${case.association.name}"></h2>
                                 <span th:text="${case.association.email}"></span>
+                            </div>
+                            <p th:text="${case.association.description}"></p>
+                            <div class="author-social-links center">
+                                <ul class="display-inline-flex">
+                                    <li class="pl-5 pr-5">
+                                        <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
+                                    </li>
+                                    <li class="pl-5 pr-5">
+                                        <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+                                    </li>
+                                    <li class="pl-5 pr-5">
+                                        <a href="#" target="_blank"><i class="fa fa-google-plus"></i></a>
+                                    </li>
+                                    <li class="pl-5 pr-5">
+                                        <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                                    </li>
+                                    <li class="pl-5 pr-5">
+                                        <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
     <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
 </head>
 <body id="top" class="has-header-search">
@@ -26,11 +27,10 @@
         <div class="row">
             <div class="col s12">
                 <div class="row">
-                    <form th:action="@{/cases}" th:method="put" th:object="${aCase}"
-                          enctype="multipart/form-data"
-                          class="col s8 offset-s2">
-                        <input type="hidden" id="id" name="id" th:value="${aCase.id}" th:if="${update}"/>
-                        <input type="hidden" id="slug" name="slug" th:value="${aCase.slug}" th:if="${update}"/>
+                    <form th:action="@{/cases}" th:method="put" th:object="${aCase}" id="update-form"
+                          enctype="multipart/form-data" class="col s8 offset-s2">
+                        <input type="hidden" id="id" name="id" th:value="${aCase.id}"/>
+                        <input type="hidden" id="slug" name="slug" th:value="${aCase.slug}"/>
                         <div class="input-field">
                             <input type="text" name="name" th:value="${aCase.name}" id="name"
                                    th:class="|validate ${errors.containsKey('name') ? 'invalid' : ''}|">
@@ -44,22 +44,30 @@
                             <label for="description">Description</label>
                         </div>
                         <div class="input-field">
-                            <!--<input type="date" name="deadLine" class="validate datepicker" id="deadline"-->
-                                   <!--th:value="${#calendars.format(aCase.deadLine,'yyyy-MM-dd')}">-->
-                            <input type="text" class="validate datepicker" name="deadLine" id="deadline">
+                            <input type="text" class="validate datepicker" name="deadLine" id="deadline"
+                                   th:value="${#calendars.format(aCase.deadLine,'MMM dd, yyyy')}">
                             <label for="deadline">Dead line</label>
                         </div>
                         <div class="input-field">
                             <input type="number" name="amount" class="validate" id="amount" th:value="${aCase.amount}">
                             <label for="amount">Amount</label>
                         </div>
+                        <div class="input-field">
+                            <select class="select2-tags" name="caseTypes" id="types" multiple="multiple">
+                                <option th:each="type:${aCase.types}" th:value="${type.label}"
+                                        th:text="${type.label}" selected></option>
+                                <option th:each="type:${types}" th:value="${type.label}"
+                                        th:text="${type.label}"></option>
+                            </select>
+                            <label for="types" class="select2-tags-label">Types</label>
+                        </div>
                         <div class="input-field file-field">
                             <div class="btn">
                                 <span><i class="material-icons">image</i></span>
-                                <input type="file" name="imageFile" id="image">
+                                <input type="file" name="imageFile" id="image" th:value="${aCase.image}">
                             </div>
                             <div class="file-path-wrapper">
-                                <input type="text" class="file-path validate" title="Image name">
+                                <input type="text" class="file-path validate" title="" th:value="${aCase.image}">
                             </div>
                         </div>
                         <div class="input-field file-field">
@@ -72,13 +80,30 @@
                                        placeholder="Upload one or more files">
                             </div>
                         </div>
-                        <div class="input-field display-flex">
-                            <div class="flex-1"></div>
-                            <button class="btn-large waves-effect waves-light">
-                                Submit <i class="material-icons right">send</i>
-                            </button>
-                        </div>
                     </form>
+                </div>
+            </div>
+            <div class="col s8 offset-s2">
+                <ul class="collection">
+                    <li class="collection-item" th:each="file:${aCase.files}">
+                        <!--<th:block th:text="${file.path}"/>-->
+                        <a th:href="@{'/files/cases/' + ${file.id}}" th:text="${file.path}" target="_blank"></a>
+                        <a class="delete-file" href="#"
+                           th:onclick="'event.preventDefault(); document.getElementById(\'delete-file-form-' + ${file.id} + '\').submit();'">
+                            <i class="material-icons red-text darken-1">close</i>
+                        </a>
+                        <form th:action="@{'/cases/files/' + ${file.id}}" th:method="delete"
+                              th:id="'delete-file-form-' + ${file.id}"></form>
+                    </li>
+                </ul>
+            </div>
+            <div class="col s8 offset-s2">
+                <div class="input-field display-flex">
+                    <div class="flex-1"></div>
+                    <button class="btn-large waves-effect waves-light"
+                            onclick="event.preventDefault(); document.getElementById('update-form').submit();">
+                        Submit <i class="material-icons right">send</i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -87,6 +112,6 @@
 
 <th:block th:replace="~{layouts/master::footer}"/>
 <th:block th:include="~{layouts/master::js}"/>
-
+<script th:src="@{/js/select2.min.js}"></script>
 </body>
 </html>
