@@ -55,4 +55,6 @@ class CaseControllerTest {
                 .andExpect(model().attribute("cases", cases));
         verify(publicServices).getAllCases();
     }
+
+
 }

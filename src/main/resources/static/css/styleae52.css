@@ -2219,3 +2219,14 @@ nav ul a {
 .delete-file{
     float: right;
 }
+
+.author-info-wrapper {
+     border: none;
+}
+
+.card-content .post-wrapper {
+    border: none !important;
+}
+.card-content .post-wrapper:hover {
+    box-shadow: none !important;
+}
