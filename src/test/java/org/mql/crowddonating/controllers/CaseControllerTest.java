@@ -22,7 +22,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(MockitoJUnitRunner.class)
 class CaseControllerTest {
-
     private MockMvc mockMvc;
 
     @InjectMocks
@@ -55,6 +54,4 @@ class CaseControllerTest {
                 .andExpect(model().attribute("cases", cases));
         verify(publicServices).getAllCases();
     }
-
-
 }
