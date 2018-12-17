@@ -9,14 +9,15 @@ import org.mql.crowddonating.models.Event;
 import org.mql.crowddonating.models.Sponsor;
 import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.models.User;
+import org.springframework.data.domain.Page;
 
 
 public interface IPublicServices {
 	
 	/* *** Cases *** */
-    List<Case> getAllCases();
+	Page<Case> getAllCases(int page, int size);
     Case getCaseById(long id);
-    List<Case> getCasesByName(String name);
+    Page<Case> getCasesByName(String name, int page, int size);
     Case getCaseBySlug(String slug);
     List<Type> getAllTypes();
     
@@ -43,6 +44,9 @@ public interface IPublicServices {
     
     /* *** domains *** */
     List<Domain> getAllDomains();
+    
+    /* *** types *** */
+    Type getTypeById(long id);
     
     
 }

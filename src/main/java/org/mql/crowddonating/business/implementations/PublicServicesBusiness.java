@@ -16,6 +16,9 @@ import org.mql.crowddonating.models.Sponsor;
 import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,16 +34,16 @@ public class PublicServicesBusiness implements IPublicServices {
 	@Autowired
 	private UserRepository userDao;
 
-	public List<Case> getAllCases() {
-		return caseDao.findAll();
+	public Page<Case> getAllCases(int page, int size) {
+		return caseDao.findAll(PageRequest.of(page, size));
 	}
 
 	public Case getCaseById(long id) {
 		return caseDao.findById(id).get();
 	}
 
-	public List<Case> getCasesByName(String name) {
-		return caseDao.findByNameLike(name);
+	public Page<Case> getCasesByName(String name, int page, int size) {
+		return caseDao.findByNameLike(name, PageRequest.of(page, size));
 	}
 
 	@Override
@@ -127,6 +130,11 @@ public class PublicServicesBusiness implements IPublicServices {
 	public List<Domain> getAllDomains() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Type getTypeById(long id) {
+		return typeDao.getOne(id);
 	}
 
 }
