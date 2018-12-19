@@ -30,6 +30,7 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
     public void deleteFile(long id, String repository) {
         File file = fileDao.findById(id).get();
         Path filePath = Paths.get(Utility.uploadDir, repository, file.getPath());
+        System.out.println("Deleting  : " + Utility.uploadDir+ repository+ file.getPath());
         try {
             Files.delete(filePath);
         } catch (IOException ex) {

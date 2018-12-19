@@ -20,7 +20,7 @@ public interface IAssociationBusiness extends IUserServices{
     Type addType(Type type);
     Type findTypeByLabel(String label);
     
-    /* *** dons *** */
+    /* *** donations *** */
     List<Donation> getDonationByCase(long id);
     
     /* *** donors *** */

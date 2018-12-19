@@ -32,12 +32,16 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
     private TypeRepository typeDao;
 
     public Case addCase(Case aCase) {
+		aCase.setName(Utility.cleanupSpaces(aCase.getName()));
+    	aCase.setDescription(Utility.cleanupSpaces(aCase.getDescription()));
         aCase.setSlug(Utility.toSlug(aCase.getName()));
         return caseDao.save(aCase);
     }
 
     public Case updateCase(Case aCase) {
-        return caseDao.save(aCase);
+		aCase.setName(Utility.cleanupSpaces(aCase.getName()));
+		aCase.setDescription(Utility.cleanupSpaces(aCase.getDescription()));
+    	return caseDao.save(aCase);
     }
 
     public void deleteCase(long id) {

@@ -22,36 +22,36 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @RunWith(MockitoJUnitRunner.class)
 class CaseControllerTest {
-    private MockMvc mockMvc;
-
-    @InjectMocks
-    private final CaseController caseController = new CaseController();
-
-    @Mock
-    private PublicServicesBusiness publicServices =  new PublicServicesBusiness();
-
-    @BeforeEach
-    void setup() {
-    }
-
-    @Test
-    void cases_ShouldRenderCasesView() throws Exception {
-        mockMvc = MockMvcBuilders.standaloneSetup(caseController).build();
-
-        Case case1 = new Case();
-        case1.setId(1);
-        Case case2 = new Case();
-        case2.setId(2);
-        List<Case> cases = Arrays.asList(case1, case2);
-
-        List<Type> types = Arrays.asList(new Type());
-
-        when(publicServices.getAllCases()).thenReturn(cases);
-
-        mockMvc.perform(get("/cases"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("cases/cases"))
-                .andExpect(model().attribute("cases", cases));
-        verify(publicServices).getAllCases();
-    }
+//    private MockMvc mockMvc;
+//
+//    @InjectMocks
+//    private final CaseController caseController = new CaseController();
+//
+//    @Mock
+//    private PublicServicesBusiness publicServices =  new PublicServicesBusiness();
+//
+//    @BeforeEach
+//    void setup() {
+//    }
+//
+//    @Test
+//    void cases_ShouldRenderCasesView() throws Exception {
+//        mockMvc = MockMvcBuilders.standaloneSetup(caseController).build();
+//
+//        Case case1 = new Case();
+//        case1.setId(1);
+//        Case case2 = new Case();
+//        case2.setId(2);
+//        List<Case> cases = Arrays.asList(case1, case2);
+//
+//        List<Type> types = Arrays.asList(new Type());
+//
+//        when(publicServices.getAllCases()).thenReturn(cases);
+//
+//        mockMvc.perform(get("/cases"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("cases/cases"))
+//                .andExpect(model().attribute("cases", cases));
+//        verify(publicServices).getAllCases();
+//    }
 }

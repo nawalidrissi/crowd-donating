@@ -25,6 +25,10 @@ public class Utility {
         return slug.toLowerCase(Locale.ENGLISH);
     }
 
+    public static String cleanupSpaces(String input) {
+        return input.trim().replaceAll(" +", " ");
+    }
+
     public static String upload(String path, MultipartFile file) {
         String name = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         Path fileNameAndPath = Paths.get(uploadDir + path, name);

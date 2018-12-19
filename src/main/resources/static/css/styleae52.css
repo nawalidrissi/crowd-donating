@@ -2216,17 +2216,50 @@ nav ul a {
     margin-left: 0;
 }
 
-.delete-file{
+.delete-file {
     float: right;
 }
 
 .author-info-wrapper {
-     border: none;
+    border: none;
 }
 
 .card-content .post-wrapper {
     border: none !important;
 }
+
 .card-content .post-wrapper:hover {
     box-shadow: none !important;
 }
+
+.btn-small, .btn, .btn-large {
+    font-size: 16px;
+    border-radius: 2px;
+    background-color: #03a9f4;
+    border: 0;
+}
+
+.btn-small.focus, .btn-small:focus, .btn-small:hover,
+.btn-large.focus, .btn-large:focus, .btn-large:hover,
+.btn.focus, .btn:focus, .btn:hover {
+    color: #fff;
+}
+
+.btn-small:hover, .btn:hover, .btn-large:hover {
+    background-color: #03a9f4;
+}
+
+.btn-round {
+    border-radius: 100% !important;
+}
+
+.validate.invalid + span.select2 > span.selection > span.select2-selection {
+    border-bottom: 1px solid #F44336;
+    -webkit-box-shadow: 0 1px 0 0 #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+}
+
+/*.img-wrapper{*/
+/*height: 320px;*/
+/*overflow: hidden;*/
+/*}*/

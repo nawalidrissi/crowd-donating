@@ -1,94 +1,97 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
-    <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+  <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
+  <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
 </head>
 <body id="top" class="has-header-search">
 <th:block th:replace="~{layouts/master::header}"/>
 
 <section class="page-title ptb-50">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Cases</h2>
-                <ol class="breadcrumb">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/cases}">Cases</a></li>
-                    <li class="active">Add</li>
-                </ol>
-            </div>
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Cases</h2>
+        <ol class="breadcrumb">
+          <li><a th:href="@{/}">Home</a></li>
+          <li><a th:href="@{/cases}">Cases</a></li>
+          <li class="active">Add</li>
+        </ol>
+      </div>
     </div>
+  </div>
 </section>
 
 <section class="section-padding pt-0">
-    <div class="container">
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
         <div class="row">
-            <div class="col s12">
-                <div class="row">
-                    <form th:action="@{/cases}" method="post" th:object="${aCase}"
-                          enctype="multipart/form-data"
-                          class="col s8 offset-s2">
-                        <div class="input-field">
-                            <input type="text" name="name" th:value="${aCase.name}" id="name"
-                                   th:class="|validate ${errors.containsKey('name') ? 'invalid' : ''}|">
-                            <label for="name">Name</label>
-                            <span class="helper-text" th:data-error="${errors.get('name')}" data-success=""
-                                  th:if="${errors.containsKey('name')}"></span>
-                        </div>
-                        <div class="input-field">
-                            <textarea name="description" class="validate materialize-textarea"
-                                      id="description" th:text="${aCase.description}"></textarea>
-                            <label for="description">Description</label>
-                        </div>
-                        <div class="input-field">
-                            <!--<input type="date" name="deadLine" class="validate datepicker" id="deadline"-->
-                            <!--th:value="${#calendars.format(aCase.deadLine,'yyyy-MM-dd')}">-->
-                            <input type="text" class="validate datepicker" name="deadLine" id="deadline">
-                            <label for="deadline">Dead line</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="number" name="amount" class="validate" id="amount" th:value="${aCase.amount}">
-                            <label for="amount">Amount</label>
-                        </div>
-                        <div class="input-field">
-                            <select class="select2-tags" name="caseTypes" id="types" multiple="multiple">
-                                <option th:each="type:${types}" th:value="${type.label}"
-                                        th:text="${type.label}"></option>
-                            </select>
-                            <label for="types" class="select2-tags-label">Types</label>
-                        </div>
-                        <div class="input-field file-field">
-                            <div class="btn">
-                                <span><i class="material-icons">image</i></span>
-                                <input type="file" name="imageFile" id="image">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input type="text" class="file-path validate" title="Image name">
-                            </div>
-                        </div>
-                        <div class="input-field file-field">
-                            <div class="btn">
-                                <span><i class="material-icons">file_upload</i></span>
-                                <input type="file" name="documents" id="documents" multiple>
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input type="text" class="file-path validate" title="documents names"
-                                       placeholder="Upload one or more files">
-                            </div>
-                        </div>
-                        <div class="input-field display-flex">
-                            <div class="flex-1"></div>
-                            <button class="btn-large waves-effect waves-light">
-                                Submit <i class="material-icons right">send</i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+          <form th:action="@{/cases}" method="post" th:object="${aCase}"
+                enctype="multipart/form-data"
+                class="col s8 offset-s2">
+            <div class="input-field">
+              <input type="text" name="name" th:value="${aCase.name}" id="name" required
+                     th:class="|validate ${errors.containsKey('name') ? 'invalid' : ''}|">
+              <label for="name">Name</label>
+              <span class="helper-text" th:data-error="${errors.get('name')}" data-success=""
+                    th:if="${errors.containsKey('name')}"></span>
             </div>
+            <div class="input-field">
+                            <textarea name="description" class="validate materialize-textarea" required
+                                      id="description" th:text="${aCase.description}"></textarea>
+              <label for="description">Description</label>
+            </div>
+            <div class="input-field">
+                <input type="text" class="validate datepicker" name="deadLine" id="deadline"
+                       th:value="${#calendars.format(aCase.deadLine,'MMM dd, yyyy')}" required>
+              <label for="deadline">Dead line</label>
+            </div>
+            <div class="input-field">
+              <input type="number" name="amount" class="validate" id="amount" th:value="${aCase.amount}"
+                     required value="1000">
+              <label for="amount">Amount</label>
+            </div>
+            <div class="input-field">
+              <select name="caseTypes" id="types" multiple
+                      th:class="|select2-tags validate ${errors.containsKey('types') ? 'invalid' : ''}|">
+                <option th:each="type:${types}" th:value="${type.label}"
+                        th:text="${type.label}"></option>
+              </select>
+              <label for="types" class="select2-tags-label">Types</label>
+              <span class="helper-text" th:data-error="${errors.get('types')}" data-success=""
+                    th:if="${errors.containsKey('types')}"></span>
+            </div>
+            <div class="input-field file-field">
+              <div class="btn">
+                <span><i class="material-icons">image</i></span>
+                <input type="file" name="imageFile" id="image">
+              </div>
+              <div class="file-path-wrapper">
+                <input type="text" class="file-path validate" title="Image name">
+              </div>
+            </div>
+            <div class="input-field file-field">
+              <div class="btn">
+                <span><i class="material-icons">file_upload</i></span>
+                <input type="file" name="documents" id="documents" multiple required>
+              </div>
+              <div class="file-path-wrapper">
+                <input type="text" class="file-path validate" title="documents names"
+                       placeholder="Upload one or more files">
+              </div>
+            </div>
+            <div class="input-field display-flex">
+              <div class="flex-1"></div>
+              <button class="btn-large waves-effect waves-light">
+                Submit <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 
 <th:block th:replace="~{layouts/master::footer}"/>
