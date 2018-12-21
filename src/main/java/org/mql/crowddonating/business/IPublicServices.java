@@ -5,6 +5,8 @@ import java.util.List;
 import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Domain;
+import org.mql.crowddonating.models.Donation;
+import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.Event;
 import org.mql.crowddonating.models.Sponsor;
 import org.mql.crowddonating.models.Type;
@@ -21,9 +23,13 @@ public interface IPublicServices {
     Case getCaseBySlug(String slug);
     List<Type> getAllTypes();
     
+    List<Donation> getCaseDonating(Case aCase);
+    
     /* *** user *** */
     @Deprecated
     Association addAssociation(Association association);
+    @Deprecated
+	Donor addDonor(Donor donor);
     User login(String username, String password);
     
     /* *** associations *** */
@@ -47,6 +53,6 @@ public interface IPublicServices {
     
     /* *** types *** */
     Type getTypeById(long id);
-    
+
     
 }

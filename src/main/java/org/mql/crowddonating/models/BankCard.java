@@ -21,7 +21,7 @@ public class BankCard {
     @Column
     private int securityCode;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "donor_id")
     private Donor donor;
 
@@ -90,4 +90,13 @@ public class BankCard {
     public void setDonations(List<Donation> donations) {
         this.donations = donations;
     }
+
+	@Override
+	public String toString() {
+		return "BankCard [id=" + id + ", cardNumber=" + cardNumber + ", cardHolder=" + cardHolder + ", expirationDate="
+				+ expirationDate + ", securityCode=" + securityCode + ", donor=" + donor + ", donations=" + donations
+				+ "]";
+	}
+    
+    
 }

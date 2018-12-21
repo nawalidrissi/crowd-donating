@@ -12,7 +12,7 @@ public class Donor extends User {
     @Column
     private String address;
 
-    @OneToMany(mappedBy = "donor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "donor", fetch=FetchType.LAZY)
     private List<BankCard> bankCards;
 
     public Donor() {
@@ -45,4 +45,12 @@ public class Donor extends User {
     public void setBankCards(List<BankCard> bankCards) {
         this.bankCards = bankCards;
     }
+
+	@Override
+	public String toString() {
+		return "Donor [ " + super.toString() + ", phone=" + phone + ", address=" + address + ", bankCards=" + bankCards + "]";
+	}
+    
+    
+    
 }

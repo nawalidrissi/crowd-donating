@@ -1,36 +1,44 @@
 package org.mql.crowddonating.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.mql.crowddonating.business.IAssociationBusiness;
+import org.mql.crowddonating.business.IDonorBusiness;
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.business.IUserServices;
-import org.mql.crowddonating.business.implementations.UserBusiness;
 import org.mql.crowddonating.models.Association;
+import org.mql.crowddonating.models.BankCard;
 import org.mql.crowddonating.models.Case;
+import org.mql.crowddonating.models.Donation;
+import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class CaseController {
@@ -46,6 +54,10 @@ public class CaseController {
     @Autowired
     @Qualifier("publicServicesBusiness")
     private IPublicServices publicServices;
+    
+    @Autowired
+    @Qualifier("donorBusiness")
+    private IDonorBusiness donorBusiness;
 
     @GetMapping("/cases")
     public String cases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
@@ -89,6 +101,15 @@ public class CaseController {
             response.setStatus(404);
             return "error/404";
         }
+        
+        List<Donation> donations = publicServices.getCaseDonating(aCase);
+        
+        map.put("donatingNumber", donations.size());
+        double total = 0;
+        for (Donation donation : donations) {
+			total += donation.getAmount();
+		}
+        map.put("totalDonations", total);
         map.put("case", aCase);
         return "cases/details";
     }
@@ -223,7 +244,7 @@ public class CaseController {
 //	}
 
     @PostConstruct
-    public void createAssoc() {
+    public void createAssocAndDonore() {
         Association assoc = new Association();
         assoc.setId(1);
         assoc.setEmail("assoc-123@gmail.com");
@@ -236,6 +257,27 @@ public class CaseController {
         publicServices.addAssociation(assoc);
 
         System.out.println("Assoc added.");
+        
+        Donor donor=new Donor();
+        donor.setId(2);
+        donor.setName("donor1");
+        donor.setAvatar("cover.jpg");
+        donor.setBanned(false);
+        
+        publicServices.addDonor(donor);
+        
+        System.out.println("donor ajouté");
+        
+        BankCard card=new BankCard();
+        card.setCardHolder("donor1");
+        card.setId(1);
+        card.setCardNumber("1456-1254-7542-7542");
+        card.setDonor(donor);
+        card.setSecurityCode(444);
+        
+        donorBusiness.addBankCard(card);
+              
+        
     }
 
 }
