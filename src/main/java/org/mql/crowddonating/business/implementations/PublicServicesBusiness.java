@@ -153,5 +153,9 @@ public class PublicServicesBusiness implements IPublicServices {
 		return donationDao.findByACase(aCase);
 	}
 
-	
+	@Override
+	public Donation getDonationById(long id) {
+		return donationDao.findById(id).get();
+	}
+
 }

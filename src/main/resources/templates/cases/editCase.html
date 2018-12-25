@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<th:block th:include="~{layouts/master::head('Crowd Donating | Home')}" />
+</head>
+<body id="top" class="has-header-search">
+	<th:block th:replace="~{layouts/master::header}" />
+
+	<section class="page-title ptb-50">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h2>Hna kaykoun title dial l page (Optional)</h2>
+					<ol class="breadcrumb">
+						<li><a th:href="@{/}">Home</a></li>
+						<li><a th:href="@{/cases}">Cases</a></li>
+						<li class="active">Add new case</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+
+
+					<form th:action="@{/cases}" th:method="put">
+					
+					<div class="input-field">
+							<input name="label" id="id" type="text" class="validate"
+								th:field="${eCase.id}"> <label for="name" th:field="${eCase.id}">ID</label>
+						</div>
+					
+					
+						<div class="input-field">
+							<input name="label" id="name" type="text" class="validate"
+								th:field="${eCase.label}"> <label for="name">Name</label>
+						</div>
+
+						<div class="input-field">
+							<input name="deadLine" id="deadline" type="text" class="validate"
+								th:field="${eCase.deadLine}"> <label for="deadline">Dead
+								Line</label>
+						</div>
+
+						<div class="input-field">
+							<input name="amount" id="amount" type="text" class="validate"
+								th:field="${eCase.amount}"> <label for="amount">Amount</label>
+						</div>
+
+						<div class="input-field">
+							<textarea name="description" id="description"
+								th:field="${eCase.description}" class="materialize-textarea"></textarea>
+							<label for="description">Description</label>
+						</div>
+
+						<div class="input-field">
+							<button type="submit" name="submit"
+								class="waves-effect waves-light btn submit-button pink mt-30">Edit
+							</button>
+						</div>
+
+					</form>
+				</div>
+
+
+			</div>
+		</div>
+	</section>
+
+	<th:block th:replace="~{layouts/master::footer}" />
+	<th:block th:include="~{layouts/master::js}" />
+</body>
+</html>

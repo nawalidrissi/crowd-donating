@@ -54,5 +54,7 @@ public interface IPublicServices {
     /* *** types *** */
     Type getTypeById(long id);
 
-    
+
+    /* *** Donations *** */
+    Donation getDonationById(long id);
 }

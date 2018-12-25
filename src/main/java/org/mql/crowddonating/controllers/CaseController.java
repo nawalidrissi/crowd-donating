@@ -263,7 +263,8 @@ public class CaseController {
         donor.setName("donor1");
         donor.setAvatar("cover.jpg");
         donor.setBanned(false);
-        
+        donor.setPhone("055555858");
+        donor.setAddress("Fes Morocco");
         publicServices.addDonor(donor);
         
         System.out.println("donor ajouté");
