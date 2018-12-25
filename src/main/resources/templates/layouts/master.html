@@ -232,6 +232,36 @@
           });
       });
   </script>
+  
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+	    var elems = document.querySelectorAll('.modal');
+	    var instances = M.Modal.init(elems, options);
+	  });
+
+	  // Or with jQuery
+
+	  $(document).ready(function(){
+	    $('.modal').modal();
+	  });
+  </script>
+  
+  
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+	    var elems = document.querySelectorAll('select');
+	    var instances = M.FormSelect.init(elems, options);
+	  });
+
+	  // Or with jQuery
+
+	  $(document).ready(function(){
+	    $('select').formSelect();
+	  });
+  
+	  
+  </script>
+
 
   <script th:src="@{/revolution/js/extensions/revolution.extension.video.min.js}"></script>
   <script th:src="@{/revolution/js/extensions/revolution.extension.slideanims.min.js}"></script>

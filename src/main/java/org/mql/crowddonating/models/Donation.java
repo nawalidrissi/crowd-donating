@@ -23,9 +23,6 @@ public class Donation {
 	@JoinColumn(name = "bank_card_id")
 	private BankCard bankCard;
 	
-	@Transient
-	private int cardID;
-	
 	public Donation() {
 		date = new Date();
 		bankCard = new BankCard();
@@ -78,15 +75,4 @@ public class Donation {
 	public void setBankCard(BankCard bankCard) {
 		this.bankCard = bankCard;
 	}
-
-	public int getCardID() {
-		return cardID;
-	}
-
-	public void setCardID(int cardID) {
-		this.cardID = cardID;
-		bankCard.setId(cardID);
-	}
-	
-	
 }

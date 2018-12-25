@@ -10,12 +10,12 @@ import org.mql.crowddonating.models.User;
 public interface IDonorBusiness extends IUserServices{
 	
 	/* *** bank Cards *** */
+	BankCard getCardById(long id);
 	BankCard addBankCard(BankCard bankCard);
 	void deleteBankCard(long id);
 	BankCard updatebankCard(BankCard bankCrd);
 	List<BankCard> getAllByDonor(String userName); // cuz spring sec works with username as principal
 	
-	/* *** dons *** */
+	/* *** donations *** */
 	Donation addDon(Donation donation);
-
 }

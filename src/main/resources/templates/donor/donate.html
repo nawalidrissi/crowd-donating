@@ -9,7 +9,56 @@
 <body id="top" class="has-header-search">
 	<th:block th:replace="~{layouts/master::header}" />
 
+	<!-- Modal Structure -->
+	<div id="modal1" class="modal">
+		<div class="modal-content ">
+			<form th:action="@{/cards}" method="post" th:object="${card}"
+				class="col s8 offset-s2">
 
+				<div class="row">
+					<div class="col m6">
+						<div class="input-field">
+							<input type="text" name="cardNumber"
+								th:value="${card.cardNumber}" id="cardNumber" required>
+							<label for="cardNumber">Card number</label>
+						</div>
+
+						<div class="input-field">
+							<input type="text" name="cardHolder"
+								th:value="${card.cardHolder}" id="cardHolder" required>
+							<label for="cardHolder">Card holder</label>
+						</div>
+
+
+					</div>
+					<div class="col m6">
+						<div class="input-field">
+							<input type="text" name="securityCode"
+								th:value="${card.securityCode}" id="securityCode" required>
+							<label for="securityCode">Security code</label>
+						</div>
+						<div class="input-field">
+							<input type="text" class="validate datepicker "
+								name="expirationDate" id="expirationDate"
+								th:value="${#calendars.format(card.expirationDate,'MMM dd, yyyy')}"
+								required> <label for="expirationDate">Expiration
+								date</label>
+						</div>
+					</div>
+				</div>
+				<div class="input-field">
+					<input type="hidden" name="caseID" th:value="${donation.case.id}"
+						id="idcase" required>
+				</div>
+
+				<div class="input-field display-flex">
+					<div class="flex-1"></div>
+					<button class="btn-small waves-effect waves-light">
+						Validate</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	<section class="blog-section pt-50 pb-50">
 		<div class="container">
 			<div class="row">
@@ -18,51 +67,34 @@
 						<div class="card hoverable">
 							<div class="card-content">
 								<div class="row">
-
-
 									<form th:action="@{/donor}" method="post"
-										th:object="${donation}" 
-										class="col s8 offset-s2">
-
+										th:object="${donation}" class="col s8 offset-s2">
 										<div class="input-field">
-											<input type="hidden" name="case" th:value="${donation.case.id}"
-												id="idcase" required>
+											<input type="hidden" name="case"
+												th:value="${donation.case.id}" id="idcase" required>
 										</div>
-
-
 										<div class="input-field">
-											<input type="number" name="amount" th:value="${donation.amount}"
-												id="amount" required> <label for="amount">Amount</label>
+											<input type="number" name="amount"
+												th:value="${donation.amount}" id="amount" required>
+											<label for="amount">Amount</label>
 										</div>
-
-									<!-- 	<div class="input-field">
-											<input type="text" name="id" th:value="${donor.id}"
-												id="username" required> <label for="username">Donor</label>
-										</div> -->
-										
-										
 										<div class="input-field">
-										 <label>Bank cards</label><br/>
-											<p>
-												<label th:each="card:${donor.bankCards}"> 
-													<input name="cardID"  type="radio" th:value="${card.id}" checked/>
-													<span th:text="${card.cardNumber + ' ' + card.id}"></span>
-													<br/>
-												</label>
-											</p>
+											<select name="bankCard" th:field="*{bankCard.id}">
+												<option th:each="card:${donor.bankCards}"
+													th:value="${card.id}" th:text="${card.cardNumber}"></option>
+											</select>
 										</div>
-										
-		  								 <a th:href="@{/cards/new}">Add bankCard </a>
-
+										<a class="waves-effect waves-light btn modal-trigger"
+											href="#modal1">New bank card</a>
 										<div class="input-field display-flex">
 											<div class="flex-1"></div>
-											<button class="btn-large waves-effect waves-light">
+											<button class="btn waves-effect waves-light">
 												Submit <i class="material-icons right">send</i>
 											</button>
 										</div>
 									</form>
+								</div>
 							</div>
-						</div>
 						</div>
 					</div>
 				</div>
@@ -78,16 +110,17 @@
 							<div class="card-content p-0">
 								<div class="author-info-wrapper">
 									<div class="author-cover">
-										<img th:src="@{'/images/cases/' + ${donation.case.image}}" alt="">
+										<img th:src="@{'/images/cases/' + ${donation.case.image}}"
+											alt="">
 									</div>
 									<div class="author-avatar">
-										<img th:src="@{'/images/cases/' + ${donation.case.image}}" alt="">
+										<img th:src="@{'/images/cases/' + ${donation.case.image}}"
+											alt="">
 										<h2 th:text="${donation.case.name}"></h2>
 										<span th:text="${donation.case.amount}"></span><br /> <span
 											th:text="${donation.case.deadLine}"></span><br /> <span
 											th:text="${donation.case.amount}"></span>
 									</div>
-
 								</div>
 							</div>
 						</div>

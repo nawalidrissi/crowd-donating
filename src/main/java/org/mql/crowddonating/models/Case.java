@@ -1,8 +1,5 @@
 package org.mql.crowddonating.models;
 
-import org.hibernate.validator.constraints.UniqueElements;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
