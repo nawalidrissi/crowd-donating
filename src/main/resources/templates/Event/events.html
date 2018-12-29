@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+</head>
+<body id="top" class="has-header-search">
+<th:block th:replace="~{layouts/master::header}"/>
+
+<section class="section-padding default-blog grid-blog">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="tt-sidebar-wrapper" role="complementary">
+          <div class="widget widget_search">
+<!--             <form role="search" method="get" th:action="@{/cases/search}" -->
+<!--                   class="search-form"> -->
+<!--               <input type="text" class="form-control" value="" name="name" -->
+<!--                      th:value="${name}" id="s" placeholder="Write any keywords"> -->
+<!--               <button type="submit"> -->
+<!--                 <i class="fa fa-search"></i> -->
+<!--               </button> -->
+<!--             </form> -->
+          </div>
+<!--           <div class="widget widget_categories"> -->
+<!--             <h3 class="widget-title">Types</h3> -->
+<!--             <ul> -->
+<!--               <li th:each="type:${types}"> -->
+<!--                 <a th:href="@{'/cases/type/'+${type.id}}" th:text="${type.label}"></a> -->
+<!--               </li> -->
+<!--             </ul> -->
+<!--           </div> -->
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="row" th:if="${events}">
+          <div class="col-md-6" th:each="event:${events}">
+            <article class="post-wrapper">
+              <div class="thumb-wrapper">
+                <div class="img-wrapper">
+                  <img th:src="@{'/images/event/' + ${event.image}}"
+                       class="img-responsive" alt="">
+                </div>
+                <div class="entry-header">
+										 
+                  <h2 class="entry-title">
+                    <a th:href="@{'/events/' + ${event.id}}"
+                       th:text="${event.title}"></a>
+                  </h2>
+                </div>
+                <div class="author-thumb waves-effect waves-light">
+                  <a href="javascript:void(0);"> <img
+                          th:src="@{'/images/event/'}"
+                          alt="">
+                  </a>
+                </div>
+                <span class="post-comments-number"> <i
+                        class="fa fa-comments"></i><a href="#">25</a>
+									</span>
+              </div>
+              <div class="entry-content">
+                <!--  <p th:text="${#strings.substring(case.description ,0 ,100)}"></p> -->
+                <p th:text="${event.description}"></p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<th:block th:replace="~{layouts/master::footer}"/>
+<th:block th:include="~{layouts/master::js}"/>
+</body>
+</html>

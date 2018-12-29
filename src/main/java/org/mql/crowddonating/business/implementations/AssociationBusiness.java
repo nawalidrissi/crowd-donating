@@ -3,6 +3,7 @@ package org.mql.crowddonating.business.implementations;
 import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.dao.CaseRepository;
+import org.mql.crowddonating.dao.EventRepository;
 import org.mql.crowddonating.dao.TypeRepository;
 import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
@@ -30,6 +31,8 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
 
     @Autowired
     private TypeRepository typeDao;
+    @Autowired
+    private EventRepository eventDao;
 
     public Case addCase(Case aCase) {
 		aCase.setName(Utility.cleanupSpaces(aCase.getName()));
@@ -70,21 +73,22 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
 
 	@Override
 	public Event addEvent(Event event) {
-		// TODO Auto-generated method stub
-		return null;
+		event.setTitle(Utility.cleanupSpaces(event.getTitle()));
+		event.setDescription(Utility.cleanupSpaces(event.getDescription()));
+		return eventDao.save(event);
 	}
 
 	@Override
 	public Event updateEvent(Event event) {
-		// TODO Auto-generated method stub
-		return null;
+		event.setTitle(Utility.cleanupSpaces(event.getTitle()));
+		event.setDescription(Utility.cleanupSpaces(event.getDescription()));
+		return eventDao.save(event);
 	}
 
-	@Override
-	public Event deleteEvent(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 
+	 public void deleteEvent(long id) {
+	        eventDao.deleteById(id);
+	    }
 
 	@Override
 	public Domain addDomain(Domain domain) {

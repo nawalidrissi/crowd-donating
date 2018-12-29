@@ -1,6 +1,9 @@
 package org.mql.crowddonating.models;
 
 import javax.persistence.*;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.*;
 
 @Entity
@@ -76,4 +79,11 @@ public class Event {
 	public void setAssociation(Association association) {
 		this.association = association;
 	}
+
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", title=" + title + ", description=" + description + ", image=" + image
+				+ ", plannedDate=" + plannedDate + ", association=" + association + "]";
+	}
+
 }
