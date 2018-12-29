@@ -45,8 +45,8 @@ public interface IPublicServices {
     
     /* *** sponsors *** */
     List<Sponsor> getAllSponsors();
-    Case getSponsorById(long id);
-    List<Case> getSponsorByName(String name);
+    Sponsor getSponsorById(long id);
+    Page<Sponsor> getSponsorByName(String name,int page,int size);
     
     /* *** domains *** */
     List<Domain> getAllDomains();

@@ -3,48 +3,62 @@ package org.mql.crowddonating.business.implementations;
 import javax.transaction.Transactional;
 
 import org.mql.crowddonating.business.IAdminBusiness;
-import org.mql.crowddonating.models.File;
+import org.mql.crowddonating.dao.DomainRepository;
+import org.mql.crowddonating.dao.SponsorRepository;
+import org.mql.crowddonating.dao.TypeRepository;
+import org.mql.crowddonating.dao.UserRepository;
+
 import org.mql.crowddonating.models.Sponsor;
+import org.mql.crowddonating.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class AdminBusiness extends UserBusiness implements IAdminBusiness {
+public class  AdminBusiness extends UserBusiness implements IAdminBusiness {
 
+	@Autowired
+	private SponsorRepository sponsorDao;
+	@Autowired
+	private DomainRepository domainDao;
+	@Autowired
+	private TypeRepository typeDao;
+	@Autowired
+	private UserRepository userDao;
+	
 	@Override
 	public void banUser(long id) {
-		// TODO Auto-generated method stub
+		User u = userDao.getOne(id);
+		u.setBanned(true);
+		userDao.save(u);
 
 	}
 
 	@Override
 	public Sponsor addSponsor(Sponsor sponsor) {
-		// TODO Auto-generated method stub
-		return null;
+		return sponsorDao.save(sponsor);
 	}
 
 	@Override
 	public void deleteSponsor(Sponsor sponsor) {
-		// TODO Auto-generated method stub
+		sponsorDao.delete(sponsor);
 
 	}
 
 	@Override
 	public Sponsor updateSponsor(Sponsor sponsor) {
-		// TODO Auto-generated method stub
-		return null;
+		return sponsorDao.save(sponsor);
 	}
 
 	@Override
 	public void deleteDomain(long id) {
-		// TODO Auto-generated method stub
+		domainDao.deleteById(id);
 
 	}
 
 	@Override
 	public void deleteType(long id) {
-		// TODO Auto-generated method stub
-
+		typeDao.deleteById(id);
 	}
 
 }

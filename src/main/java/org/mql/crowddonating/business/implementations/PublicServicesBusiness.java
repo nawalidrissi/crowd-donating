@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.dao.CaseRepository;
+import org.mql.crowddonating.dao.SponsorRepository;
 import org.mql.crowddonating.dao.EventRepository;
 import org.mql.crowddonating.dao.DonationRepository;
 import org.mql.crowddonating.dao.TypeRepository;
@@ -37,6 +38,9 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Autowired
 	private UserRepository userDao;
+	
+	@Autowired
+	private SponsorRepository  sponsorDao;
 
 	@Autowired
 	private EventRepository eventDao;
@@ -94,20 +98,12 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Override
 	public List<Sponsor> getAllSponsors() {
-		// TODO Auto-generated method stub
-		return null;
+		return sponsorDao.findAll();
 	}
 
 	@Override
-	public Case getSponsorById(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Case> getSponsorByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public Sponsor getSponsorById(long id) {
+		return sponsorDao.getOne(id);
 	}
 
 	@Override
@@ -145,6 +141,10 @@ public class PublicServicesBusiness implements IPublicServices {
 	}
 
 	@Override
+	public Page<Sponsor> getSponsorByName(String name, int page, int size) {
+		return sponsorDao.findByNameLike(name, PageRequest.of(page, size));
+	}
+  
 	public Donor addDonor(Donor donor) {
 		return userDao.save(donor);
 	}
@@ -158,5 +158,6 @@ public class PublicServicesBusiness implements IPublicServices {
 	public Donation getDonationById(long id) {
 		return donationDao.findById(id).get();
 	}
+
 
 }
