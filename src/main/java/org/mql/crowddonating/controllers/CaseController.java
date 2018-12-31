@@ -43,198 +43,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class CaseController {
 
-<<<<<<< HEAD
-	@Autowired
-	@Qualifier("userBusiness")
-	private IUserServices userBusiness;
-
-	@Autowired
-	@Qualifier("associationBusiness")
-	private IAssociationBusiness associationBusiness;
-
-	@Autowired
-	@Qualifier("publicServicesBusiness")
-	private IPublicServices publicServices;
-
-	@GetMapping("/cases")
-	public String cases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "8") int size) {
-		if(page <= 0)
-			page = 1;
-		Page<Case> cases = publicServices.getAllCases(page - 1, size);
-		int[] pages = new int[cases.getTotalPages()];
-		model.addAttribute("types", publicServices.getAllTypes());
-		model.addAttribute("pages", pages);		
-		
-		model.addAttribute("currentPage", page);
-		model.addAttribute("cases", cases);
-		return "cases/cases";
-	}
-
-	@GetMapping("/cases/search")
-	public String cases(Model model, @RequestParam(name = "name") String name,
-			@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "8") int size) {
-		Page<Case> cases = publicServices.getCasesByName("%" + name + "%", page - 1, size);
-		int[] pages = new int[cases.getTotalPages()];
-		model.addAttribute("types", publicServices.getAllTypes());
-		model.addAttribute("pages", pages);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("cases", cases);
-		return "cases/cases";
-	}
-	
-	@GetMapping("/cases/type/{id}")
-	public String casesByType(Model model, @PathVariable long id) {
-		Type type = publicServices.getTypeById(id);
-		model.addAttribute("types", publicServices.getAllTypes());
-		model.addAttribute("cases", type.getCases());
-		return "cases/cases";
-	}
-
-	@GetMapping("/cases/{slug}")
-	public String caseBySlug(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
-		Case aCase = publicServices.getCaseBySlug(slug);
-		if (aCase == null) {
-			response.setStatus(404);
-			return "error/404";
-		}
-		map.put("case", aCase);
-		return "cases/details";
-	}
-	@DeleteMapping("/cases/{id}")
-	public String delete(@PathVariable long id, Model model) {
-		associationBusiness.deleteCase(id);
-		return "cases/cases";
-	}
-
-	@GetMapping("/cases/add")
-	public String addForm(ModelMap map) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("aCase", new Case());
-		map.put("types", publicServices.getAllTypes());
-		return "cases/add";
-	}
-
-	// @ResponseBody
-	@GetMapping("/cases/update/{slug}")
-	public String updateForm(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		Case aCase = publicServices.getCaseBySlug(slug);
-		List<Type> types = publicServices.getAllTypes().stream().filter(type -> !aCase.getTypes().contains(type))
-				.collect(Collectors.toList());
-		map.put("types", types);
-		if (aCase == null) {
-			response.setStatus(404);
-			return "error/404";
-		}
-		map.put("aCase", aCase);
-		return "cases/update";
-	}
-
-	@PutMapping("/cases")
-	public String update(ModelMap map, Case aCase, @RequestParam MultipartFile imageFile,
-			@RequestParam MultipartFile[] documents) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("aCase", aCase);
-		try {
-			if (!imageFile.isEmpty()) {
-				aCase.setImage(Utility.upload("images/cases/", imageFile));
-			} else
-				aCase.setImage(publicServices.getCaseBySlug(aCase.getSlug()).getImage());
-			associationBusiness.updateCase(aCase);
-			uploadDocuments(aCase, documents);
-			associationBusiness.updateCase(aCase);
-		} catch (DataIntegrityViolationException ex) {
-			errors.put("name", "A case with the same name already exists!");
-			return "cases/update";
-		}
-		return "redirect:cases/" + aCase.getSlug();
-	}
-
-	@PostMapping("/cases")
-	public String add(ModelMap map, Case aCase, String[] caseTypes, @RequestParam MultipartFile imageFile,
-			@RequestParam MultipartFile[] documents) {
-		if (caseTypes.length > 0) {
-			for (String ct : caseTypes) {
-				Type type = new Type();
-				type.setLabel(ct);
-				try {
-					associationBusiness.addType(type);
-				} catch (Exception ex) {
-					type = associationBusiness.findTypeByLabel(ct);
-				}
-				aCase.addType(type);
-			}
-		}
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("aCase", aCase);
-		try {
-			associationBusiness.addCase(aCase);
-			if (imageFile.isEmpty())
-				aCase.setImage("blog-1.jpg");
-			else
-				aCase.setImage(Utility.upload("images/cases/", imageFile));
-			associationBusiness.updateCase(aCase);
-
-			uploadDocuments(aCase, documents);
-
-		} catch (DataIntegrityViolationException ex) {
-			errors.put("name", "A case with the same name already exists!");
-			return "cases/add";
-		}
-		return "redirect:cases/" + aCase.getSlug();
-	}
-
-	@DeleteMapping("/cases/files/{id}")
-	public String deleteFile(@PathVariable long id, HttpServletRequest request) {
-		userBusiness.deleteFile(id, "/files/cases/");
-		return "redirect:" + request.getHeader("Referer");
-	}
-
-	private void uploadDocuments(Case aCase, MultipartFile[] documents) {
-		for (MultipartFile doc : documents) {
-			File file = new File();
-			file.setPath(Utility.upload("files/cases/", doc));
-			file.setType("document");
-			file.setCase(aCase);
-			userBusiness.saveFile(file);
-		}
-	}
-
-	/*@InitBinder
-	private void DateBinder(WebDataBinder binder) {
-		try {
-			System.out.println("test ");
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-			CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
-			binder.registerCustomEditor(Date.class, editor);
-		}catch (Exception e) {
-			System.out.println("erro");
-		}
-
-	}
-*/
-	@PostConstruct
-	public void createAssoc() {
-		Association assoc = new Association();
-		assoc.setId(1);
-		assoc.setEmail("assoc-123@gmail.com");
-		assoc.setUsername("assoc-1");
-		assoc.setName("assoc 1");
-		assoc.setCover("cover.jpg");
-		assoc.setBanned(false);
-		assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
-
-		publicServices.addAssociation(assoc);
-
-		System.out.println("Assoc added.");
-	}
-=======
     @Autowired
     @Qualifier("userBusiness")
     private IUserServices userBusiness;
@@ -246,7 +54,7 @@ public class CaseController {
     @Autowired
     @Qualifier("publicServicesBusiness")
     private IPublicServices publicServices;
-    
+
     @Autowired
     @Qualifier("donorBusiness")
     private IDonorBusiness donorBusiness;
@@ -293,14 +101,14 @@ public class CaseController {
             response.setStatus(404);
             return "error/404";
         }
-        
+
         List<Donation> donations = publicServices.getCaseDonating(aCase);
-        
+
         map.put("donatingNumber", donations.size());
         double total = 0;
         for (Donation donation : donations) {
-			total += donation.getAmount();
-		}
+            total += donation.getAmount();
+        }
         map.put("totalDonations", total);
         map.put("case", aCase);
         return "cases/details";
@@ -449,7 +257,7 @@ public class CaseController {
         publicServices.addAssociation(assoc);
 
         System.out.println("Assoc added.");
-        
+
         Donor donor=new Donor();
         donor.setId(2);
         donor.setName("donor1");
@@ -458,20 +266,16 @@ public class CaseController {
         donor.setPhone("055555858");
         donor.setAddress("Fes Morocco");
         publicServices.addDonor(donor);
-        
-        System.out.println("donor ajouté");
-        
+
+        System.out.println("donor ajoutÃ©");
+
         BankCard card=new BankCard();
         card.setCardHolder("donor1");
         card.setId(1);
         card.setCardNumber("1456-1254-7542-7542");
         card.setDonor(donor);
         card.setSecurityCode(444);
-        
-        donorBusiness.addBankCard(card);
-              
-        
-    }
->>>>>>> e486c39d00860fed03675650587240e9777f8dfb
 
+        donorBusiness.addBankCard(card);
+    }
 }
