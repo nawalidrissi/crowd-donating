@@ -54,7 +54,7 @@ public class CaseController {
     @Autowired
     @Qualifier("publicServicesBusiness")
     private IPublicServices publicServices;
-    
+
     @Autowired
     @Qualifier("donorBusiness")
     private IDonorBusiness donorBusiness;
@@ -101,15 +101,20 @@ public class CaseController {
             response.setStatus(404);
             return "error/404";
         }
-        
+
         List<Donation> donations = publicServices.getCaseDonating(aCase);
-        
-        map.put("donatingNumber", donations.size());
+
         double total = 0;
         for (Donation donation : donations) {
-			total += donation.getAmount();
-		}
-        map.put("totalDonations", total);
+            total += donation.getAmount();
+        }
+        double percentage = (total / aCase.getAmount()) * 100;
+        System.err.println(total);
+        System.err.println(aCase.getAmount());
+        System.err.println(percentage);
+        map.put("donationsTotal", total);
+        map.put("donationsPercentage", percentage);
+        map.put("donationsCount", donations.size());
         map.put("case", aCase);
         return "cases/details";
     }
@@ -257,8 +262,8 @@ public class CaseController {
         publicServices.addAssociation(assoc);
 
         System.out.println("Assoc added.");
-        
-        Donor donor=new Donor();
+
+        Donor donor = new Donor();
         donor.setId(2);
         donor.setName("donor1");
         donor.setAvatar("cover.jpg");
@@ -266,19 +271,21 @@ public class CaseController {
         donor.setPhone("055555858");
         donor.setAddress("Fes Morocco");
         publicServices.addDonor(donor);
-        
-        System.out.println("donor ajouté");
-        
-        BankCard card=new BankCard();
-        card.setCardHolder("donor1");
-        card.setId(1);
-        card.setCardNumber("1456-1254-7542-7542");
-        card.setDonor(donor);
-        card.setSecurityCode(444);
-        
-        donorBusiness.addBankCard(card);
-              
-        
-    }
 
+        System.out.println("donor ajouté");
+
+//        BankCard card = new BankCard();
+//        card.setCardHolderLastName("Youssef");
+//        card.setCardHolderFirstName("Mouad");
+////        card.setId(1);
+//        card.setCardNumber("1456-1254-7542-7542");
+//        card.setDonor(donor);
+//        card.setSecurityCode("443");
+//        card.setExpiryDateMonth("03");
+//        card.setExpiryDateYear("97");
+
+//        donorBusiness.addBankCard(card);
+
+
+    }
 }

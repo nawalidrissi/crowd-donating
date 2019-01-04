@@ -29,7 +29,7 @@ public interface IAssociationBusiness extends IUserServices{
     /* *** events *** */
     Event addEvent(Event event);
     Event updateEvent(Event event);
-    Event deleteEvent(long id);
+    void deleteEvent(long id);
     
     /* *** association's domains *** */
     Domain addDomain(Domain domain);

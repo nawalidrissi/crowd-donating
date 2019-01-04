@@ -1,79 +1,86 @@
 package org.mql.crowddonating.models;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
 
 @Entity
 public class Event {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	@Column
-	private String title;
+    @Column
+    private String title;
 
-	@Column
-	private String description;
+    @Column
+    private String description;
 
-	@Column
-	private String image;
+    @Column
+    private String image;
 
-	@Column
-	private Date plannedDate;
+    @Column
+    private Date plannedDate;
 
-	@ManyToOne
-	@JoinColumn(name = "association_id")
-	private Association association;
+    @ManyToOne
+    @JoinColumn(name = "association_id")
+    private Association association;
 
-	public Event() {
-	}
+    public Event() {
+    }
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public void setImage(String image) {
-		this.image = image;
-	}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-	public Date getPlannedDate() {
-		return plannedDate;
-	}
+    public Date getPlannedDate() {
+        return plannedDate;
+    }
 
-	public void setPlannedDate(Date plannedDate) {
-		this.plannedDate = plannedDate;
-	}
+    public void setPlannedDate(Date plannedDate) {
+        this.plannedDate = plannedDate;
+    }
 
-	public Association getAssociation() {
-		return association;
-	}
+    public Association getAssociation() {
+        return association;
+    }
 
-	public void setAssociation(Association association) {
-		this.association = association;
-	}
+    public void setAssociation(Association association) {
+        this.association = association;
+    }
+
+    @Override
+    public String toString() {
+        return "Event [id=" + id + ", title=" + title + ", description=" + description + ", image=" + image
+                + ", plannedDate=" + plannedDate + ", association=" + association + "]";
+    }
+
 }

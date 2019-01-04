@@ -1,90 +1,78 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
   <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+  <link rel="stylesheet" th:href="@{/css/default.css}"/>
+  <link rel="stylesheet" th:href="@{/css/default.date.css}"/>
 </head>
 <body id="top" class="has-header-search">
-<th:block th:replace="~{layouts/master::header}"/>
+<th:block th:include="~{layouts/master::header}"/>
 
-<section class="page-title ptb-50">
+<div class="charity-subheader-two">
+  <span class="charity-footer-transparent"></span>
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <h2>Cases</h2>
-        <ol class="breadcrumb">
-          <li><a th:href="@{/}">Home</a></li>
-          <li><a th:href="@{/cases}">Cases</a></li>
-          <li class="active">Add</li>
-        </ol>
+        <div class="charity-page-title"><h1>Add Cause</h1></div>
+        <ul class="charity-breadcrumb">
+          <li><a href="index-2.html">Home</a></li>
+          <li class="active">Add Cause</li>
+        </ul>
       </div>
     </div>
   </div>
-</section>
+</div>
 
-<section class="section-padding pt-0">
+<section class="section-padding">
   <div class="container">
     <div class="row">
-      <div class="col s12">
+      <div class="col-sm-12 mt-50">
         <div class="row">
           <form th:action="@{/cases}" method="post" th:object="${aCase}"
                 enctype="multipart/form-data"
-                class="col s8 offset-s2">
-            <div class="input-field">
+                class="col-sm-8 col-sm-offset-2">
+            <div th:class="|form-group  ${errors.containsKey('name') ? 'has-error' : ''}">
+              <label for="name" class="control-label" th:text="#{cause.name}"></label>
               <input type="text" name="name" th:value="${aCase.name}" id="name" required
-                     th:class="|validate ${errors.containsKey('name') ? 'invalid' : ''}|">
-              <label for="name">Name</label>
-              <span class="helper-text" th:data-error="${errors.get('name')}" data-success=""
-                    th:if="${errors.containsKey('name')}"></span>
+                     th:class="|form-control validate ${errors.containsKey('name') ? 'invalid' : ''}|">
+              <span class="help-block" th:if="${errors.containsKey('name')}" th:text="${errors.get('name')}"></span>
             </div>
-            <div class="input-field">
-                            <textarea name="description" class="validate materialize-textarea" required
-                                      id="description" th:text="${aCase.description}"></textarea>
+            <div class="form-group">
               <label for="description">Description</label>
+              <textarea name="description" class="validate materialize-textarea form-control" required
+                        id="description" th:text="${aCase.description}"></textarea>
             </div>
-            <div class="input-field">
-                <input type="text" class="validate datepicker" name="deadLine" id="deadline"
-                       th:value="${#calendars.format(aCase.deadLine,'MMM dd, yyyy')}" required>
-              <label for="deadline">Dead line</label>
+            <div class="form-group">
+              <label for="deadline" th:text="#{cause.deadLine}"></label>
+              <input type="text" class="validate datepicker form-control" name="deadLine" id="deadline"
+                     th:value="${#calendars.format(aCase.deadLine,'MMM dd, yyyy')}" required>
             </div>
-            <div class="input-field">
-              <input type="number" name="amount" class="validate" id="amount" th:value="${aCase.amount}"
+            <div class="form-group">
+              <label for="amount" th:text="#{cause.amount}"></label>
+              <input type="number" name="amount" class="validate form-control" id="amount" th:value="${aCase.amount}"
                      required value="1000">
-              <label for="amount">Amount</label>
             </div>
-            <div class="input-field">
+            <div th:class="|form-group  ${errors.containsKey('types') ? 'has-error' : ''}">
+              <label for="types" class="select2-tags-label control-label">Types</label>
               <select name="caseTypes" id="types" multiple
-                      th:class="|select2-tags validate ${errors.containsKey('types') ? 'invalid' : ''}|">
+                      th:class="|form-control select2-tags validate ${errors.containsKey('types') ? 'invalid' : ''}|">
                 <option th:each="type:${types}" th:value="${type.label}"
                         th:text="${type.label}"></option>
               </select>
-              <label for="types" class="select2-tags-label">Types</label>
-              <span class="helper-text" th:data-error="${errors.get('types')}" data-success=""
-                    th:if="${errors.containsKey('types')}"></span>
+              <span class="help-block" th:if="${errors.containsKey('types')}" th:text="${errors.get('types')}"></span>
             </div>
-            <div class="input-field file-field">
-              <div class="btn">
-                <span><i class="material-icons">image</i></span>
-                <input type="file" name="imageFile" id="image">
-              </div>
-              <div class="file-path-wrapper">
-                <input type="text" class="file-path validate" title="Image name">
-              </div>
+            <div class="form-group">
+              <label for="image" th:text="#{global.picture}"></label>
+              <input type="file" name="imageFile" id="image" class="form-control">
             </div>
-            <div class="input-field file-field">
-              <div class="btn">
-                <span><i class="material-icons">file_upload</i></span>
-                <input type="file" name="documents" id="documents" multiple required>
-              </div>
-              <div class="file-path-wrapper">
-                <input type="text" class="file-path validate" title="documents names"
-                       placeholder="Upload one or more files">
-              </div>
+            <div class="form-group">
+              <label for="documents" >Documents</label>
+              <input type="file" name="documents" id="documents" class="form-control" multiple required>
             </div>
-            <div class="input-field display-flex">
+            <div class="form-group display-flex">
               <div class="flex-1"></div>
-              <button class="btn-large waves-effect waves-light">
-                Submit <i class="material-icons right">send</i>
+              <button class="btn btn-main">
+                Valider
               </button>
             </div>
           </form>
@@ -96,6 +84,14 @@
 
 <th:block th:replace="~{layouts/master::footer}"/>
 <th:block th:include="~{layouts/master::js}"/>
-<script th:src="@{/js/select2.min.js}"></script>
+<script th:src="@{/script/picker.js}"></script>
+<script th:src="@{/script/picker.date.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('.datepicker').pickadate({
+            format: 'mmm dd, yyyy',
+        });
+    });
+</script>
 </body>
 </html>

@@ -75,4 +75,15 @@ public class Donation {
 	public void setBankCard(BankCard bankCard) {
 		this.bankCard = bankCard;
 	}
+
+	@Override
+	public String toString() {
+		return "Donation{" +
+				"id=" + id +
+				", amount=" + amount +
+				", date=" + date +
+				", aCase=" + aCase +
+				", bankCard=" + bankCard +
+				'}';
+	}
 }

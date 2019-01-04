@@ -25,7 +25,7 @@ public class DonorBusiness extends UserBusiness implements IDonorBusiness {
 	private BankCardRepository cardDao;
 	
 	@Autowired
-	private DonationRepository dondao;
+	private DonationRepository donationDao;
 	
 	@Override
 	public BankCard addBankCard(BankCard bankCard) {
@@ -44,8 +44,8 @@ public class DonorBusiness extends UserBusiness implements IDonorBusiness {
 	}
 
 	@Override
-	public Donation addDon(Donation donation) {
-		return dondao.save(donation);
+	public Donation addDonation(Donation donation) {
+		return donationDao.save(donation);
 	}
 
 

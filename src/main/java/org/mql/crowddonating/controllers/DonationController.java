@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
@@ -23,56 +24,56 @@ import java.util.List;
 @Controller
 public class DonationController {
 
-	@Autowired
-	@Qualifier("publicServicesBusiness")
-	private IPublicServices publicServices;
+    @Autowired
+    @Qualifier("publicServicesBusiness")
+    private IPublicServices publicServices;
 
-	@Autowired
-	@Qualifier("donorBusiness")
-	private IDonorBusiness donorBusiness;
+    @Autowired
+    @Qualifier("donorBusiness")
+    private IDonorBusiness donorBusiness;
 
-	@Autowired
-	@Qualifier("userBusiness")
-	private IUserServices userServices;
+    @Autowired
+    @Qualifier("userBusiness")
+    private IUserServices userServices;
 
-	@GetMapping("/donor/donate/{slug}")
-	public String donateForm(Model model, @PathVariable String slug) {
+    @GetMapping("/cases/{slug}/donate")
+    public String donateForm(Model model, @PathVariable String slug) {
 
-		Case aCase = publicServices.getCaseBySlug(slug);
-		Donor donor = userServices.getDonorById(2);
-		model.addAttribute("donor", donor);
+        Case aCase = publicServices.getCaseBySlug(slug);
+        Donor donor = userServices.getDonorById(2);
+        model.addAttribute("donor", donor);
 
-		Donation donation = new Donation();
-		donation.setCase(aCase);
+        Donation donation = new Donation();
+        donation.setCase(aCase);
 
-		model.addAttribute("donation", donation);
-		model.addAttribute("card", new BankCard());
+        model.addAttribute("donation", donation);
+        model.addAttribute("card", new BankCard());
 
-		return "donor/donate";
-	}
+        return "donor/donate";
+    }
 
-	@PostMapping("/donor")
-	public String processDonate(Model model, Donation donation) {
-		donorBusiness.addDon(donation);
-		return "redirect:/cases/" + donation.getCase().getSlug();
-	}
+    @PostMapping("/cases/{slug}/donate")
+    public String processDonate(Donation donation, Double donationValue, @PathVariable String slug) {
+        donation.setAmount(donationValue);
+        donorBusiness.addDonation(donation);
+        return "redirect:/cases/" + donation.getCase().getSlug();
+    }
 
-	@GetMapping("/donations/{id}")
-	public String caseBySlug(ModelMap map, @PathVariable Long id, HttpServletResponse response) {
-		Donation donation = publicServices.getDonationById(id);
-		if (donation == null) {
-			response.setStatus(404);
-			return "error/404";
-		}
-		else {
-			map.put("donation", donation);
-			List<Donation> donations = publicServices.getCaseDonating(donation.getaCase());
-			double total = donation.getaCase().getAmount();
-			double percent=(donation.getAmount()/total)*100;
- 			DecimalFormat df2 = new DecimalFormat(".##");
-			map.put("percentDonation", df2.format(percent));
-			map.put("percent", Math.round(percent)+"");
-			return "donations/details";
-		}
-	}
+    @GetMapping("/donations/{id}")
+    public String caseBySlug(ModelMap map, @PathVariable Long id, HttpServletResponse response) {
+        Donation donation = publicServices.getDonationById(id);
+        if (donation == null) {
+            response.setStatus(404);
+            return "error/404";
+        } else {
+            map.put("donation", donation);
+            List<Donation> donations = publicServices.getCaseDonating(donation.getaCase());
+            double total = donation.getaCase().getAmount();
+            double percent = (donation.getAmount() / total) * 100;
+            DecimalFormat df2 = new DecimalFormat(".##");
+            map.put("percentDonation", df2.format(percent));
+            map.put("percent", Math.round(percent) + "");
+            return "donations/details";
+        }
+    }
 }

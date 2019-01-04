@@ -17,42 +17,43 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class CardController {
 
-	@Autowired
-	@Qualifier("userBusiness")
-	private IUserServices userServices;
-	
-	@Autowired
-	@Qualifier("publicServicesBusiness")
-	private IPublicServices publicServices;
+    @Autowired
+    @Qualifier("userBusiness")
+    private IUserServices userServices;
 
-	@Autowired
-	@Qualifier("donorBusiness")
-	private IDonorBusiness donorBusiness;
+    @Autowired
+    @Qualifier("publicServicesBusiness")
+    private IPublicServices publicServices;
 
-	@GetMapping("/cards/new")
-	public String getCardForm(Model model) {
-		model.addAttribute("card", new BankCard());
-		return "donor/addCard";
-	}
-	
-	@PostMapping("/cards")
-	public String formProcess(Model model, BankCard card, long caseID) {
-		card.setDonor(userServices.getDonorById(2));
-		donorBusiness.addBankCard(card);
-		Case aCase = publicServices.getCaseById(caseID);
-		return "redirect:/donor/donate/"+aCase.getSlug();
-	}
-	
-	@GetMapping("/cards/{id}")
-	public String updateCardForm(Model model, @PathVariable long id) {
-		model.addAttribute("card", donorBusiness.getCardById(id));
-		return "donor/updateCard";
-	}
+    @Autowired
+    @Qualifier("donorBusiness")
+    private IDonorBusiness donorBusiness;
 
-	
-	@PutMapping("/cards")
-	public String formUpdateProcess(Model model, BankCard card) {
-		donorBusiness.updatebankCard(card);
-		return "redirect:/cases";
-	}
+    @GetMapping("/cards/new")
+    public String getCardForm(Model model) {
+        model.addAttribute("card", new BankCard());
+        return "donor/addCard";
+    }
+
+    @PostMapping("/cards")
+    public String formProcess(BankCard card, long caseId) {
+        card.setDonor(userServices.getDonorById(2));
+        donorBusiness.addBankCard(card);
+        Case aCase = publicServices.getCaseById(caseId);
+        System.out.println(card);
+        return "redirect:/cases/" + aCase.getSlug() + "/donate";
+    }
+
+    @GetMapping("/cards/{id}")
+    public String updateCardForm(Model model, @PathVariable long id) {
+        model.addAttribute("card", donorBusiness.getCardById(id));
+        return "donor/updateCard";
+    }
+
+
+    @PutMapping("/cards")
+    public String formUpdateProcess(Model model, BankCard card) {
+        donorBusiness.updatebankCard(card);
+        return "redirect:/cases";
+    }
 }

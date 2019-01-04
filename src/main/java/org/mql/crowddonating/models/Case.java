@@ -59,7 +59,8 @@ public class Case {
     public Case() {
         this.association = new Association(1);
         this.types = new ArrayList<>();
-//        this.types.add(new Type(1));
+        this.files = new ArrayList<>();
+        this.donations = new ArrayList<>();
     }
 
     public void addDonation(Donation donation) {
@@ -181,6 +182,10 @@ public class Case {
                 ", deadLine=" + deadLine +
                 ", postedDate=" + postedDate +
                 ", image='" + image + '\'' +
+                ", association=" + association +
+                ", files=" + files +
+                ", donations=" + donations +
+                ", types=" + types +
                 '}';
     }
 }

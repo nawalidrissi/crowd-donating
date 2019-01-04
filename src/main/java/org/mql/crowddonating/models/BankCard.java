@@ -1,6 +1,8 @@
 package org.mql.crowddonating.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -13,15 +15,21 @@ public class BankCard {
     private String cardNumber;
 
     @Column
-    private String cardHolder;
+    private String cardHolderFirstName;
 
     @Column
-    private Date expirationDate;
+    private String cardHolderLastName;
 
     @Column
-    private int securityCode;
+    private String expiryDateMonth;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @Column
+    private String expiryDateYear;
+
+    @Column
+    private String securityCode;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id")
     private Donor donor;
 
@@ -51,27 +59,43 @@ public class BankCard {
         this.cardNumber = cardNumber;
     }
 
-    public String getCardHolder() {
-        return cardHolder;
+    public String getCardHolderFirstName() {
+        return cardHolderFirstName;
     }
 
-    public void setCardHolder(String cardHolder) {
-        this.cardHolder = cardHolder;
+    public void setCardHolderFirstName(String cardHolderFirstName) {
+        this.cardHolderFirstName = cardHolderFirstName;
     }
 
-    public Date getExpirationDate() {
-        return expirationDate;
+    public String getCardHolderLastName() {
+        return cardHolderLastName;
     }
 
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setCardHolderLastName(String cardHolderLastName) {
+        this.cardHolderLastName = cardHolderLastName;
     }
 
-    public int getSecurityCode() {
+    public String getExpiryDateMonth() {
+        return expiryDateMonth;
+    }
+
+    public void setExpiryDateMonth(String expiryDateMonth) {
+        this.expiryDateMonth = expiryDateMonth;
+    }
+
+    public String getExpiryDateYear() {
+        return expiryDateYear;
+    }
+
+    public void setExpiryDateYear(String expiryDateYear) {
+        this.expiryDateYear = expiryDateYear;
+    }
+
+    public String getSecurityCode() {
         return securityCode;
     }
 
-    public void setSecurityCode(int securityCode) {
+    public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
     }
 
@@ -91,12 +115,16 @@ public class BankCard {
         this.donations = donations;
     }
 
-	@Override
-	public String toString() {
-		return "BankCard [id=" + id + ", cardNumber=" + cardNumber + ", cardHolder=" + cardHolder + ", expirationDate="
-				+ expirationDate + ", securityCode=" + securityCode + ", donor=" + donor + ", donations=" + donations
-				+ "]";
-	}
-    
-    
+    @Override
+    public String toString() {
+        return "BankCard{" +
+                "id=" + id +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", cardHolderFirstName='" + cardHolderFirstName + '\'' +
+                ", cardHolderLastName='" + cardHolderLastName + '\'' +
+                ", expiryDateMonth='" + expiryDateMonth + '\'' +
+                ", expiryDateYear='" + expiryDateYear + '\'' +
+                ", securityCode='" + securityCode + '\'' +
+                '}';
+    }
 }

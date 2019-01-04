@@ -36,17 +36,17 @@ public interface IPublicServices {
     List<Association> getAllAssociations();
     List<Association> getAssociationsByDomain();
     List<Association> getAssociationsByName();
-    Association getAssociationById(long id);    
-    
+    User getAssociationById(long id);
+
     /* *** events *** */
     List<Event> getAllEvents();
-    Case getEventById(long id);
-    List<Case> getEventByName(String name);
-    
+    Event getEventById(long id);
+    List<Event> getEventByName(String name);
+
     /* *** sponsors *** */
     List<Sponsor> getAllSponsors();
-    Case getSponsorById(long id);
-    List<Case> getSponsorByName(String name);
+    Sponsor getSponsorById(long id);
+    Page<Sponsor> getSponsorByName(String name,int page,int size);
     
     /* *** domains *** */
     List<Domain> getAllDomains();
