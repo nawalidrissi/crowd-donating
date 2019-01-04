@@ -52,9 +52,7 @@ public class EventController {
 
     @GetMapping("/events")
     public String sponsors(Model model) {
-
         List<Event> events = publicServices.getAllEvents();
-
         model.addAttribute("events", events);
         return "event/events";
     }
@@ -75,14 +73,12 @@ public class EventController {
         event.setDescription(description);
         event.setPlannedDate(plannedDate);
         Association assoc = (Association) publicServices.getAssociationById(1);
-        System.out.println(assoc);
         event.setAssociation(assoc);
         event.setImage(Utility.upload("images/events/", image));
         associationBusiness.addEvent(event);
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
         map.put("event", event);
-        System.out.println(event);
         return "redirect:/events/" + event.getId();
     }
 
@@ -115,11 +111,11 @@ public class EventController {
     @GetMapping("/events/{id}")
     public String eventById(ModelMap map, @PathVariable long id, HttpServletResponse response) {
         Event event = publicServices.getEventById(id);
+		map.put("event", event);
         if (event == null) {
             response.setStatus(404);
             return "error/404";
         }
-        map.put("event", event);
         return "event/details";
     }
 

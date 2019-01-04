@@ -104,10 +104,12 @@ public class CaseController {
 
         List<Donation> donations = publicServices.getCaseDonating(aCase);
 
+        map.put("donatingNumber", donations.size());
         double total = 0;
         for (Donation donation : donations) {
             total += donation.getAmount();
         }
+
         double percentage = (total / aCase.getAmount()) * 100;
         System.err.println(total);
         System.err.println(aCase.getAmount());
@@ -272,12 +274,13 @@ public class CaseController {
         donor.setAddress("Fes Morocco");
         publicServices.addDonor(donor);
 
+
         System.out.println("donor ajouté");
 
 //        BankCard card = new BankCard();
 //        card.setCardHolderLastName("Youssef");
 //        card.setCardHolderFirstName("Mouad");
-////        card.setId(1);
+//        card.setId(1);
 //        card.setCardNumber("1456-1254-7542-7542");
 //        card.setDonor(donor);
 //        card.setSecurityCode("443");
@@ -285,7 +288,5 @@ public class CaseController {
 //        card.setExpiryDateYear("97");
 
 //        donorBusiness.addBankCard(card);
-
-
     }
 }

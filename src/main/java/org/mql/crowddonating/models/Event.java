@@ -82,5 +82,4 @@ public class Event {
         return "Event [id=" + id + ", title=" + title + ", description=" + description + ", image=" + image
                 + ", plannedDate=" + plannedDate + ", association=" + association + "]";
     }
-
 }
