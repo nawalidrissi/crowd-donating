@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-public class AdminBusiness extends UserBusiness implements IAdminBusiness {
+public class  AdminBusiness extends UserBusiness implements IAdminBusiness {
 
 	@Autowired
 	private SponsorRepository sponsorDao;
