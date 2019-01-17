@@ -2,6 +2,7 @@ package org.mql.crowddonating.utilities;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,5 +39,22 @@ public class Utility {
             e.printStackTrace();
         }
         return name;
+    }
+
+    public static String getBaseURL(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+        StringBuilder url = new StringBuilder();
+        url.append(scheme).append("://").append(serverName);
+        if ((serverPort != 80) && (serverPort != 443)) {
+            url.append(":").append(serverPort);
+        }
+        url.append(contextPath);
+        if (url.toString().endsWith("/")) {
+            url.append("/");
+        }
+        return url.toString();
     }
 }
