@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="en">
 <head th:fragment="head(title)">
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -84,18 +85,22 @@
         <div class="row">
           <div class="col-md-6">
             <ul class="charity-strip-info">
-              <li><i class="fa fa-phone"></i> +123 45 678</li>
-              <li><i class="fa fa-envelope-o"></i> <a href="mailto:name@email.com">info@example.com</a></li>
-              <li><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</li>
+              <li><i class="fa fa-phone"></i> +212 677 23 23 47</li>
+              <li><i class="fa fa-envelope-o"></i> <a href="mailto:name@email.com">mql.donating@gmail.com</a></li>
             </ul>
           </div>
           <div class="col-md-6">
             <ul class="charity-strip-social">
-              <li><a href="https://www.facebook.com/" class="charity-colorhover fa fa-facebook"></a></li>
-              <li><a href="https://www.twitter.com/" class="charity-colorhover fa fa-twitter"></a></li>
-              <li><a href="https://www.linkedin.com/" class="charity-colorhover fa fa-linkedin"></a></li>
-              <li><a href="https://www.youtube.com/" class="charity-colorhover fa fa-youtube"></a></li>
-              <li><a href="https://www.vimeo.com/" class="charity-colorhover fa fa-vimeo"></a></li>
+                   <li> 
+                   <select id="locales" class="charity-simple-btn charity-bgcolor mt-0">
+                        <title th:text="#{lang.lang}"></title>
+                        <option th:text="#{lang.lang}"></option>
+                        <option value="en" th:text="#{lang.eng}"></option>
+                        <option value="fr" th:text="#{lang.fr}"></option>
+                      </select>
+
+                    </li>
+                
             </ul>
           </div>
         </div>
@@ -147,44 +152,23 @@
                         <li><a th:href="@{/events/add}">Add event</a></li>
                       </ul>
                     </li>
-                    <li><a href="team-grid.html" th:text="#{menu.team}"></a>
+                   
+                    <li sec:authorize="!isAuthenticated()" ><a href="#" th:text="#{menu.signup}"></a>
                       <ul class="charity-dropdown-menu">
-                        <li><a href="team-grid.html">Team Grid</a>
-                          <ul class="charity-dropdown-menu">
-                            <li><a href="team-grid.html">Team Grid W/O/Sdbar</a></li>
-                            <li><a href="team-grid-wls.html">Team Grid W/L/Sdbar</a></li>
-                            <li><a href="team-grid-wrs.html">Team Grid W/R/Sdbar</a></li>
-                          </ul>
-                        </li>
-                        <li><a href="team-medium.html">Team Medium</a></li>
-                        <li><a href="team-modren.html">Team Modren</a></li>
-                        <li><a href="team-detail.html">Team Detail</a>
-                          <ul class="charity-dropdown-menu">
-                            <li><a href="team-detail.html">Team Detail W/R/Sdbar</a></li>
-                            <li><a href="team-detail-wls.html">Team Detail W/L/Sdbar</a></li>
-                            <li><a href="team-detail-w-soundcloud.html">Team Dtail W/Soundcloud</a></li>
-                            <li><a href="team-detail-w-video.html">Team Dtail W/Video</a></li>
-                          </ul>
-                        </li>
+                        <li><a th:href="@{/donator/register}" th:text="#{menu.asDonator}"></a></li>
+                        <li><a href="contact-us-view2.html" th:text="#{menu.asAssociation}"></a></li>
                       </ul>
                     </li>
-                    <li><a href="contact-us.html" th:text="#{menu.contact}"></a>
-                      <ul class="charity-dropdown-menu">
-                        <li><a href="contact-us-view1.html">Contact Us View One</a></li>
-                        <li><a href="contact-us-view2.html">Contact Us View Two</a></li>
-                      </ul>
-                    </li>
-                    <li>
-
-                      <select id="locales" class="charity-simple-btn charity-bgcolor mt-0">
-                        <title th:text="#{lang.lang}"></title>
-                        <option th:text="#{lang.lang}"></option>
-                        <option value="en" th:text="#{lang.eng}"></option>
-                        <option value="fr" th:text="#{lang.fr}"></option>
-                      </select>
-
-                    </li>
+                    
                   </ul>
+                  
+                  <ul class="nav navbar-nav">
+                    <li class="active">
+                    	<a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{menu.login}"></a>
+                    	<a sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{menu.logout}" > </a>
+                    </li>
+        
+                   </ul>
                 </div>
               </nav>
               <!--// Navigation \\-->

@@ -31,6 +31,7 @@ public interface IPublicServices {
     @Deprecated
 	Donor addDonor(Donor donor);
     User login(String username, String password);
+    User findUserByUsername(String userName);
     
     /* *** associations *** */
     List<Association> getAllAssociations();

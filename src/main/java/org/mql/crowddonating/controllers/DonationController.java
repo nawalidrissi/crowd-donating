@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
@@ -32,15 +31,11 @@ public class DonationController {
     @Qualifier("donorBusiness")
     private IDonorBusiness donorBusiness;
 
-    @Autowired
-    @Qualifier("userBusiness")
-    private IUserServices userServices;
-
     @GetMapping("/cases/{slug}/donate")
     public String donateForm(Model model, @PathVariable String slug) {
 
         Case aCase = publicServices.getCaseBySlug(slug);
-        Donor donor = userServices.getDonorById(2);
+        Donor donor = donorBusiness.getDonorById(2);
         model.addAttribute("donor", donor);
 
         Donation donation = new Donation();
@@ -67,7 +62,6 @@ public class DonationController {
             return "error/404";
         } else {
             map.put("donation", donation);
-            List<Donation> donations = publicServices.getCaseDonating(donation.getaCase());
             double total = donation.getaCase().getAmount();
             double percent = (donation.getAmount() / total) * 100;
             DecimalFormat df2 = new DecimalFormat(".##");
