@@ -16,11 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class CardController {
-
-    @Autowired
-    @Qualifier("userBusiness")
-    private IUserServices userServices;
-
+	
     @Autowired
     @Qualifier("publicServicesBusiness")
     private IPublicServices publicServices;
@@ -37,7 +33,7 @@ public class CardController {
 
     @PostMapping("/cards")
     public String formProcess(BankCard card, long caseId) {
-        card.setDonor(userServices.getDonorById(2));
+        card.setDonor(donorBusiness.getDonorById(2));
         donorBusiness.addBankCard(card);
         Case aCase = publicServices.getCaseById(caseId);
         System.out.println(card);

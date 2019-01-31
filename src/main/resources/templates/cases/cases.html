@@ -45,14 +45,16 @@
                 </section>
               </li>
               <li>
-                <figure><a href="blog-detail.html"><img src="extra-images/widget-recent-img2.png" alt=""></a></figure>
+                <figure><a href="blog-detail.html"><img src="extra-images/widget-recent-img2.png"
+                                                        alt=""></a></figure>
                 <section>
                   <h6><a href="blog-detail.html">Fusce finibus purusco aliquam agittis</a></h6>
                   <time datetime="2008-02-14 20:00">28 Sept, 2016</time>
                 </section>
               </li>
               <li>
-                <figure><a href="blog-detail.html"><img src="extra-images/widget-recent-img3.png" alt=""></a></figure>
+                <figure><a href="blog-detail.html"><img src="extra-images/widget-recent-img3.png"
+                                                        alt=""></a></figure>
                 <section>
                   <h6><a href="blog-detail.html">Fusce finibus purusco aliquam agittis</a></h6>
                   <time datetime="2008-02-14 20:00">28 Sept, 2016</time>
@@ -70,21 +72,24 @@
                 <time datetime="2008-02-14 20:00">22 Aug</time>
                 <div class="charity-events">
                   <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
+                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street
+                    9976</a>
                 </div>
               </li>
               <li>
                 <time datetime="2008-02-14 20:00">13 Sep</time>
                 <div class="charity-events">
                   <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
+                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street
+                    9976</a>
                 </div>
               </li>
               <li>
                 <time datetime="2008-02-14 20:00">07 Dec</time>
                 <div class="charity-events">
                   <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
+                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street
+                    9976</a>
                 </div>
               </li>
             </ul>
@@ -108,18 +113,24 @@
           <div class="widget widget_gallery">
             <h2 class="charity-widget-title">Photo Gallery</h2>
             <ul>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img1.png" class="fancybox"><img
-                      src="extra-images/event-gallery-img1.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img2.png" class="fancybox"><img
-                      src="extra-images/event-gallery-img2.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img3.png" class="fancybox"><img
-                      src="extra-images/event-gallery-img3.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img4.png" class="fancybox"><img
-                      src="extra-images/event-gallery-img4.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img5.png" class="fancybox"><img
-                      src="extra-images/event-gallery-img5.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img6.png" class="fancybox"><img
-                      src="extra-images/event-gallery-img6.png" alt=""></a></li>
+              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img1.png"
+                     class="fancybox"><img
+                  src="extra-images/event-gallery-img1.png" alt=""></a></li>
+              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img2.png"
+                     class="fancybox"><img
+                  src="extra-images/event-gallery-img2.png" alt=""></a></li>
+              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img3.png"
+                     class="fancybox"><img
+                  src="extra-images/event-gallery-img3.png" alt=""></a></li>
+              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img4.png"
+                     class="fancybox"><img
+                  src="extra-images/event-gallery-img4.png" alt=""></a></li>
+              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img5.png"
+                     class="fancybox"><img
+                  src="extra-images/event-gallery-img5.png" alt=""></a></li>
+              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img6.png"
+                     class="fancybox"><img
+                  src="extra-images/event-gallery-img6.png" alt=""></a></li>
             </ul>
           </div>
           <!--// Widget Instagram Photos \\-->
@@ -136,8 +147,14 @@
                 </figure>
                 <div class="charity-cause-modern-text">
                   <h5><a th:href="@{'/cases/' + ${case.slug}}" th:text="${case.name}"></a></h5>
-                  <p th:text="${#strings.substring(case.description ,0 ,90)}"></p>
-                  <a href="donation.html" class="charity-donate-btn"><i class="fa fa-heart"></i> Donate Now</a>
+                  <th:block th:if="${#strings.length(case.description) > 90}">
+                    <p th:text="${#strings.substring(case.description ,0 ,90)}"></p>
+                  </th:block>
+                  <th:block th:if="${#strings.length(case.description) <= 90}">
+                    <p th:text="${case.description}"></p>
+                  </th:block>
+                  <a href="donation.html" class="charity-donate-btn"><i class="fa fa-heart"></i>
+                    Donate Now</a>
                 </div>
                 <div class="charity-cause-modern-skill">
                   <div class="skillst">
@@ -154,12 +171,12 @@
           <div class="charity-pagination">
             <ul class="page-numbers">
               <li><a class="previous page-numbers" href="404.html"><span aria-label="Next"><i
-                      class="fa fa-angle-left"></i></span></a></li>
+                  class="fa fa-angle-left"></i></span></a></li>
               <li><span class="page-numbers current">1</span></li>
               <li><a class="page-numbers" href="404.html">2</a></li>
               <li><a class="page-numbers" href="404.html">3</a></li>
               <li><a class="next page-numbers" href="404.html"><span aria-label="Next"><i
-                      class="fa fa-angle-right"></i></span></a></li>
+                  class="fa fa-angle-right"></i></span></a></li>
             </ul>
           </div>
           <!--// Pagination \\-->

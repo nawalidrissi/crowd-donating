@@ -17,18 +17,20 @@ import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IDonorBusiness;
 import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.business.IUserServices;
+import org.mql.crowddonating.dao.RoleRepository;
 import org.mql.crowddonating.models.Association;
-import org.mql.crowddonating.models.BankCard;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.File;
+import org.mql.crowddonating.models.Role;
 import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -44,8 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class CaseController {
 
     @Autowired
-    @Qualifier("userBusiness")
-    private IUserServices userBusiness;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     @Qualifier("associationBusiness")
@@ -59,7 +60,10 @@ public class CaseController {
     @Qualifier("donorBusiness")
     private IDonorBusiness donorBusiness;
 
-    @GetMapping("/cases")
+    @Autowired
+    private RoleRepository roleDao;
+
+    @GetMapping(path = {"/", "/cases"})
     public String cases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
                         @RequestParam(name = "size", defaultValue = "8") int size) {
         if (page <= 0)
@@ -68,7 +72,8 @@ public class CaseController {
         return getPageCases(model, page, cases);
     }
 
-    private String getPageCases(Model model, @RequestParam(name = "page", defaultValue = "1") int page, Page<Case> cases) {
+    private String getPageCases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
+                                Page<Case> cases) {
         int[] pages = new int[cases.getTotalPages()];
         model.addAttribute("types", publicServices.getAllTypes());
         model.addAttribute("pages", pages);
@@ -126,7 +131,7 @@ public class CaseController {
         Case aCase = publicServices.getCaseById(id);
         System.out.println("Case : " + aCase.getName());
         for (File file : aCase.getFiles()) {
-            userBusiness.deleteFile(file.getId(), "files/cases/");
+            associationBusiness.deleteFile(file.getId(), "files/cases/");
         }
         Path filePath = Paths.get(Utility.uploadDir, "images/cases/", aCase.getImage());
         try {
@@ -147,7 +152,6 @@ public class CaseController {
         return "cases/add";
     }
 
-    // @ResponseBody
     @GetMapping("/cases/update/{slug}")
     public String updateForm(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
         Map<String, String> errors = new HashMap<>();
@@ -180,7 +184,7 @@ public class CaseController {
             associationBusiness.updateCase(aCase);
         } catch (DataIntegrityViolationException ex) {
             errors.put("name", "A case with the same name already exists!");
-            return "cases/update";
+            return "private/cases/update";
         }
         return "redirect:cases/" + aCase.getSlug();
     }
@@ -227,7 +231,7 @@ public class CaseController {
 
     @DeleteMapping("/cases/files/{id}")
     public String deleteFile(@PathVariable long id, HttpServletRequest request) {
-        userBusiness.deleteFile(id, "/files/cases/");
+        associationBusiness.deleteFile(id, "/files/cases/");
         return "redirect:" + request.getHeader("Referer");
     }
 
@@ -238,55 +242,64 @@ public class CaseController {
                 file.setPath(Utility.upload("files/cases/", doc));
                 file.setType("document");
                 file.setCase(aCase);
-                userBusiness.saveFile(file);
+                associationBusiness.saveFile(file);
             }
         }
     }
 
-//	@InitBinder
-//	private void DateBinder(WebDataBinder binder) {
-//		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-//		CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
-//		binder.registerCustomEditor(Date.class, editor);
-//	}
-
     @PostConstruct
-    public void createAssocAndDonore() {
+    public void createAssocAndDonor() {
+
+        Role role = new Role(1, "DONATOR");
+        roleDao.save(role);
+        role = new Role(2, "ASSOCIATION");
+        roleDao.save(role);
+        role = new Role(3, "ADMIN");
+        roleDao.save(role);
+
         Association assoc = new Association();
         assoc.setId(1);
         assoc.setEmail("assoc-123@gmail.com");
         assoc.setUsername("assoc-1");
         assoc.setName("assoc 1");
         assoc.setCover("cover.jpg");
-        assoc.setBanned(false);
+        role.setRole("ASSOCIATION");
+        assoc.addRole(roleDao.findByRole("ASSOCIATION"));
+        assoc.setEnabled(true);
+        assoc.setPassword(bCryptPasswordEncoder.encode("123"));
         assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
 
         publicServices.addAssociation(assoc);
 
         System.out.println("Assoc added.");
+//
+//		Donor donor = new Donor();
+//		donor.setId(1000);
+//		donor.setName("donor1");
+//		donor.setAvatar("cover.jpg");
+//		donor.setUsername("donor-1");
+//		donor.setEnabled(false);
+//
+//		role.setRole("DONATOR");
+//		donor.addRole(role);
+//		donor.setPhone("055555858");
+//		donor.setAddress("Fes Morocco");
+//		donor.setPassword(bCryptPasswordEncoder.encode("123"));
+//		publicServices.addDonor(donor);
 
-        Donor donor = new Donor();
-        donor.setId(2);
-        donor.setName("donor1");
-        donor.setAvatar("cover.jpg");
-        donor.setBanned(false);
-        donor.setPhone("055555858");
-        donor.setAddress("Fes Morocco");
-        publicServices.addDonor(donor);
-
-
-        System.out.println("donor ajouté");
-
-//        BankCard card = new BankCard();
-//        card.setCardHolderLastName("Youssef");
-//        card.setCardHolderFirstName("Mouad");
-//        card.setId(1);
-//        card.setCardNumber("1456-1254-7542-7542");
-//        card.setDonor(donor);
-//        card.setSecurityCode("443");
-//        card.setExpiryDateMonth("03");
-//        card.setExpiryDateYear("97");
-
-//        donorBusiness.addBankCard(card);
+        //System.out.println("donor ajoutï¿½");
+//
+////        BankCard card = new BankCard();
+////        card.setCardHolderLastName("Youssef");
+////        card.setCardHolderFirstName("Mouad");
+////        card.setId(1);
+////        card.setCardNumber("1456-1254-7542-7542");
+////        card.setDonor(donor);
+////        card.setSecurityCode("443");
+////        card.setExpiryDateMonth("03");
+////        card.setExpiryDateYear("97");
+//
+////        donorBusiness.addBankCard(card);
     }
+
 }

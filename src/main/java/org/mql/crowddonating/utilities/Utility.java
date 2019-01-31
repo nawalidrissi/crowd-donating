@@ -4,12 +4,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.server.UID;
 import java.text.Normalizer;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -56,5 +60,28 @@ public class Utility {
             url.append("/");
         }
         return url.toString();
+    }
+
+    public static String getJsonFromUrl(String link) {
+        String json = null;
+        try {
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoOutput(true);
+            connection.setInstanceFollowRedirects(false);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("charset", "utf-8");
+            connection.connect();
+            InputStream inStream = connection.getInputStream();
+            json = Utility.streamToString(inStream); // input stream to string
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return json;
+    }
+
+    public static String streamToString(InputStream inputStream) {
+        return new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
     }
 }

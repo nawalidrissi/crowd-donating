@@ -12,6 +12,6 @@ public interface IUserServices {
     
     /* *** user *** */
     Donor getDonorById(long id);
-   
-    
+	User findByEmailIgnoreCase(String email);
+
 }

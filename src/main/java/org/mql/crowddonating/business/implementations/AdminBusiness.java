@@ -29,7 +29,7 @@ public class  AdminBusiness extends UserBusiness implements IAdminBusiness {
 	@Override
 	public void banUser(long id) {
 		User u = userDao.getOne(id);
-		u.setBanned(true);
+		u.setEnabled(true);
 		userDao.save(u);
 
 	}
