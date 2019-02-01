@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -83,5 +85,18 @@ public class Utility {
 
     public static String streamToString(InputStream inputStream) {
         return new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
+    }
+
+    /**
+     * @param value the double to round
+     * @param places number of floating numbers
+     * @return double
+     */
+    public static double round(double value, int places) {
+        if (places < 0)
+            throw new IllegalArgumentException();
+        BigDecimal bigDecimal = new BigDecimal(Double.toString(value));
+        bigDecimal = bigDecimal.setScale(places, RoundingMode.HALF_EVEN);
+        return bigDecimal.doubleValue();
     }
 }

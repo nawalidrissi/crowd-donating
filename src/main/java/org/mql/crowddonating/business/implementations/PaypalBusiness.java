@@ -3,22 +3,32 @@ package org.mql.crowddonating.business.implementations;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import org.json.JSONObject;
 import org.mql.crowddonating.business.IPaypalBusiness;
-import org.mql.crowddonating.config.PaypalPaymentIntent;
-import org.mql.crowddonating.config.PaypalPaymentMethod;
+import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.utility.PaypalPayment;
+import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class PaypalBusiness implements IPaypalBusiness {
     @Autowired
     private APIContext apiContext;
+
+    @Autowired
+    private DonorBusiness donorBusiness;
+
+    @Autowired
+    private PublicServicesBusiness publicServices;
 
     @Override
     public Payment createPayment(PaypalPayment paypalPayment) throws PayPalRESTException {
@@ -69,5 +79,51 @@ public class PaypalBusiness implements IPaypalBusiness {
         PaymentExecution paymentExecute = new PaymentExecution();
         paymentExecute.setPayerId(payerId);
         return payment.execute(apiContext, paymentExecute);
+    }
+
+    @Override
+    public boolean successPayment(String paymentId, String payerId) throws PayPalRESTException {
+        Payment payment = executePayment(paymentId, payerId);
+
+        if (payment.getState().equals("approved")) {
+            String currencyConverterApiJson = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
+            JSONObject obj = new JSONObject(currencyConverterApiJson);
+            double dollarPrice = obj.getDouble("MAD_USD");
+
+            JSONObject json = new JSONObject(payment.toJSON());
+            String payment_id = json.getString("id");
+            String custom = json.getJSONArray("transactions")
+                    .getJSONObject(0)
+                    .getString("custom");
+            json = json.getJSONArray("transactions")
+                    .getJSONObject(0)
+                    .getJSONArray("related_resources")
+                    .getJSONObject(0)
+                    .getJSONObject("sale");
+            String transaction_id = json.getString("id");
+            double transaction_fee = json.getJSONObject("transaction_fee").getDouble("value");
+            double amount = json.getJSONObject("amount").getDouble("total");
+
+            long case_id = new JSONObject(custom).getLong("case_id");
+
+            transaction_fee = Utility.round((transaction_fee * dollarPrice), 2);
+            amount = Utility.round((amount * dollarPrice), 2);
+
+            Donation donation = new Donation();
+            donation.setAmount(amount);
+            donation.setPaypalId(payment_id);
+            donation.setTransactionId(transaction_id);
+            donation.setTransactionFee(transaction_fee);
+            donation.setDate(new Date());
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            donation.setDonor(donorBusiness.getByUsername(auth.getName()));
+            donation.setCase(publicServices.getCaseById(case_id));
+
+            donorBusiness.addDonation(donation);
+
+            return true;
+        }
+        return false;
     }
 }

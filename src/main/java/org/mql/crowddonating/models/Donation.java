@@ -5,85 +5,116 @@ import java.util.*;
 
 @Entity
 public class Donation {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	@Column
-	private double amount;
+    @Column
+    private String paypal_id;
 
-	@Column
-	private Date date;
+    @Column
+    private String transaction_id;
 
-	@ManyToOne
-	@JoinColumn(name = "case_id")
-	private Case aCase;
+    @Column
+    private double amount;
 
-	@ManyToOne
-	@JoinColumn(name = "bank_card_id")
-	private BankCard bankCard;
-	
-	public Donation() {
-		date = new Date();
-		bankCard = new BankCard();
-	}
+    @Column
+    private double transaction_fee;
 
-	public long getId() {
-		return id;
-	}
+    @Column
+    private Date date;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "case_id")
+    private Case aCase;
 
-	public double getAmount() {
-		return amount;
-	}
+    @ManyToOne
+    @JoinColumn(name = "donor_id")
+    private Donor donor;
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+    public Donation() {
+        date = new Date();
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public Case getCase() {
-		return aCase;
-	}
+    public double getAmount() {
+        return amount;
+    }
 
-	public void setCase(Case aCase) {
-		this.aCase = aCase;
-	}
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
 
-	public BankCard getBankCard() {
-		return bankCard;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public Case getaCase() {
-		return aCase;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public void setaCase(Case aCase) {
-		this.aCase = aCase;
-	}
+    public Case getCase() {
+        return aCase;
+    }
 
-	public void setBankCard(BankCard bankCard) {
-		this.bankCard = bankCard;
-	}
+    public void setCase(Case aCase) {
+        this.aCase = aCase;
+    }
 
-	@Override
-	public String toString() {
-		return "Donation{" +
-				"id=" + id +
-				", amount=" + amount +
-				", date=" + date +
-				", aCase=" + aCase +
-				", bankCard=" + bankCard +
-				'}';
-	}
+    public String getPaypalId() {
+        return paypal_id;
+    }
+
+    public Donation setPaypalId(String paypal_id) {
+        this.paypal_id = paypal_id;
+        return this;
+    }
+
+    public String getTransactionId() {
+        return transaction_id;
+    }
+
+    public Donation setTransactionId(String transaction_id) {
+        this.transaction_id = transaction_id;
+        return this;
+    }
+
+    public double getTransactionFee() {
+        return transaction_fee;
+    }
+
+    public Donation setTransactionFee(double transaction_fee) {
+        this.transaction_fee = transaction_fee;
+        return this;
+    }
+
+    public Donor getDonor() {
+        return donor;
+    }
+
+    public Donation setDonor(Donor donor) {
+        this.donor = donor;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Donation{" +
+                "id=" + id +
+                ", paypal_id='" + paypal_id + '\'' +
+                ", transaction_id='" + transaction_id + '\'' +
+                ", amount=" + amount +
+                ", transaction_fee=" + transaction_fee +
+                ", date=" + date +
+                ", aCase=" + aCase +
+                ", donor=" + donor +
+                '}';
+    }
 }

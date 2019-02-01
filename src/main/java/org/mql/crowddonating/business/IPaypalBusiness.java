@@ -8,4 +8,6 @@ public interface IPaypalBusiness {
     Payment createPayment(PaypalPayment paypalPayment) throws PayPalRESTException;
 
     Payment executePayment(String paymentId, String payerId) throws PayPalRESTException;
+
+    boolean successPayment(String paymentId, String payerId) throws PayPalRESTException;
 }

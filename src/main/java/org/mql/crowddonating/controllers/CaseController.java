@@ -16,12 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IDonorBusiness;
 import org.mql.crowddonating.business.IPublicServices;
-import org.mql.crowddonating.business.IUserServices;
 import org.mql.crowddonating.dao.RoleRepository;
 import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Donation;
-import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.Role;
 import org.mql.crowddonating.models.Type;
@@ -114,11 +112,8 @@ public class CaseController {
         for (Donation donation : donations) {
             total += donation.getAmount();
         }
-
         double percentage = (total / aCase.getAmount()) * 100;
-        System.err.println(total);
-        System.err.println(aCase.getAmount());
-        System.err.println(percentage);
+
         map.put("donationsTotal", total);
         map.put("donationsPercentage", percentage);
         map.put("donationsCount", donations.size());

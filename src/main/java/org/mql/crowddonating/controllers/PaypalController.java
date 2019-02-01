@@ -12,7 +12,10 @@ import org.mql.crowddonating.models.utility.PaypalPaymentBuilder;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,17 +33,11 @@ public class PaypalController {
         return "paypal/index";
     }
 
-    public static void main(String[] args) {
-        String json = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
-
-        JSONObject obj = new JSONObject(json);
-        double amount = obj.getDouble("MAD_USD");
-
-        System.out.println(amount);
-    }
-
     @PostMapping("/cases/paypal")
     public String pay(HttpServletRequest request, @RequestParam long id, @RequestParam double value) {
+        if (1 == 1)
+            return "redirect:" + PAYPAL_SUCCESS_URL;
+
         String cancelUrl = Utility.getBaseURL(request) + PAYPAL_CANCEL_URL;
         String successUrl = Utility.getBaseURL(request) + PAYPAL_SUCCESS_URL;
 
@@ -83,32 +80,8 @@ public class PaypalController {
     public String success(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         // TODO: implement refund functionality
         try {
-            Payment payment = paypalBusiness.executePayment(paymentId, payerId);
-
-            if (payment.getState().equals("approved")) {
-//                String json = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
-//                JSONObject obj = new JSONObject(json);
-//                double dollarPrice = obj.getDouble("MAD_USD");
-//
-//                JSONObject paymentJson = new JSONObject(payment.toJSON());
-//                obj = paymentJson.getJSONObject("transactions").getJSONObject("related_resources");
-//
-//                String transaction_id = obj.getJSONObject("sale").getString("id");
-//                double transaction_fee = obj.getJSONObject("transaction_fee").getDouble("value");
-//                double amount = obj.getJSONObject("amount").getDouble("total");
-//                String custom = obj.getString("custom");
-//
-//                transaction_fee *= dollarPrice;
-//                amount *= dollarPrice;
-//
-//                System.out.println(transaction_id);
-//                System.out.println(transaction_fee);
-//                System.out.println(amount);
-//                System.out.println(custom);
-
-//                return "success";
-                return payment.toJSON();
-            }
+            // returns boolean
+            paypalBusiness.successPayment(paymentId, payerId);
         } catch (PayPalRESTException e) {
             System.err.println(e.getMessage());
         }

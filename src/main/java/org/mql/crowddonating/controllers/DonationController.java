@@ -2,8 +2,6 @@ package org.mql.crowddonating.controllers;
 
 import org.mql.crowddonating.business.IDonorBusiness;
 import org.mql.crowddonating.business.IPublicServices;
-import org.mql.crowddonating.business.IUserServices;
-import org.mql.crowddonating.models.BankCard;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.Donor;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
-import java.util.List;
 
 @Controller
 public class DonationController {
@@ -42,7 +39,6 @@ public class DonationController {
         donation.setCase(aCase);
 
         model.addAttribute("donation", donation);
-        model.addAttribute("card", new BankCard());
 
         return "donor/donate";
     }
@@ -62,7 +58,7 @@ public class DonationController {
             return "error/404";
         } else {
             map.put("donation", donation);
-            double total = donation.getaCase().getAmount();
+            double total = donation.getCase().getAmount();
             double percent = (donation.getAmount() / total) * 100;
             DecimalFormat df2 = new DecimalFormat(".##");
             map.put("percentDonation", df2.format(percent));
