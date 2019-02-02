@@ -9,98 +9,110 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected long id;
-	@Column
-	protected String name;
-	@Column
-	protected String username;
-	@Column
-	protected String email;
-	@Column
-	protected String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected long id;
+    @Column
+    protected String name;
+    @Column
+    protected String username;
+    @Column
+    protected String email;
+    @Column
+    protected String password;
 
-	@Column
-	protected String avatar;
+    @Column
+    protected String avatar;
 
-	@Column(name = "enabled")
-	private boolean isEnabled;
+    @Column(name = "enabled")
+    private boolean isEnabled;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+    @Column(name = "banned")
+    private boolean banned;
 
-	protected User() {
-		roles = new HashSet<>();
-	}
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
-	public long getId() {
-		return id;
-	}
+    protected User() {
+        roles = new HashSet<>();
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public boolean isEnabled() {
-		return isEnabled;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public boolean isBanned() {
+        return banned;
+    }
 
-	public String getAvatar() {
-		return avatar;
-	}
+    public User setBanned(boolean banned) {
+        this.banned = banned;
+        return this;
+    }
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    public String getAvatar() {
+        return avatar;
+    }
 
-	public void addRole(Role role) {
-		roles.add(role);
-	}
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 
 }

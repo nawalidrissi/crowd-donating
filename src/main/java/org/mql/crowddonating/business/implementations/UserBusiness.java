@@ -16,8 +16,10 @@ import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.User;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+@Primary
 @Service
 @Transactional
 public class UserBusiness extends PublicServicesBusiness implements IUserServices {
@@ -54,7 +56,12 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
 		return donorDao.getOne(id);
 	}
 
-	@Override
+    @Override
+    public Donor getDonorByUsername(String username) {
+        return (Donor) userDao.findByUsername(username);
+    }
+
+    @Override
 	public User findByEmailIgnoreCase(String email) {
 		return userDao.findByEmailIgnoreCase(email);
 	}
