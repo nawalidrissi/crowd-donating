@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class DonorBusiness extends UserBusiness implements IDonorBusiness {
-
     @Autowired
     private DonationRepository donationDao;
 
@@ -88,5 +87,4 @@ public class DonorBusiness extends UserBusiness implements IDonorBusiness {
     public Donor getByUsername(String username) {
         return donorDao.getByUsername(username);
     }
-
 }

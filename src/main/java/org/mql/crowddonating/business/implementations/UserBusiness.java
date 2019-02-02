@@ -8,9 +8,11 @@ import java.nio.file.Paths;
 import javax.transaction.Transactional;
 
 import org.mql.crowddonating.business.IUserServices;
+import org.mql.crowddonating.dao.AssociationRepository;
 import org.mql.crowddonating.dao.DonorRepository;
 import org.mql.crowddonating.dao.FileRepository;
 import org.mql.crowddonating.dao.UserRepository;
+import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.User;
@@ -28,9 +30,13 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
 
     @Autowired
     private DonorRepository donorDao;
-    
+
     @Autowired
     private UserRepository userDao;
+
+
+    @Autowired
+    private AssociationRepository associationDao;
 
     @Override
     public File saveFile(File file) {
@@ -41,7 +47,7 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
     public void deleteFile(long id, String repository) {
         File file = fileDao.findById(id).get();
         Path filePath = Paths.get(Utility.uploadDir, repository, file.getPath());
-        System.out.println("Deleting  : " + Utility.uploadDir+ repository+ file.getPath());
+        System.out.println("Deleting  : " + Utility.uploadDir + repository + file.getPath());
         try {
             Files.delete(filePath);
         } catch (IOException ex) {
@@ -51,10 +57,10 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
         fileDao.deleteById(id);
     }
 
-	@Override
-	public Donor getDonorById(long id) {
-		return donorDao.getOne(id);
-	}
+    @Override
+    public Donor getDonorById(long id) {
+        return donorDao.getOne(id);
+    }
 
     @Override
     public Donor getDonorByUsername(String username) {
@@ -62,8 +68,12 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
     }
 
     @Override
-	public User findByEmailIgnoreCase(String email) {
-		return userDao.findByEmailIgnoreCase(email);
-	}
+    public Association getAssociationById(long id) {
+        return associationDao.getOne(id);
+    }
 
+    @Override
+    public User findByEmailIgnoreCase(String email) {
+        return userDao.findByEmailIgnoreCase(email);
+    }
 }
