@@ -57,8 +57,7 @@ public class DonorBusiness extends UserBusiness implements IDonorBusiness {
 
 	@Override
 	public void deleteBankCard(long id) {
-		// TODO Auto-generated method stub
-
+		 cardDao.delete(cardDao.getOne(id));
 	}
 
 	@Override

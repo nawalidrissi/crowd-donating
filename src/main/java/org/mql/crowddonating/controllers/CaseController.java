@@ -44,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class CaseController {
-
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -272,34 +271,5 @@ public class CaseController {
 		publicServices.addAssociation(assoc);
 
 		System.out.println("Assoc added.");
-//
-//		Donor donor = new Donor();
-//		donor.setId(1000);
-//		donor.setName("donor1");
-//		donor.setAvatar("cover.jpg");
-//		donor.setUsername("donor-1");
-//		donor.setEnabled(false);
-//
-//		role.setRole("DONATOR");
-//		donor.addRole(role);
-//		donor.setPhone("055555858");
-//		donor.setAddress("Fes Morocco");
-//		donor.setPassword(bCryptPasswordEncoder.encode("123"));
-//		publicServices.addDonor(donor);
-
-		//System.out.println("donor ajouté");
-//
-////        BankCard card = new BankCard();
-////        card.setCardHolderLastName("Youssef");
-////        card.setCardHolderFirstName("Mouad");
-////        card.setId(1);
-////        card.setCardNumber("1456-1254-7542-7542");
-////        card.setDonor(donor);
-////        card.setSecurityCode("443");
-////        card.setExpiryDateMonth("03");
-////        card.setExpiryDateYear("97");
-//
-////        donorBusiness.addBankCard(card);
 }
-	
 }

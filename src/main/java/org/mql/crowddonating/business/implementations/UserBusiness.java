@@ -8,9 +8,11 @@ import java.nio.file.Paths;
 import javax.transaction.Transactional;
 
 import org.mql.crowddonating.business.IUserServices;
+import org.mql.crowddonating.dao.AssociationRepository;
 import org.mql.crowddonating.dao.DonorRepository;
 import org.mql.crowddonating.dao.FileRepository;
 import org.mql.crowddonating.dao.UserRepository;
+import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.User;
@@ -31,6 +33,10 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
     
     @Autowired
     private UserRepository userDao;
+
+
+    @Autowired
+    private AssociationRepository associationDao;
 
     @Override
     public File saveFile(File file) {
@@ -56,14 +62,18 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
 		return donorDao.getOne(id);
 	}
 
-    @Override
-    public Donor getDonorByUsername(String username) {
-        return (Donor) userDao.findByUsername(username);
-    }
+  @Override
+  public Association getAssociationById(long id) {
+      return associationDao.getOne(id);
+  }
 
-    @Override
+  @Override
+  public Donor getDonorByUsername(String username) {
+      return (Donor) userDao.findByUsername(username);
+  }
+
+  @Override
 	public User findByEmailIgnoreCase(String email) {
 		return userDao.findByEmailIgnoreCase(email);
 	}
-
 }

@@ -90,7 +90,7 @@
             <h2 class="charity-section-heading">Admin Post</h2>
             <div class="charity-admin-post">
               <figure>
-                <a href="404.html"><img th:src="@{'/images/users/' + ${case.association.avatar}}" alt=""></a>
+                <a href="404.html"><img th:float="left" th:src="@{'/images/users/' + ${case.association.avatar}}" alt=""></a>
                 <figcaption>
                   <h6><a href="404.html" th:text="${case.association.name}"></a></h6>
                   <span>Association</span>
