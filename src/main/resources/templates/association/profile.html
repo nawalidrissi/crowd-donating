@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+
+    .profileimage{
+      border-radius: 100%;
+      position: relative;
+      float:right;
+      margin-bottom:5px;
+      }
+      .breadcrumb{
+
+      background-color: #1da1d2 !important;
+      }
+
+    </style>
+
+    <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+</head>
+<body id="top" class="has-header-search">
+<th:block th:replace="~{layouts/master::header}"/>
+
+<section class="page-title ptb-50">
+
+
+    <div class="container">
+        <div class="row">
+
+
+
+            <div class="col s12">
+
+                <h2>Mon Profile <img class="profileimage"  th:src="'/images/users/'+${association.avatar}" alt="" /></h2>
+
+                <ol style="margin-top:110px !important;" class="breadcrumb">
+                    <li><a href="active">Mes Données</a></li>
+
+                </ol>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nom Utilisateur</th>
+                        <td><span th:text="${association.username}"></span></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Télephone</th>
+                        <td><span th:text="${association.phone}"></span></td>
+                    </tr>
+
+
+                    <tr>
+                        <th>Domaines</th>
+                        <td><span th:each="domaine:${association.domains}" style="margin:4px" th:text="'#'+${domaine.label}"></span></td>
+                    </tr>
+
+                    <tr>
+                        <th>Email</th>
+                        <td><span th:text="${association.email}"></span></td>
+                    </tr>
+
+                    <tr>
+                        <th>Addresse</th>
+                        <td><span th:text="${association.address}"></span></td>
+                    </tr>
+
+                    <tr>
+                        <th>Descreption</th>
+                        <td><span th:text="${association.description}"></span></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <ol class="breadcrumb">
+                    <li><a href="active">Mes Fichies</a></li>
+
+                </ol>
+
+                <div class="col s8 offset-s2">
+
+
+                            <table class="table">
+
+                                <tr th:each="file,iter:${association.files}">
+                                    <th>Fichier <span th:text="${iter.index+1}" /></th>
+                                    <td><span th:text="${file.type}"></span></td>
+                                    <td><a th:href="@{'/files/associations/'+${file.path}}" th:text="${file.path}" target="_blank" style="color:blue" /></td>
+                                    <td><a style="color:red"  th:href="'/association/'+${association.id}+'/file/delete/'+${file.id}">Delete</a></td>
+                                </tr>
+
+
+                            <!--<th:block th:text="${file.path}"/>-->
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<th:block th:replace="~{layouts/master::footer}"/>
+<th:block th:include="~{layouts/master::js}"/>
+</body>
+</html>
