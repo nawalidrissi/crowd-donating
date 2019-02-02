@@ -9,5 +9,5 @@ public interface IPaypalBusiness {
 
     Payment executePayment(String paymentId, String payerId) throws PayPalRESTException;
 
-    boolean successPayment(String paymentId, String payerId) throws PayPalRESTException;
+    String successPayment(String paymentId, String payerId) throws PayPalRESTException;
 }

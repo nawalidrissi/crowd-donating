@@ -82,7 +82,7 @@ public class PaypalBusiness implements IPaypalBusiness {
     }
 
     @Override
-    public boolean successPayment(String paymentId, String payerId) throws PayPalRESTException {
+    public String successPayment(String paymentId, String payerId) throws PayPalRESTException {
         Payment payment = executePayment(paymentId, payerId);
 
         if (payment.getState().equals("approved")) {
@@ -105,12 +105,13 @@ public class PaypalBusiness implements IPaypalBusiness {
             double amount = json.getJSONObject("amount").getDouble("total");
 
             long case_id = new JSONObject(custom).getLong("case_id");
+            double mad_amount = new JSONObject(custom).getDouble("mad_amount");
 
             transaction_fee = Utility.round((transaction_fee * dollarPrice), 2);
-            amount = Utility.round((amount * dollarPrice), 2);
+            //amount = Utility.round((amount * dollarPrice), 2);
 
             Donation donation = new Donation();
-            donation.setAmount(amount);
+            donation.setAmount(mad_amount);
             donation.setPaypalId(payment_id);
             donation.setTransactionId(transaction_id);
             donation.setTransactionFee(transaction_fee);
@@ -122,8 +123,8 @@ public class PaypalBusiness implements IPaypalBusiness {
 
             donorBusiness.addDonation(donation);
 
-            return true;
+            return "/cases/" + publicServices.getCaseById(case_id).getSlug();
         }
-        return false;
+        return "/error/500";
     }
 }

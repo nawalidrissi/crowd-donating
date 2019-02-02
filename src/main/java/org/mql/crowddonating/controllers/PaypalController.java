@@ -35,24 +35,21 @@ public class PaypalController {
 
     @PostMapping("/cases/paypal")
     public String pay(HttpServletRequest request, @RequestParam long id, @RequestParam double value) {
-        if (1 == 1)
-            return "redirect:" + PAYPAL_SUCCESS_URL;
-
         String cancelUrl = Utility.getBaseURL(request) + PAYPAL_CANCEL_URL;
         String successUrl = Utility.getBaseURL(request) + PAYPAL_SUCCESS_URL;
 
-        String json = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
-        JSONObject obj = new JSONObject(json);
-        double dollarPrice = obj.getDouble("MAD_USD");
-        value = value * dollarPrice;
-
-        JSONObject custom = new JSONObject();
-        custom.put("test", 123);
-        custom.put("test2", 321);
-
         try {
+            String json = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
+
+            JSONObject obj = new JSONObject(json);
+            double dollarPrice = obj.getDouble("MAD_USD");
+
+            JSONObject custom = new JSONObject();
+            custom.put("case_id", id);
+            custom.put("mad_amount", value);
+
             PaypalPayment paypalPayment = new PaypalPaymentBuilder()
-                    .setTotal(value)
+                    .setTotal(value * dollarPrice)
                     .setCurrency("USD")
                     .setMethod(PaypalPaymentMethod.paypal)
                     .setIntent(PaypalPaymentIntent.sale)
@@ -75,17 +72,17 @@ public class PaypalController {
         return "redirect:/paypal";
     }
 
-    @ResponseBody
     @GetMapping(value = PAYPAL_SUCCESS_URL, produces = "application/json")
     public String success(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
         // TODO: implement refund functionality
         try {
             // returns boolean
-            paypalBusiness.successPayment(paymentId, payerId);
+            String return_url = paypalBusiness.successPayment(paymentId, payerId);
+            return "redirect:" + return_url + "?success=true";
         } catch (PayPalRESTException e) {
             System.err.println(e.getMessage());
         }
-        return "success";
+        return "/";
     }
 
     @ResponseBody
