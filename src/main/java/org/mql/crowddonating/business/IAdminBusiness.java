@@ -1,6 +1,9 @@
 package org.mql.crowddonating.business;
 
+import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.Sponsor;
+
+import java.util.List;
 
 public interface IAdminBusiness extends IUserServices{
 	
@@ -17,5 +20,7 @@ public interface IAdminBusiness extends IUserServices{
 	
 	/* *** case's types *** */
 	void deleteType(long id);
+
+	List<Donor> getAllDonators();
 	
 }

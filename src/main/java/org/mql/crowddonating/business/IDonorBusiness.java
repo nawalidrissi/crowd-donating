@@ -1,7 +1,5 @@
 package org.mql.crowddonating.business;
 
-import java.util.List;
-
 import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.Donor;
 
