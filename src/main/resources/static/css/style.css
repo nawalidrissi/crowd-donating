@@ -7490,7 +7490,7 @@ blockquote {
     line-height: 32px;
 }
 
-.btn-main{
+.btn-main {
     border: none;
     color: #fff;
     font-size: 15px;
@@ -7507,7 +7507,12 @@ blockquote {
     height: 40px;
 }
 
-.charity-simple-btn{
+.charity-simple-btn {
     height: 35px;
     padding-top: 7px;
+}
+
+/* Sweetalert2 font-size bug when used with Bootstrap3 */
+.swal2-popup {
+    font-size: 1.6rem !important;
 }

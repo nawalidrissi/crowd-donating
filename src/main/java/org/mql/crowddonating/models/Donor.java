@@ -1,6 +1,8 @@
 package org.mql.crowddonating.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Donor extends User {
@@ -10,12 +12,14 @@ public class Donor extends User {
 
     @Column
     private String address;
-    
+
+    @OneToMany(mappedBy = "donor", fetch = FetchType.LAZY)
+    private List<Donation> donations;
 
     public Donor() {
+        donations = new ArrayList<>();
     }
 
-    
     public String getPhone() {
         return phone;
     }
@@ -32,12 +36,27 @@ public class Donor extends User {
         this.address = address;
     }
 
-   
-	@Override
-	public String toString() {
-		return "Donor [ " + super.toString() + ", phone=" + phone + ", address=" + address + "]";
-	}
-    
-    
-    
+    public List<Donation> getDonations() {
+        return donations;
+    }
+
+    public Donor setDonations(List<Donation> donations) {
+        this.donations = donations;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Donor{" +
+                "phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", donations=" + donations +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
+    }
 }

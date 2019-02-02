@@ -3,7 +3,8 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
-  <link th:href="@{/css/shortcodes/blog.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/shortcodes/blog.css}"/>
+  <link rel="stylesheet" th:href="@{/admin/js/plugins/sweetalert2/sweetalert2.min.css}"/>
 </head>
 <body id="top" class="has-header-search">
 <div class="charity-main-wrapper">
@@ -52,11 +53,13 @@
                 <div class="skillst">
                   <h6>Raised: <span th:text="|${donationsTotal} MAD|"></span></h6>
                   <h6>Goal: <span th:text="|${case.amount} MAD|"></span></h6>
-                  <div class="progressbar1" th:data-width="${#numbers.formatDecimal(donationsPercentage, 0, 0)}"
+                  <div class="progressbar1"
+                       th:data-width="${#numbers.formatDecimal(donationsPercentage, 0, 0)}"
                        th:data-target="${#numbers.formatDecimal(donationsPercentage, 0, 0)}"></div>
                 </div>
-                <a th:href="@{'/cases/' + ${case.slug} + '/donate'}" class="charity-plan-btn" th:text="#{cause.donate}"><i
-                        class="fa fa-heart"></i></a>
+                <a th:href="@{'/cases/' + ${case.slug} + '/donate'}" class="charity-plan-btn">
+                  <i class="fa fa-paypal"></i> <span th:text="#{cause.donate}"></span>
+                </a>
                 <ul class="charity-cause-social">
                   <li><a href="https://www.facebook.com/" class="fa fa-facebook"></a></li>
                   <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
@@ -90,7 +93,8 @@
             <h2 class="charity-section-heading">Admin Post</h2>
             <div class="charity-admin-post">
               <figure>
-                <a href="404.html"><img th:src="@{'/images/users/' + ${case.association.avatar}}" alt=""></a>
+                <a href="404.html"><img th:src="@{'/images/users/' + ${case.association.avatar}}"
+                                        alt=""></a>
                 <figcaption>
                   <h6><a href="404.html" th:text="${case.association.name}"></a></h6>
                   <span>Association</span>
@@ -116,7 +120,8 @@
               <h2 class="charity-widget-title">Featured Causes</h2>
               <ul>
                 <li>
-                  <figure><a href="cause-detail.html"><img src="/extra-images/featured-causes-img1.png" alt=""></a>
+                  <figure><a href="cause-detail.html"><img
+                      src="/extra-images/featured-causes-img1.png" alt=""></a>
                   </figure>
                   <div class="charity-featured-text">
                     <h6><a href="cause-detail.html">Fusce finibus prus co</a></h6>
@@ -128,7 +133,8 @@
                   </div>
                 </li>
                 <li>
-                  <figure><a href="cause-detail.html"><img src="/extra-images/featured-causes-img2.png" alt=""></a>
+                  <figure><a href="cause-detail.html"><img
+                      src="/extra-images/featured-causes-img2.png" alt=""></a>
                   </figure>
                   <div class="charity-featured-text">
                     <h6><a href="cause-detail.html">Fusce finibus prus co</a></h6>
@@ -140,7 +146,8 @@
                   </div>
                 </li>
                 <li>
-                  <figure><a href="cause-detail.html"><img src="/extra-images/featured-causes-img3.png" alt=""></a>
+                  <figure><a href="cause-detail.html"><img
+                      src="/extra-images/featured-causes-img3.png" alt=""></a>
                   </figure>
                   <div class="charity-featured-text">
                     <h6><a href="cause-detail.html">Fusce finibus prus co</a></h6>
@@ -163,21 +170,24 @@
                   <time datetime="2008-02-14 20:00">22 Aug</time>
                   <div class="charity-events">
                     <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
+                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell
+                      Street 9976</a>
                   </div>
                 </li>
                 <li>
                   <time datetime="2008-02-14 20:00">13 Sep</time>
                   <div class="charity-events">
                     <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
+                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell
+                      Street 9976</a>
                   </div>
                 </li>
                 <li>
                   <time datetime="2008-02-14 20:00">07 Dec</time>
                   <div class="charity-events">
                     <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
+                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell
+                      Street 9976</a>
                   </div>
                 </li>
               </ul>
@@ -193,5 +203,13 @@
 
 <th:block th:replace="~{layouts/master::footer}"/>
 <th:block th:include="~{layouts/master::js}"/>
+<script th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
+<script th:if="${(param.success != null) and (param.success[0] == 'true')}">
+    Swal(
+        'Good job!',
+        'Your donation have been sent successfully!',
+        'success'
+    );
+</script>
 </body>
 </html>

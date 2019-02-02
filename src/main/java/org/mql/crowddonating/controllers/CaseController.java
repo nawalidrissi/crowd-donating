@@ -16,12 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IDonorBusiness;
 import org.mql.crowddonating.business.IPublicServices;
-import org.mql.crowddonating.business.IUserServices;
 import org.mql.crowddonating.dao.RoleRepository;
 import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Donation;
-import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.Role;
 import org.mql.crowddonating.models.Type;
@@ -45,233 +43,230 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class CaseController {
 
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Autowired
-	@Qualifier("associationBusiness")
-	private IAssociationBusiness associationBusiness;
+    @Autowired
+    @Qualifier("associationBusiness")
+    private IAssociationBusiness associationBusiness;
 
-	@Autowired
-	@Qualifier("publicServicesBusiness")
-	private IPublicServices publicServices;
+    @Autowired
+    @Qualifier("publicServicesBusiness")
+    private IPublicServices publicServices;
 
-	@Autowired
-	@Qualifier("donorBusiness")
-	private IDonorBusiness donorBusiness;
-	
-	@Autowired
-	private RoleRepository roleDao;
+    @Autowired
+    @Qualifier("donorBusiness")
+    private IDonorBusiness donorBusiness;
 
-	@GetMapping(path = {"/", "/cases"})
-	public String cases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "8") int size) {
-		if (page <= 0)
-			page = 1;
-		Page<Case> cases = publicServices.getAllCases(page - 1, size);
-		return getPageCases(model, page, cases);
-	}
+    @Autowired
+    private RoleRepository roleDao;
 
-	private String getPageCases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
-			Page<Case> cases) {
-		int[] pages = new int[cases.getTotalPages()];
-		model.addAttribute("types", publicServices.getAllTypes());
-		model.addAttribute("pages", pages);
-		model.addAttribute("currentPage", page);
-		model.addAttribute("cases", cases);
-		return "cases/cases";
-	}
+    @GetMapping(path = {"/", "/cases"})
+    public String cases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
+                        @RequestParam(name = "size", defaultValue = "8") int size) {
+        if (page <= 0)
+            page = 1;
+        Page<Case> cases = publicServices.getAllCases(page - 1, size);
+        return getPageCases(model, page, cases);
+    }
 
-	@GetMapping("/cases/search")
-	public String cases(Model model, @RequestParam(name = "name") String name,
-			@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "8") int size) {
-		Page<Case> cases = publicServices.getCasesByName("%" + name + "%", page - 1, size);
-		return getPageCases(model, page, cases);
-	}
+    private String getPageCases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
+                                Page<Case> cases) {
+        int[] pages = new int[cases.getTotalPages()];
+        model.addAttribute("types", publicServices.getAllTypes());
+        model.addAttribute("pages", pages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("cases", cases);
+        return "cases/cases";
+    }
 
-	@GetMapping("/cases/type/{id}")
-	public String casesByType(Model model, @PathVariable long id) {
-		Type type = publicServices.getTypeById(id);
-		model.addAttribute("types", publicServices.getAllTypes());
-		model.addAttribute("cases", type.getCases());
-		model.addAttribute("currentPage", 1);
-		return "cases/cases";
-	}
+    @GetMapping("/cases/search")
+    public String cases(Model model, @RequestParam(name = "name") String name,
+                        @RequestParam(name = "page", defaultValue = "1") int page,
+                        @RequestParam(name = "size", defaultValue = "8") int size) {
+        Page<Case> cases = publicServices.getCasesByName("%" + name + "%", page - 1, size);
+        return getPageCases(model, page, cases);
+    }
 
-	@GetMapping("/cases/{slug}")
-	public String caseBySlug(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
-		Case aCase = publicServices.getCaseBySlug(slug);
-		if (aCase == null) {
-			response.setStatus(404);
-			return "error/404";
-		}
+    @GetMapping("/cases/type/{id}")
+    public String casesByType(Model model, @PathVariable long id) {
+        Type type = publicServices.getTypeById(id);
+        model.addAttribute("types", publicServices.getAllTypes());
+        model.addAttribute("cases", type.getCases());
+        model.addAttribute("currentPage", 1);
+        return "cases/cases";
+    }
 
-		List<Donation> donations = publicServices.getCaseDonating(aCase);
+    @GetMapping("/cases/{slug}")
+    public String caseBySlug(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
+        Case aCase = publicServices.getCaseBySlug(slug);
+        if (aCase == null) {
+            response.setStatus(404);
+            return "error/404";
+        }
 
-		map.put("donatingNumber", donations.size());
-		double total = 0;
-		for (Donation donation : donations) {
-			total += donation.getAmount();
-		}
+        List<Donation> donations = publicServices.getCaseDonating(aCase);
 
-		double percentage = (total / aCase.getAmount()) * 100;
-		System.err.println(total);
-		System.err.println(aCase.getAmount());
-		System.err.println(percentage);
-		map.put("donationsTotal", total);
-		map.put("donationsPercentage", percentage);
-		map.put("donationsCount", donations.size());
-		map.put("case", aCase);
-		return "cases/details";
-	}
+        map.put("donatingNumber", donations.size());
+        double total = 0;
+        for (Donation donation : donations) {
+            total += donation.getAmount();
+        }
+        double percentage = (total / aCase.getAmount()) * 100;
 
-	@DeleteMapping("/cases/{id}")
-	public String delete(@PathVariable long id, Model model) {
-		Case aCase = publicServices.getCaseById(id);
-		System.out.println("Case : " + aCase.getName());
-		for (File file : aCase.getFiles()) {
-			associationBusiness.deleteFile(file.getId(), "files/cases/");
-		}
-		Path filePath = Paths.get(Utility.uploadDir, "images/cases/", aCase.getImage());
-		try {
-			Files.delete(filePath);
-		} catch (IOException ignored) {
-		}
-		System.out.println();
-		associationBusiness.deleteCase(id);
-		return "redirect:/cases";
-	}
+        map.put("donationsTotal", total);
+        map.put("donationsPercentage", percentage);
+        map.put("donationsCount", donations.size());
+        map.put("case", aCase);
+        return "cases/details";
+    }
 
-	@GetMapping("/cases/add")
-	public String addForm(ModelMap map) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("aCase", new Case());
-		map.put("types", publicServices.getAllTypes());
-		return "cases/add";
-	}
+    @DeleteMapping("/cases/{id}")
+    public String delete(@PathVariable long id, Model model) {
+        Case aCase = publicServices.getCaseById(id);
+        System.out.println("Case : " + aCase.getName());
+        for (File file : aCase.getFiles()) {
+            associationBusiness.deleteFile(file.getId(), "files/cases/");
+        }
+        Path filePath = Paths.get(Utility.uploadDir, "images/cases/", aCase.getImage());
+        try {
+            Files.delete(filePath);
+        } catch (IOException ignored) {
+        }
+        System.out.println();
+        associationBusiness.deleteCase(id);
+        return "redirect:/cases";
+    }
 
-	@GetMapping("/cases/update/{slug}")
-	public String updateForm(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		Case aCase = publicServices.getCaseBySlug(slug);
-		List<Type> types = publicServices.getAllTypes().stream().filter(type -> !aCase.getTypes().contains(type))
-				.collect(Collectors.toList());
-		map.put("types", types);
-		if (aCase == null) {
-			response.setStatus(404);
-			return "error/404";
-		}
-		map.put("aCase", aCase);
-		return "cases/update";
-	}
+    @GetMapping("/cases/add")
+    public String addForm(ModelMap map) {
+        Map<String, String> errors = new HashMap<>();
+        map.put("errors", errors);
+        map.put("aCase", new Case());
+        map.put("types", publicServices.getAllTypes());
+        return "cases/add";
+    }
 
-	@PutMapping("/cases")
-	public String update(ModelMap map, Case aCase, @RequestParam MultipartFile imageFile,
-			@RequestParam MultipartFile[] documents) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("aCase", aCase);
-		try {
-			if (!imageFile.isEmpty()) {
-				aCase.setImage(Utility.upload("images/cases/", imageFile));
-			} else
-				aCase.setImage(publicServices.getCaseBySlug(aCase.getSlug()).getImage());
-			associationBusiness.updateCase(aCase);
-			uploadDocuments(aCase, documents);
-			associationBusiness.updateCase(aCase);
-		} catch (DataIntegrityViolationException ex) {
-			errors.put("name", "A case with the same name already exists!");
-			return "private/cases/update";
-		}
-		return "redirect:cases/" + aCase.getSlug();
-	}
+    @GetMapping("/cases/update/{slug}")
+    public String updateForm(ModelMap map, @PathVariable String slug, HttpServletResponse response) {
+        Map<String, String> errors = new HashMap<>();
+        map.put("errors", errors);
+        Case aCase = publicServices.getCaseBySlug(slug);
+        List<Type> types = publicServices.getAllTypes().stream().filter(type -> !aCase.getTypes().contains(type))
+                .collect(Collectors.toList());
+        map.put("types", types);
+        if (aCase == null) {
+            response.setStatus(404);
+            return "error/404";
+        }
+        map.put("aCase", aCase);
+        return "cases/update";
+    }
 
-	@PostMapping("/cases")
-	public String add(ModelMap map, Case aCase, String[] caseTypes, @RequestParam MultipartFile imageFile,
-			@RequestParam MultipartFile[] documents) {
-		Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("aCase", aCase);
-		map.put("types", publicServices.getAllTypes());
-		if (caseTypes == null) {
-			errors.put("types", "At least one type is required!");
-			return "cases/add";
-		} else if (caseTypes.length == 0) {
-			errors.put("types", "At least one type is required!");
-			return "cases/add";
-		} else {
-			for (String ct : caseTypes) {
-				Type type = new Type();
-				type.setLabel(ct);
-				try {
-					associationBusiness.addType(type);
-				} catch (Exception ex) {
-					type = associationBusiness.findTypeByLabel(ct);
-				}
-				aCase.addType(type);
-			}
-		}
-		try {
-			associationBusiness.addCase(aCase);
-			if (imageFile.isEmpty())
-				aCase.setImage("blog-1.jpg");
-			else
-				aCase.setImage(Utility.upload("images/cases/", imageFile));
-			associationBusiness.updateCase(aCase);
-			uploadDocuments(aCase, documents);
-		} catch (DataIntegrityViolationException ex) {
-			errors.put("name", "A case with the same name already exists!");
-			return "cases/add";
-		}
-		return "redirect:cases/" + aCase.getSlug();
-	}
+    @PutMapping("/cases")
+    public String update(ModelMap map, Case aCase, @RequestParam MultipartFile imageFile,
+                         @RequestParam MultipartFile[] documents) {
+        Map<String, String> errors = new HashMap<>();
+        map.put("errors", errors);
+        map.put("aCase", aCase);
+        try {
+            if (!imageFile.isEmpty()) {
+                aCase.setImage(Utility.upload("images/cases/", imageFile));
+            } else
+                aCase.setImage(publicServices.getCaseBySlug(aCase.getSlug()).getImage());
+            associationBusiness.updateCase(aCase);
+            uploadDocuments(aCase, documents);
+            associationBusiness.updateCase(aCase);
+        } catch (DataIntegrityViolationException ex) {
+            errors.put("name", "A case with the same name already exists!");
+            return "private/cases/update";
+        }
+        return "redirect:cases/" + aCase.getSlug();
+    }
 
-	@DeleteMapping("/cases/files/{id}")
-	public String deleteFile(@PathVariable long id, HttpServletRequest request) {
-		associationBusiness.deleteFile(id, "/files/cases/");
-		return "redirect:" + request.getHeader("Referer");
-	}
+    @PostMapping("/cases")
+    public String add(ModelMap map, Case aCase, String[] caseTypes, @RequestParam MultipartFile imageFile,
+                      @RequestParam MultipartFile[] documents) {
+        Map<String, String> errors = new HashMap<>();
+        map.put("errors", errors);
+        map.put("aCase", aCase);
+        map.put("types", publicServices.getAllTypes());
+        if (caseTypes == null) {
+            errors.put("types", "At least one type is required!");
+            return "cases/add";
+        } else if (caseTypes.length == 0) {
+            errors.put("types", "At least one type is required!");
+            return "cases/add";
+        } else {
+            for (String ct : caseTypes) {
+                Type type = new Type();
+                type.setLabel(ct);
+                try {
+                    associationBusiness.addType(type);
+                } catch (Exception ex) {
+                    type = associationBusiness.findTypeByLabel(ct);
+                }
+                aCase.addType(type);
+            }
+        }
+        try {
+            associationBusiness.addCase(aCase);
+            if (imageFile.isEmpty())
+                aCase.setImage("blog-1.jpg");
+            else
+                aCase.setImage(Utility.upload("images/cases/", imageFile));
+            associationBusiness.updateCase(aCase);
+            uploadDocuments(aCase, documents);
+        } catch (DataIntegrityViolationException ex) {
+            errors.put("name", "A case with the same name already exists!");
+            return "cases/add";
+        }
+        return "redirect:cases/" + aCase.getSlug();
+    }
 
-	private void uploadDocuments(Case aCase, MultipartFile[] documents) {
-		for (MultipartFile doc : documents) {
-			if (!"".equals(doc.getName())) {
-				File file = new File();
-				file.setPath(Utility.upload("files/cases/", doc));
-				file.setType("document");
-				file.setCase(aCase);
-				associationBusiness.saveFile(file);
-			}
-		}
-	}
-	
-	@PostConstruct
-	public void createAssocAndDonore() {
-		
-		Role role = new Role(1, "DONATOR");
-		roleDao.save(role);
-		role = new Role(2, "ASSOCIATION");
-		roleDao.save(role);
-		role = new Role(3, "ADMIN");
-		roleDao.save(role);
-		
-		Association assoc = new Association();
-		assoc.setId(1);
-		assoc.setEmail("assoc-123@gmail.com");
-		assoc.setUsername("assoc-1");
-		assoc.setName("assoc 1");
-		assoc.setCover("cover.jpg");
-		role.setRole("ASSOCIATION");
-		assoc.addRole(roleDao.findByRole("ASSOCIATION"));
-		assoc.setEnabled(true);
-		assoc.setPassword(bCryptPasswordEncoder.encode("123"));
-		assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
+    @DeleteMapping("/cases/files/{id}")
+    public String deleteFile(@PathVariable long id, HttpServletRequest request) {
+        associationBusiness.deleteFile(id, "/files/cases/");
+        return "redirect:" + request.getHeader("Referer");
+    }
 
-		publicServices.addAssociation(assoc);
+    private void uploadDocuments(Case aCase, MultipartFile[] documents) {
+        for (MultipartFile doc : documents) {
+            if (!"".equals(doc.getName())) {
+                File file = new File();
+                file.setPath(Utility.upload("files/cases/", doc));
+                file.setType("document");
+                file.setCase(aCase);
+                associationBusiness.saveFile(file);
+            }
+        }
+    }
 
-		System.out.println("Assoc added.");
+    @PostConstruct
+    public void createAssocAndDonor() {
+
+        Role role = new Role(1, "DONATOR");
+        roleDao.save(role);
+        role = new Role(2, "ASSOCIATION");
+        roleDao.save(role);
+        role = new Role(3, "ADMIN");
+        roleDao.save(role);
+
+        Association assoc = new Association();
+        assoc.setId(1);
+        assoc.setEmail("assoc-123@gmail.com");
+        assoc.setUsername("assoc-1");
+        assoc.setName("assoc 1");
+        assoc.setCover("cover.jpg");
+        role.setRole("ASSOCIATION");
+        assoc.addRole(roleDao.findByRole("ASSOCIATION"));
+        assoc.setEnabled(true);
+        assoc.setPassword(bCryptPasswordEncoder.encode("123"));
+        assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
+
+        publicServices.addAssociation(assoc);
+
+        System.out.println("Assoc added.");
 //
 //		Donor donor = new Donor();
 //		donor.setId(1000);
@@ -287,7 +282,7 @@ public class CaseController {
 //		donor.setPassword(bCryptPasswordEncoder.encode("123"));
 //		publicServices.addDonor(donor);
 
-		//System.out.println("donor ajouté");
+        //System.out.println("donor ajoutï¿½");
 //
 ////        BankCard card = new BankCard();
 ////        card.setCardHolderLastName("Youssef");
@@ -300,6 +295,6 @@ public class CaseController {
 ////        card.setExpiryDateYear("97");
 //
 ////        donorBusiness.addBankCard(card);
-}
-	
+    }
+
 }

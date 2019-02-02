@@ -62,19 +62,21 @@
               </li>
             </ul>
 
-            <form action="" method="post" th:object="${donation}">
-              <div class="form-group">
-                <select name="bankCard" th:field="*{bankCard.id}" class="form-control" required>
-                  <option th:each="card:${donor.bankCards}"
-                          th:value="${card.id}" th:text="${card.cardNumber}"></option>
-                </select>
-              </div>
-              <button type="button" class="btn btn-link" data-toggle="modal" data-target="#card-modal">
-                New bank card
+            <form th:action="@{/cases/paypal}" method="post" th:object="${donation}">
+              <!--<div class="form-group">-->
+                <!--<select name="bankCard" th:field="*{bankCard.id}" class="form-control" required>-->
+                  <!--<option th:each="card:${donor.bankCards}"-->
+                          <!--th:value="${card.id}" th:text="${card.cardNumber}"></option>-->
+                <!--</select>-->
+              <!--</div>-->
+              <!--<button type="button" class="btn btn-link" data-toggle="modal" data-target="#card-modal">-->
+                <!--New bank card-->
+              <!--</button>-->
+              <input type="hidden" id="donation-value" name="value" value="50.0">
+              <input type="hidden" name="id" th:value="${donation.case.id}">
+              <button type="submit" class="btn btn-main pull-right mb-24">
+                <i class="fa fa-paypal"></i> <span th:text="#{cause.donate}"></span>
               </button>
-              <input type="hidden" id="donation-value" name="donationValue" value="50.0">
-              <input type="hidden" name="case" th:value="${donation.case.id}">
-              <input type="submit" value="Donate Now" class="btn btn-main pull-right mb-24">
             </form>
           </div>
         </div>
