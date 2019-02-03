@@ -59,9 +59,9 @@ public class LoginController {
 		return "auth/login";
 	}
 
-	@RequestMapping("/denied")
+	@RequestMapping("/forbidden")
 	public String accessDenied() {
-		return "error/404";
+		return "error/403";
 	}
 
 	@GetMapping("/logout")
