@@ -77,6 +77,7 @@ public interface IPublicServices {
     
     Map<String, Object> globalStats();
     
-	List<Case> findLastNCases(int numbre);
+	  List<Case> findLastNCases();
+	  List<Event> getLastNEvents();
     
 }

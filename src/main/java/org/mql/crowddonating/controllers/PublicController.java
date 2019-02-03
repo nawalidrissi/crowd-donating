@@ -1,5 +1,6 @@
 package org.mql.crowddonating.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import org.mql.crowddonating.business.IPublicServices;
@@ -22,8 +23,9 @@ public class PublicController {
 	
 	@GetMapping("/")
 	public String home(Model model) {
-		
-		model.addAttribute("cases", publicServices.findLastNCases(3));
+		model.addAttribute("events", publicServices.getLastNEvents());
+		model.addAttribute("cases", publicServices.findLastNCases());
+		model.addAttribute("sponsors", publicServices.getAllSponsors());
 		model.addAttribute("stats", publicServices.globalStats());
 		
 		return "public/index";
