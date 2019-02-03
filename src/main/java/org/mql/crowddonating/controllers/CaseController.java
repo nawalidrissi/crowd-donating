@@ -32,12 +32,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -61,7 +56,7 @@ public class CaseController {
     @Autowired
     private RoleRepository roleDao;
 
-    @GetMapping(path = {"/", "/cases"})
+    @GetMapping("/cases")
     public String cases(Model model, @RequestParam(name = "page", defaultValue = "1") int page,
                         @RequestParam(name = "size", defaultValue = "8") int size) {
         if (page <= 0)
@@ -263,6 +258,9 @@ public class CaseController {
         assoc.setEnabled(true);
         assoc.setPassword(bCryptPasswordEncoder.encode("123"));
         assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
+        assoc.setAddress("Adress Morocco n123");
+        assoc.setPhone("053650303030");
+        assoc.setDescription("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi deleniti eaque hic laboriosam minima modi perspiciatis quia quo quos ratione saepe, similique voluptatibus voluptatum. Ab blanditiis neque odit omnis sapiente.");
 
         publicServices.addAssociation(assoc);
 

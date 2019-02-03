@@ -97,27 +97,11 @@ public class SponsorController {
 	}
 	@PostMapping("/sponsors")
 	public String add(ModelMap map, String name, String url, @RequestParam("logo") MultipartFile logo, String description) {
-	/*	Map<String, String> errors = new HashMap<>();
-		map.put("errors", errors);
-		map.put("sponsor", sponsor);
-		try {
-			adminBusiness.addSponsor(sponsor);
-			if (imageFile.isEmpty())05_1961662113953587_4108013232235479040_o.jpg");
-			else
-				sponsor.setLogo(Utility.upload("images/sponsors/", imageFile));
-			adminBusiness.updateSponsor(sponsor);
-
-
-		} catch (DataIntegrityViolationException ex) {
-			errors.put("name", "A sponsor with the same name already exists!");
-			return "cases/add";
-		}
-		return "redirect:sponsors/";*/
 		Sponsor sponsor = new Sponsor();
 		sponsor.setName(name);
 		sponsor.setUrl(url);
 		sponsor.setDescription(description);
-		sponsor.setLogo(Utility.upload("images/sponsors/", logo));
+		sponsor.setLogo(Utility.upload("images/partners/", logo));
 		Map<String, String> errors = new HashMap<>();
 		map.put("errors", errors);
 		map.put("sponsor", sponsor);
@@ -131,9 +115,6 @@ public class SponsorController {
 	Map<String, String> errors = new HashMap<>();
 		map.put("errors", errors);
 		Sponsor sponsor = publicServices.getSponsorById(id);
-	/*	List<Type> types = publicServices.getAllTypes().stream().filter(type -> !aCase.getTypes().contains(type))
-				.collect(Collectors.toList());
-		map.put("types", types);*/
 		if (sponsor == null) {
 			response.setStatus(404);
 			return "error/404";

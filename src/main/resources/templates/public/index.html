@@ -64,78 +64,30 @@
 						<!--// CauseGrid \\-->
 						<div class="charity-cause charity-cause-simplegrid">
 							<ul class="row">
-								<li class="col-md-4">
+								<li class="col-md-4" th:each="case:${cases}">
 									<figure>
-										<a href="#"><img
-											src="extra-images/cause-simple-grid-1.jpg" alt=""></a>
-										<figcaption>
-											<a href="#"><i class="fa fa-users"></i> 12 Donors</a>
-										</figcaption>
+										<a th:href="@{'/cases/' + ${case.slug}}"> 
+										<img th:src="@{'/images/cases/' + ${case.image}}" style="height:250px;"/>
+										</a>
+										 <figcaption> 
+										 	<a th:href="@{'/cases/' + ${case.slug}}" th:text="|${case.nbreDonations} #{cause.donationsNbre}|"><i class="fa fa-users"></i></a> </figcaption>
 									</figure>
 									<section>
 										<h4>
-											<a href="#">Donate For Children</a>
+											<a th:href="@{'/cases/' + ${case.slug}}" th:text="${case.name}"></a>
 										</h4>
-										<p>Lorem ipsum dolor amet, onsectetde cons ectetur nulla.
-											at ullamoe.</p>
+										<p th:text="${#strings.substring(case.description,0,80)}"></p>
 									</section>
 									<div class="skillst">
-										<div class="progressbar1" data-width="63" data-target="63"></div>
+										<div class="progressbar1" th:data-width="${#numbers.formatDecimal(case.percentageRaised, 0, 2)}" th:data-target="${case.amount}"></div>
 									</div>
 									<div class="cause-simplegrid-bottom">
-										<a href="#" class="charity-donate-btn charity-bgcolor">Donate</a>
-										<span>$ 45,000 / $ 90,000</span>
+										<a th:if="${case.amountRaised < case.amount}" th:href="@{'/cases/' + ${case.slug} + '/donate'}"
+											class="charity-donate-btn charity-bgcolor" th:text="#{cause.donate}"></a> 
+											<span th:text="${case.amountRaised + '/' + case.amount}"></span>
 									</div>
 								</li>
-								<li class="col-md-4">
-									<figure>
-										<a href="#"><img
-											src="extra-images/cause-simple-grid-2.jpg" alt=""></a>
-										<figcaption>
-											<a href="#"><i class="fa fa-users"></i> 28 Donors</a>
-										</figcaption>
-									</figure>
-									<section>
-										<h4>
-											<a href="#">Help The Africans</a>
-										</h4>
-										<p>Lorem ipsum dolor amet, onsectetde cons ectetur nulla.
-											at ullamoe.</p>
-									</section>
-									<div class="skillst">
-										<div class="progressbar1" data-width="75" data-target="75"></div>
-									</div>
-									<div class="cause-simplegrid-bottom">
-										<a href="#" class="charity-donate-btn charity-bgcolor">Donate</a>
-										<span>$ 45,000 / $ 90,000</span>
-									</div>
-								</li>
-								<li class="col-md-4">
-									<figure>
-										<a href="#"><img
-											src="extra-images/cause-simple-grid-3.jpg" alt=""></a>
-										<figcaption>
-											<a href="#"><i class="fa fa-users"></i> 34 Donors</a>
-										</figcaption>
-									</figure>
-									<section>
-										<h4>
-											<a href="#">Donate For Children</a>
-										</h4>
-										<p>Lorem ipsum dolor amet, onsectetde cons ectetur nulla.
-											at ullamoe.</p>
-									</section>
-									<div class="skillst">
-										<div class="progressbar1" data-width="34" data-target="34"></div>
-									</div>
-									<div class="cause-simplegrid-bottom">
-										<a href="#" class="charity-donate-btn charity-bgcolor">Donate</a>
-										<span>$ 45,000 / $ 90,000</span>
-									</div>
-								</li>
-							</ul>
-							
-							
+							</ul>			
 						</div>
 						<!--// CauseGrid \\-->
 							
@@ -148,10 +100,8 @@
 					</div>	
 				</div>
 			</div>				
-							
 		</div>
-
-
+    
 		<!--// Main Section \\-->
 		<div class="charity-main-section charity-cause-strip-full">
 			<span class="charity-transparent-layer"></span>
@@ -208,62 +158,21 @@
                         
                         <!--// Event \\-->
                         <div class="col-md-12">
-                            <div class="charity-fancy-title"> <div class="charity-fancy-title-wrap"> <h2>Our Events</h2> </div> <span>Lorem ipsum dolor</span> </div>
+                            <div class="charity-fancy-title"> <div class="charity-fancy-title-wrap"> <h2 th:text="#{event.ours}"></h2> </div> <span th:text="#{event.ourMessage}"></span> </div>
                             <div class="charity-event charity-event-medium">
-                                <ul class="row">
-                                    <li class="col-md-6">
+                                <ul class="row" th:if="${events}">
+                                    <li class="col-md-6" th:each="event:${events}">
                                         <div class="charity-event-medium-wrap">
-                                            <figure><a href="#"><img src="extra-images/event-medium-1.jpg" alt=""></a> <figcaption><a href="#">Buy Ticket</a></figcaption> </figure>
+                                            <figure>
+                                            <a th:href="@{'/events/' + ${event.id}}"><img th:src="@{'/images/event/' + ${event.image}}" alt=""></a> <figcaption><a href="#">Buy Ticket</a></figcaption> </figure>
                                             <section>
-                                                <h4><a href="#">Empowermnt and leader ship trainings</a></h4>
-                                                <p>Phasellus accusn lacus eget nisi aliqua, ac orare quam interdum In blandit.</p>
+                                                <h4><a th:href="@{'/events/' + ${event.id}}" th:text="${event.title}"></a></h4>
+                                                <p th:text="${ #strings.substring(event.description, 0, 120)}"></p>
                                                 <ul class="charity-event-option">
-                                                    <li><i class="fa fa-calendar"></i> Dec 22, 2017 - Dec 27, 2017</li>
-                                                    <li><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</li>
+                                                    <li><i class="fa fa-calendar"></i><span th:text="${#calendars.format(event.plannedDate, 'MMM dd, yyyy')}"></span></li>
+                                                    <li><i class="fa fa-institution"></i><span th:text="${event.association.name}"></span></li>
                                                 </ul>
-                                                <a href="#" class="charity-event-btn charity-bgcolorhover">View Detail</a>
-                                            </section>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6">
-                                        <div class="charity-event-medium-wrap">
-                                            <figure><a href="#"><img src="extra-images/event-medium-2.jpg" alt=""></a> <figcaption><a href="#">Buy Ticket</a></figcaption> </figure>
-                                            <section>
-                                                <h4><a href="#">Help end homelessness people</a></h4>
-                                                <p>Phasellus accusn lacus eget nisi aliqua, ac orare quam interdum In blandit.</p>
-                                                <ul class="charity-event-option">
-                                                    <li><i class="fa fa-calendar"></i> Dec 22, 2017 - Dec 27, 2017</li>
-                                                    <li><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</li>
-                                                </ul>
-                                                <a href="#" class="charity-event-btn charity-bgcolorhover">View Detail</a>
-                                            </section>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6">
-                                        <div class="charity-event-medium-wrap">
-                                            <figure><a href="#"><img src="extra-images/event-medium-3.jpg" alt=""></a> <figcaption><a href="#">Buy Ticket</a></figcaption> </figure>
-                                            <section>
-                                                <h4><a href="#">Trinity trash bash water way cleanup</a></h4>
-                                                <p>Phasellus accusn lacus eget nisi aliqua, ac orare quam interdum In blandit.</p>
-                                                <ul class="charity-event-option">
-                                                    <li><i class="fa fa-calendar"></i> Dec 22, 2017 - Dec 27, 2017</li>
-                                                    <li><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</li>
-                                                </ul>
-                                                <a href="#" class="charity-event-btn charity-bgcolorhover">View Detail</a>
-                                            </section>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6">
-                                        <div class="charity-event-medium-wrap">
-                                            <figure><a href="#"><img src="extra-images/event-medium-4.jpg" alt=""></a> <figcaption><a href="#">Buy Ticket</a></figcaption> </figure>
-                                            <section>
-                                                <h4><a href="#">Make donation day for all people</a></h4>
-                                                <p>Phasellus accusn lacus eget nisi aliqua, ac orare quam interdum In blandit.</p>
-                                                <ul class="charity-event-option">
-                                                    <li><i class="fa fa-calendar"></i> Dec 22, 2017 - Dec 27, 2017</li>
-                                                    <li><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</li>
-                                                </ul>
-                                                <a href="#" class="charity-event-btn charity-bgcolorhover">View Detail</a>
+                                                <a th:href="@{'/events/' + ${event.id}}" class="charity-event-btn charity-bgcolorhover" th:text="#{event.details}"></a>
                                             </section>
                                         </div>
                                     </li>
@@ -271,11 +180,33 @@
                             </div>
                         </div>
                         <!--// Event \\-->
-                        
                     </div>
                 </div>
             </div>
 
+        <div class="charity-main-section charity-partner-slider-full">
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-md-12">
+                            <div class="charity-fancy-title">
+                                <div class="charity-fancy-title-wrap">
+                                    <h2>Our PARTNERS</h2>
+                                </div>
+                            </div>
+                            <!--// Partner \\-->
+                          <div class="charity-partner-slider">
+                                <div th:each="sponsor:${sponsors}">
+                                	<a href="#" target="_blank"><img th:src="@{'images/partners/' + ${sponsor.logo}}" alt=""></a>
+                                </div>
+                            </div>
+                            <!--// Partner \\-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--// Main Section \\-->
 	</div>
 
 
