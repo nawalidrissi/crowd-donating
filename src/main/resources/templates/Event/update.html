@@ -4,72 +4,71 @@
 <head>
 <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
 <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}" />
+<link rel="stylesheet" th:href="@{/css/default.css}" />
+<link rel="stylesheet" th:href="@{/css/default.date.css}" />
 </head>
 <body id="top" class="has-header-search">
 	<th:block th:replace="~{layouts/master::header}" />
 
-	<section class="page-title ptb-50">
+	<div class="charity-subheader-two">
+		<span class="charity-footer-transparent"></span>
 		<div class="container">
 			<div class="row">
-				<div class="col s12">
-					<h2>Event</h2>
-					<ol class="breadcrumb">
+				<div class="col-md-12">
+					<div class="charity-page-title">
+						<h1>Update Event</h1>
+					</div>
+					<ul class="charity-breadcrumb">
 						<li><a th:href="@{/}">Home</a></li>
-						<li><a th:href="@{/event}">Event</a></li>
-						<li class="active">Update</li>
-					</ol>
+						<li class="active"><a th:href="@{/events}">Event List</a></li>
+					</ul>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+	
 
-	<section class="section-padding pt-0">
+	<section class="section-padding">
 		<div class="container">
 			<div class="row">
-				<div class="col s12">
+				<div class="col-sm-12 mt-50">
 					<div class="row">
 						<form th:action="@{/events}" th:method="put" th:object="${event}"
 							id="update-form" enctype="multipart/form-data"
-							class="col s8 offset-s2">
+							class="col-sm-8 col-sm-offset-2">
 							<input type="hidden" id="id" name="id" th:value="${event.id}" />
-							<div class="input-field">
-								<input type="text" name="title" th:value="${event.title}"
-									id="title" /> <label for="title">Title</label>
+							<div
+								th:class="|form-group  ${errors.containsKey('title') ? 'has-error' : ''}">
+								<label for="title" th:text="#{event.title}"></label> <input type="text" name="title"
+									th:value="${event.title}" id="title" required
+									class="form-control" /> <span class="help-block"
+									th:if="${errors.containsKey('title')}"
+									th:text="${errors.get('title')}"></span>
 							</div>
-							<div class="input-field">
-								<textarea name="description"
-									class="validate materialize-textarea" id="description"
-									th:text="${event.description}"></textarea>
-								<label for="description">Description</label>
+							<div class="form-group">
+								<label for="description" th:text="#{event.description}"></label>
+								<textarea name="description" class="form-control"
+									id="description" th:text="${event.description}"></textarea>
 							</div>
-							<div class="input-field">
-								<input type="text" class="validate datepicker"
-									name="plannedDate" id="plannedDate"
+							<div class="form-group">
+								<label for="plannedDate" th:text="#{event.plannedDate}"></label> <input type="text"
+									class="datepicker form-control" name="plannedDate"
+									id="plannedDate"
 									th:value="${#calendars.format(event.plannedDate,'MMM dd, yyyy')}"
-									required> <label for="plannedDate">planned Date</label>
+									required>
 							</div>
-							<div class="input-field file-field">
-								<div class="btn">
-									<span><i class="material-icons">image</i></span> <input
-										type="file" name="imageFile" id="image">
-								</div>
-								<div class="file-path-wrapper">
-									<input type="text" class="file-path validate" title="image">
-								</div>
+							<div class="form-group">
+								<label for="image" th:text="#{event.image}"></label><input type="file"
+									class="form-control" name="image" id="image" required>
 							</div>
-
-							<div class="col s8 offset-s2">
-								<div class="input-field display-flex">
-									<div class="flex-1"></div>
-									<button class="btn-large waves-effect waves-light">
-										Submit <i class="material-icons right">send</i>
-									</button>
-								</div>
+							<br>
+							<div class="form-group display-flex">
+								<div class="flex-1"></div>
+								<button class="btn btn-main mr-6">Submit</button>
 							</div>
-
+							<br>
 						</form>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -77,6 +76,15 @@
 
 	<th:block th:replace="~{layouts/master::footer}" />
 	<th:block th:include="~{layouts/master::js}" />
-	<script th:src="@{/js/select2.min.js}"></script>
+	<script th:src="@{/script/picker.js}"></script>
+	<script th:src="@{/script/picker.date.js}"></script>
+	<script>
+		$(document).ready(function() {
+			$('.datepicker').pickadate({
+				format : 'mmm dd, yyyy',
+			});
+		});
+	</script>
+
 </body>
 </html>

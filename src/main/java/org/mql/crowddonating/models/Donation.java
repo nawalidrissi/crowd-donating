@@ -28,7 +28,7 @@ public class Donation {
     @JoinColumn(name = "case_id")
     private Case aCase;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "donor_id")
     private Donor donor;
 
@@ -113,8 +113,8 @@ public class Donation {
                 ", amount=" + amount +
                 ", transaction_fee=" + transaction_fee +
                 ", date=" + date +
-                ", aCase=" + aCase +
-                ", donor=" + donor +
+                ", aCase=" + aCase.getName() +
+                ", donor=" + donor.getName() +
                 '}';
     }
 }

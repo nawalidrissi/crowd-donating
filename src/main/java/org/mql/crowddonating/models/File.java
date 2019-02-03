@@ -15,7 +15,7 @@ public class File {
 	@Column
 	private String type;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "association_id")
 	private Association association;
 

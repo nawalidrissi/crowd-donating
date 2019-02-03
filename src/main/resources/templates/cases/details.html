@@ -45,17 +45,18 @@
                 <li>
                   <i class="fa fa-heartbeat"></i>
                   <h6>Donations:</h6>
-                  <span th:text="${donationsCount}"></span>
+                  <span th:text="${case.nbreDonations}"></span>
                 </li>
                 <li></li>
               </ul>
               <div class="charity-cause-donate">
                 <div class="skillst">
-                  <h6>Raised: <span th:text="|${donationsTotal} MAD|"></span></h6>
+                  <h6>Raised: <span th:text="|${case.amountRaised} MAD|"></span></h6>
                   <h6>Goal: <span th:text="|${case.amount} MAD|"></span></h6>
                   <div class="progressbar1"
                        th:data-width="${#numbers.formatDecimal(donationsPercentage, 0, 0)}"
-                       th:data-target="${#numbers.formatDecimal(donationsPercentage, 0, 0)}"></div>
+                       th:data-target="${#numbers.formatDecimal(donationsPercentage, 0, 0)}">
+                  </div>
                 </div>
                 <a th:href="@{'/cases/' + ${case.slug} + '/donate'}" class="charity-plan-btn">
                   <i class="fa fa-paypal"></i> <span th:text="#{cause.donate}"></span>

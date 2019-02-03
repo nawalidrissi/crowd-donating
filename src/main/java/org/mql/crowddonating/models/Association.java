@@ -2,6 +2,7 @@ package org.mql.crowddonating.models;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Vector;
 
 @Entity
 public class Association extends User {
@@ -35,6 +36,8 @@ public class Association extends User {
     private List<Domain> domains;
 
     public Association() {
+    	domains= new Vector<>();
+    	files=new Vector<>();
     }
 
     public Association(long id) {

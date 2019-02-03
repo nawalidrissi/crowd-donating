@@ -55,6 +55,15 @@ public class Case {
             inverseJoinColumns = @JoinColumn(name = "case_id")
     )
     private List<Type> types;
+    
+    @Transient
+    private double amountRaised;
+    
+    @Transient
+    private double percentageRaised;
+    
+    @Transient
+    private int nbreDonations;
 
     public Case() {
         this.association = new Association(1);
@@ -171,6 +180,29 @@ public class Case {
         this.types = types;
     }
 
+    public double getAmountRaised() {
+		return amountRaised;
+	}
+    public void setAmountRaised(double amountRaised) {
+		this.amountRaised = amountRaised;
+	}
+    
+    public double getPercentageRaised() {
+		return percentageRaised;
+	}
+    
+    public void setPercentageRaised(double percentageRaised) {
+		this.percentageRaised = percentageRaised;
+	}
+    
+    public int getNbreDonations() {
+		return nbreDonations;
+	}
+    
+    public void setNbreDonations(int nbreDonations) {
+		this.nbreDonations = nbreDonations;
+	}
+    
     @Override
     public String toString() {
         return "Case{" +

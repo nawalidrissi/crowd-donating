@@ -1,12 +1,16 @@
 package org.mql.crowddonating.business.implementations;
 
 import org.mql.crowddonating.business.IAssociationBusiness;
+import org.mql.crowddonating.dao.AssociationRepository;
 import org.mql.crowddonating.dao.CaseRepository;
+import org.mql.crowddonating.dao.DomainRepository;
 import org.mql.crowddonating.dao.EventRepository;
+import org.mql.crowddonating.dao.RoleRepository;
 import org.mql.crowddonating.dao.TypeRepository;
 import org.mql.crowddonating.models.*;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,6 +29,17 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
     @Autowired
     private EventRepository eventDao;
 
+    @Autowired
+	private RoleRepository roleDao;
+    @Autowired
+    private AssociationRepository associationDao;
+    
+    @Autowired
+    private DomainRepository domainDao;
+    
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+    
     public Case addCase(Case aCase) {
         aCase.setName(Utility.cleanupSpaces(aCase.getName()));
         aCase.setDescription(Utility.cleanupSpaces(aCase.getDescription()));
@@ -83,7 +98,15 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
 
     @Override
     public Domain addDomain(Domain domain) {
-        // TODO Auto-generated method stub
-        return null;
+         return domainDao.save(domain);
     }
+
+	@Override
+	public void signup(Association association) {
+		association.addRole(roleDao.findByRole("ASSOCIATION"));
+		association.setAvatar("cover.jpg");
+		association.setPassword(bCryptPasswordEncoder.encode(association.getPassword()));
+		associationDao.save(association);
+		
+	}
 }

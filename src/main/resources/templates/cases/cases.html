@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
   <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
 </head>
@@ -12,10 +13,11 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
-        <div class="charity-page-title"><h1>Cause Modern W/L/Sidebar</h1></div>
+        <div class="charity-page-title">
+          <h1 th:text="#{cause.causes}"></h1>
+        </div>
         <ul class="charity-breadcrumb">
-          <li><a th:href="@{/}">Home</a></li>
-          <li class="active">Cause Modern</li>
+          <li><a th:href="@{/}" th:text="#{menu.home}"></a></li>
         </ul>
       </div>
     </div>
@@ -29,140 +31,38 @@
   <div class="charity-main-section">
     <div class="container">
       <div class="row">
-
-        <aside class="col-md-3">
-          <!--// Widget Recent News \\-->
-          <div class="widget widget_recent_news">
-            <h2 class="charity-widget-title">Recent Post</h2>
-            <ul>
-              <li>
-                <figure><a href="blog-detail.html">
-                  <img src="extra-images/widget-recent-img1.png" alt=""></a>
-                </figure>
-                <section>
-                  <h6><a href="blog-detail.html">Fusce finibus purusco aliquam agittis</a></h6>
-                  <time datetime="2008-02-14 20:00">22 Sept, 2016</time>
-                </section>
-              </li>
-              <li>
-                <figure><a href="blog-detail.html"><img src="extra-images/widget-recent-img2.png"
-                                                        alt=""></a></figure>
-                <section>
-                  <h6><a href="blog-detail.html">Fusce finibus purusco aliquam agittis</a></h6>
-                  <time datetime="2008-02-14 20:00">28 Sept, 2016</time>
-                </section>
-              </li>
-              <li>
-                <figure><a href="blog-detail.html"><img src="extra-images/widget-recent-img3.png"
-                                                        alt=""></a></figure>
-                <section>
-                  <h6><a href="blog-detail.html">Fusce finibus purusco aliquam agittis</a></h6>
-                  <time datetime="2008-02-14 20:00">28 Sept, 2016</time>
-                </section>
-              </li>
-            </ul>
-          </div>
-          <!--// Widget Recent News \\-->
-
-          <!--// Widget upcomimg events \\-->
-          <div class="widget widget_events">
-            <h2 class="charity-widget-title">Upcoming Events</h2>
-            <ul>
-              <li>
-                <time datetime="2008-02-14 20:00">22 Aug</time>
-                <div class="charity-events">
-                  <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street
-                    9976</a>
-                </div>
-              </li>
-              <li>
-                <time datetime="2008-02-14 20:00">13 Sep</time>
-                <div class="charity-events">
-                  <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street
-                    9976</a>
-                </div>
-              </li>
-              <li>
-                <time datetime="2008-02-14 20:00">07 Dec</time>
-                <div class="charity-events">
-                  <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                  <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street
-                    9976</a>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <!--// Widget upcomimg events \\-->
-
-          <!--// widget_archive \\-->
-          <div class="widget widget_archive">
-            <h2 class="charity-widget-title">Calender Archives</h2>
-            <ul>
-              <li><a href="404.html">13 August 2017</a></li>
-              <li><a href="404.html">28 September 2017</a></li>
-              <li><a href="404.html">19 May 2017</a></li>
-              <li><a href="404.html">03 March 2017</a></li>
-              <li><a href="404.html">28 February 2017</a></li>
-            </ul>
-          </div>
-          <!--// widget_archive \\-->
-
-          <!--// Widget Instagram Photos \\-->
-          <div class="widget widget_gallery">
-            <h2 class="charity-widget-title">Photo Gallery</h2>
-            <ul>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img1.png"
-                     class="fancybox"><img
-                  src="extra-images/event-gallery-img1.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img2.png"
-                     class="fancybox"><img
-                  src="extra-images/event-gallery-img2.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img3.png"
-                     class="fancybox"><img
-                  src="extra-images/event-gallery-img3.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img4.png"
-                     class="fancybox"><img
-                  src="extra-images/event-gallery-img4.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img5.png"
-                     class="fancybox"><img
-                  src="extra-images/event-gallery-img5.png" alt=""></a></li>
-              <li><a data-fancybox-group="group" href="extra-images/event-gallery-img6.png"
-                     class="fancybox"><img
-                  src="extra-images/event-gallery-img6.png" alt=""></a></li>
-            </ul>
-          </div>
-          <!--// Widget Instagram Photos \\-->
-        </aside>
-
-        <div class="col-md-9">
-          <div class="charity-cause charity-cause-modern">
+        <div class="col-md-12">
+          <!--// CauseGrid \\-->
+          <div class="charity-cause charity-cause-simplegrid">
             <ul class="row">
-              <li class="col-md-6" th:each="case:${cases}">
+              <li class="col-md-4" th:each="case:${cases}">
                 <figure>
                   <a th:href="@{'/cases/' + ${case.slug}}">
-                    <img th:src="@{'/images/cases/' + ${case.image}}" alt="">
+                    <img th:src="@{'/images/cases/' + ${case.image}}" th:height="250"/>
                   </a>
+                  <figcaption>
+                    <a th:href="@{'/cases/' + ${case.slug}}" th:text="|${case.nbreDonations} #{cause.donationsNbre}|"><i
+                        class="fa fa-users"></i></a></figcaption>
                 </figure>
-                <div class="charity-cause-modern-text">
-                  <h5><a th:href="@{'/cases/' + ${case.slug}}" th:text="${case.name}"></a></h5>
+                <section>
+                  <h4>
+                    <a th:href="@{'/cases/' + ${case.slug}}" th:text="${case.name}"></a>
+                  </h4>
                   <th:block th:if="${#strings.length(case.description) > 90}">
                     <p th:text="${#strings.substring(case.description ,0 ,90)}"></p>
                   </th:block>
                   <th:block th:if="${#strings.length(case.description) <= 90}">
                     <p th:text="${case.description}"></p>
                   </th:block>
-                  <a href="donation.html" class="charity-donate-btn"><i class="fa fa-heart"></i>
-                    Donate Now</a>
+                </section>
+                <div class="skillst">
+                  <div class="progressbar1" th:data-width="${#numbers.formatDecimal(case.percentageRaised, 0, 2)}"
+                       th:data-target="${case.amount}"></div>
                 </div>
-                <div class="charity-cause-modern-skill">
-                  <div class="skillst">
-                    <a th:href="@{'/cases/' + ${case.slug}}"><i class="fa fa-user"></i>12 Donors</a>
-                    <div class="progressbar1" data-width="40" data-target="40"></div>
-                    <span>Raised 120.00$ </span>
-                    <span>Goal 500.00$</span>
-                  </div>
+                <div class="cause-simplegrid-bottom">
+                  <a th:if="${case.amountRaised < case.amount}" th:href="@{'/cases/' + ${case.slug} + '/donate'}"
+                     class="charity-donate-btn charity-bgcolor" th:text="#{cause.donate}"></a>
+                  <span th:text="${case.amountRaised + '/' + case.amount}"></span>
                 </div>
               </li>
             </ul>
@@ -170,18 +70,15 @@
           <!--// Pagination \\-->
           <div class="charity-pagination">
             <ul class="page-numbers">
-              <li><a class="previous page-numbers" href="404.html"><span aria-label="Next"><i
-                  class="fa fa-angle-left"></i></span></a></li>
-              <li><span class="page-numbers current">1</span></li>
-              <li><a class="page-numbers" href="404.html">2</a></li>
-              <li><a class="page-numbers" href="404.html">3</a></li>
-              <li><a class="next page-numbers" href="404.html"><span aria-label="Next"><i
-                  class="fa fa-angle-right"></i></span></a></li>
+              <li th:each="p,status:${pages}">
+									<span th:class="|'page-numbers' ${currentPage ==  status.index + 1 ? 'current' : ''}|">
+									<a th:href="@{/cases(page=${status.index})}"
+                     th:text="${status.index + 1}"></a></span>
+              </li>
             </ul>
           </div>
           <!--// Pagination \\-->
         </div>
-
       </div>
     </div>
   </div>

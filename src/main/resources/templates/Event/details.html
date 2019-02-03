@@ -1,252 +1,109 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-  <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
-  <link th:href="@{/css/shortcodes/blog.css}" rel="stylesheet">
+<th:block th:include="~{layouts/master::head('Crowd Donating | Home')}" />
+<link th:href="@{/css/shortcodes/blog.css}" rel="stylesheet">
 </head>
 <body id="top" class="has-header-search">
-<th:block th:replace="~{layouts/master::header}"/>
+	<th:block th:replace="~{layouts/master::header}" />
 
-<div class="charity-main-wrapper">
-  <div class="charity-subheader-two">
-    <span class="charity-footer-transparent"></span>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="charity-page-title"><h1>Event Detail</h1></div>
-          <ul class="charity-breadcrumb">
-            <li><a href="index-2.html">Home</a></li>
-            <li class="active">Event Detail</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="charity-main-wrapper">
+		<div class="charity-subheader-two">
+			<span class="charity-footer-transparent"></span>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="charity-page-title">
+							<h1 th:text="#{event.events}"></h1>
+						</div>
+						<ul class="charity-breadcrumb">
+							<li><a th:href="@{/events}" th:text="#{event.event}"></a></li>
+							<li class="active" th:text="#{event.details}"></a></li>
 
-  <div class="charity-main-content">
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <!--// Main Section \\-->
-    <div class="charity-main-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <figure class="charity-event-thumb">
-              <img th:src="@{'/images/events/' + ${event.image}}" alt=""/>
-            </figure>
-          </div>
-          <div class="col-md-9">
-            <div class="charity-event-rich-editor">
-              <h3 th:text="${event.title}"></h3>
-            </div>
-            <ul class="charity-event-option-two">
-              <li>
-                <i class="fa fa-calendar-o"></i>
-                <h6>Event Sechudule:</h6>
-                <p th:text="${#calendars.format(event.plannedDate, 'MMM dd, yyyy')}"></p>
-              </li>
-            </ul>
-            <!--<div class="charity-countdown">-->
-              <!--<span class="countdown-transparent"></span>-->
-                  <!--<div id="charity-countdown"></div>-->
-              <!--<a href="404.html" class="charity-join-btn">I Am Joining (12)</a>-->
-            <!--</div>-->
-            <div class="charity-event-rich-editor">
-              <h2 class="charity-section-heading">Event Discription</h2>
-              <p th:text="${event.description}"></p>
-            </div>
-            <div class="charity-tags-wrap">
-              <div class="charity-post-tags">
-                <div class="charity-tags">
-                  <span>Tags:</span>
-                  <a href="404.html">charity </a>
-                  <a href="404.html">/ donation</a>
-                  <a href="404.html"> / needy</a>
-                </div>
-                <div class="charity-blog-social">
-                  <span>Share:</span>
-                  <ul>
-                    <li><a href="https://www.facebook.com/" class="fa fa-facebook"></a></li>
-                    <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
-                    <li><a href="https://www.linkedin.com/" class="fa fa-linkedin"></a></li>
-                    <li><a href="https://www.youtube.com/" class="fa fa-youtube"></a></li>
-                    <li><a href="https://www.vimeo.com/" class="fa fa-vimeo"></a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <aside class="col-md-3">
-            <!--// Widget Caendar \\-->
-            <div class="widget widget_calendar">
-              <h2 class="charity-widget-title">Event Calender</h2>
-              <table>
-                <caption>January 2017</caption>
-                <thead>
-                <tr>
-                  <th title="Monday">M</th>
-                  <th title="Tuesday">T</th>
-                  <th title="Wednesday">W</th>
-                  <th title="Thursday">T</th>
-                  <th title="Friday">F</th>
-                  <th title="Saturday">S</th>
-                  <th title="Sunday">S</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td colspan="5"></td>
-                  <td id="today">1</td>
-                  <td>2</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                  <td>8</td>
-                  <td>9</td>
-                </tr>
-                <tr>
-                  <td>10</td>
-                  <td>11</td>
-                  <td>12</td>
-                  <td>13</td>
-                  <td>14</td>
-                  <td>15</td>
-                  <td>16</td>
-                </tr>
-                <tr>
-                  <td>17</td>
-                  <td>18</td>
-                  <td>19</td>
-                  <td>20</td>
-                  <td>21</td>
-                  <td>22</td>
-                  <td>23</td>
-                </tr>
-                <tr>
-                  <td>24</td>
-                  <td>25</td>
-                  <td>26</td>
-                  <td>27</td>
-                  <td>28</td>
-                  <td>29</td>
-                  <td>30</td>
-                </tr>
-                <tr>
-                  <td>31</td>
-                  <td colspan="6"></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-            <!--// Widget Caendar \\-->
+		<div class="charity-main-content">
 
-            <!--// Widget upcomimg events \\-->
-            <div class="widget widget_events">
-              <h2 class="charity-widget-title">Upcoming Events</h2>
-              <ul>
-                <li>
-                  <time datetime="2008-02-14 20:00">22 Aug</time>
-                  <div class="charity-events">
-                    <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
-                  </div>
-                </li>
-                <li>
-                  <time datetime="2008-02-14 20:00">13 Sep</time>
-                  <div class="charity-events">
-                    <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
-                  </div>
-                </li>
-                <li>
-                  <time datetime="2008-02-14 20:00">07 Dec</time>
-                  <div class="charity-events">
-                    <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell Street 9976</a>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <!--// Widget upcomimg events \\-->
+			<!--// Main Section \\-->
+			<div class="charity-main-section">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<figure class="charity-event-thumb">
+								<img th:src="@{'/images/event/' + ${event.image}}" alt=""
+									style="height: 350px; width: 100%" />
+							</figure>
+						</div>
+						<div class="col-md-12">
+							<div class="charity-event-rich-editor">
+								<h3>
+									<a th:href="@{'/events/' + ${event.id}}"
+										th:text="${event.title}"></a>
+								</h3>
+								<hr />
+							</div>
 
-            <!--// widget_archive \\-->
-            <div class="widget widget_archive">
-              <h2 class="charity-widget-title">Calender Archives</h2>
-              <ul>
-                <li><a href="404.html">13 August 2017</a></li>
-                <li><a href="404.html">28 September 2017</a></li>
-                <li><a href="404.html">19 May 2017</a></li>
-                <li><a href="404.html">03 March 2017</a></li>
-                <li><a href="404.html">28 February 2017</a></li>
-              </ul>
-            </div>
-            <!--// widget_archive \\-->
-          </aside>
-        </div>
-      </div>
-    </div>
-    <!--// Main Section \\-->
-  </div>
-</div>
-
-<section class="blog-section pt-50 pb-50">
-  <div class="container">
-    <div class="row">
-      <div class="col m8">
-        <div class="col m12">
-          <div class="card hoverable mt-0">
-            <div class="card-content p-0">
-              <div class="posts-content single-post">
-                <article class="post-wrapper">
-                  <header class="entry-header-wrapper clearfix">
-                    <div class="author-thumb waves-effect waves-light">
-                      <a href="#"></a>
-                    </div>
-                    <div class="entry-header">
-                      <h2 class="entry-title mb-0" th:text="${event.title}"></h2>
-                      <div class="entry-meta">
-                        <ul class="display-inline-flex m-0">
-                          <li>
-                            <i class="fa fa-clock-o"></i>
-                            <a th:text="${#calendars.format(event.plannedDate,'MMM dd, yyyy')}"
-                               href="#"></a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="">
-                        <form th:action="@{'/events/' + ${event.id}}" th:method="delete">
-                          <button th:type="submit" class="btn right red"
-                                  onclick=" return confirm('Are you sure you want to Remove?');">Delete
-                          </button>
-                        </form>
-                        <a th:href="@{'/events/update/' + ${event.id}}" class="btn right mr-8">Update</a>
-                      </div>
-                    </div>
-                  </header>
-                  <div class="thumb-wrapper">
-                    <img th:src="@{'/images/event/' + ${event.image}}"
-                         class="img-responsive" alt="">
-                  </div>
-                  <div class="entry-content">
-                    <p th:text="${event.description}"></p>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+							<ul class="charity-event-option-two">
+								<li><i class="fa fa-calendar-o"></i>
+									<h6 th:text="#{event.date}"></h6>
+									<p
+										th:text="${#calendars.format(event.plannedDate, 'MMM dd, yyyy')}"></p>
+								</li>
+								<li><i class="fa fa-institution"></i>
+									<h6 th:text="#{association.name}"></h6>
+									<p th:text="${event.association.name}"></p></li>
+							</ul>
+							<div class="charity-countdown">
+								<span class="countdown-transparent"></span>
+								<div id="charity-countdown" th:data-date="${event.plannedDate}"></div>
+								<a href="404.html" class="charity-join-btn"
+									th:text="#{event.join}"></a>
+							</div>
+							<div class="charity-event-rich-editor">
+								<h2 class="charity-section-heading"
+									th:text="#{event.description}"></h2>
+								<blockquote class="display-block" th:text="${event.description}"></blockquote>
+							</div>
 
 
-<th:block th:replace="~{layouts/master::footer}"/>
-<th:block th:include="~{layouts/master::js}"/>
+							<div class="charity-tags-wrap">
+								<div class="charity-post-tags">
+									<div class="charity-tags">
+										<span th:text="#{tag.tags}"></span>
+									</div>
+									<div class="charity-blog-social">
+										<form th:action="@{'/events/' + ${event.id}}"
+											th:method="delete">
+											
+												<a th:href="@{'/events/add'}"
+												class="btn btn-main mr-6" th:text="#{crud.add}"></a>
+											<a th:href="@{'/events/update/' + ${event.id}}"
+												class="btn btn-main mr-6" th:text="#{crud.update}"></a>
+											<button th:type="submit" class="btn btn-main mr-6"
+												onclick=" return confirm('Are you sure you want to Remove?');"
+												th:text="#{crud.delete}"></button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--// Main Section \\-->
+
+
+
+		</div>
+	</div>
+
+
+	<th:block th:replace="~{layouts/master::footer}" />
+	<th:block th:include="~{layouts/master::js}" />
 </body>
 </html>

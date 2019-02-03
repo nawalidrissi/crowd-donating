@@ -1,6 +1,7 @@
 package org.mql.crowddonating.business;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
@@ -73,4 +74,9 @@ public interface IPublicServices {
 
     /* *** Donations *** */
     Donation getDonationById(long id);
+    
+    Map<String, Object> globalStats();
+    
+	List<Case> findLastNCases(int numbre);
+    
 }

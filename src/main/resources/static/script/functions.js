@@ -237,8 +237,7 @@ $(document).ready(function ($) {
     //***************************
     // Countdown Function
     //***************************
-    var austDay = new Date();
-    austDay = new Date(austDay.getFullYear() + 2, 1 - 1, -308);
+    var austDay = new Date($('#charity-countdown').data('date'));
     $('#charity-countdown').countdown({
         until: austDay
     });

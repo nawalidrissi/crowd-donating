@@ -38,6 +38,7 @@ public class UserController {
     @GetMapping("/donor/profile/{id}")
     public String donorById(ModelMap map, @PathVariable long id, HttpServletResponse response) {
         Donor donor = userBusiness.getDonorById(id);
+        System.out.println(donor);
         if (donor == null) {
             response.setStatus(404);
             return "error/404";

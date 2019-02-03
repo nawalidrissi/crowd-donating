@@ -2,6 +2,7 @@ package org.mql.crowddonating.business;
 
 import java.util.List;
 
+import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.Domain;
 import org.mql.crowddonating.models.Donation;
@@ -34,4 +35,6 @@ public interface IAssociationBusiness extends IUserServices{
     /* *** association's domains *** */
     Domain addDomain(Domain domain);
     
+	/* *** for signup *** */
+	void signup(Association association);
 }

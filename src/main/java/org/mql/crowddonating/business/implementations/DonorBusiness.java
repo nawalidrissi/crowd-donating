@@ -48,14 +48,14 @@ public class DonorBusiness extends UserBusiness implements IDonorBusiness {
     @Override
     public void signup(Donor donor) {
         donor.addRole(roleDao.findByRole("DONATOR"));
-        donor.setAddress("cover.jpg");
+        donor.setAvatar("cover.jpg");
+        donor.setPassword(bCryptPasswordEncoder.encode(donor.getPassword()));
         donorDao.save(donor);
         mailConfirmation(donor);
     }
 
     @Override
     public void mailConfirmation(Donor donor) {
-        donor.setPassword(bCryptPasswordEncoder.encode(donor.getPassword()));
         confirmationToken.setUser(donor);
         confirmationTokenDao.save(confirmationToken);
 
@@ -63,15 +63,14 @@ public class DonorBusiness extends UserBusiness implements IDonorBusiness {
         mailMessage.setTo(donor.getEmail());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setFrom("mql.donating@gmail.com");
-        mailMessage.setText("To confirm your account, please " + "<a href=\"http://localhost:8080/confirm-account/"
-                + confirmationToken.getConfirmationToken() + "\">click here : </a>");
+        mailMessage.setText("To confirm your account, please click here : " + "http://localhost:8080/confirm-account/"
+                + confirmationToken.getConfirmationToken());
 
         javaMailSender.send(mailMessage);
     }
 
     @Override
     public Boolean confirmation(String confirmationToken) {
-
         ConfirmationToken token = confirmationTokenDao.findByConfirmationToken(confirmationToken);
         boolean statusPage = false;
         if (token != null) {

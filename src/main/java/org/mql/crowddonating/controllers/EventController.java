@@ -54,7 +54,7 @@ public class EventController {
     public String sponsors(Model model) {
         List<Event> events = publicServices.getAllEvents();
         model.addAttribute("events", events);
-        return "event/events";
+        return "Event/events";
     }
 
     @GetMapping("/events/add")
@@ -62,7 +62,7 @@ public class EventController {
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
         map.put("event", new Event());
-        return "event/add";
+        return "Event/add";
     }
 
     @PostMapping("/events")
@@ -74,7 +74,7 @@ public class EventController {
         event.setPlannedDate(plannedDate);
         Association assoc = (Association) publicServices.getAssociationById(1);
         event.setAssociation(assoc);
-        event.setImage(Utility.upload("images/events/", image));
+        event.setImage(Utility.upload("images/event/", image));
         associationBusiness.addEvent(event);
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
@@ -92,7 +92,7 @@ public class EventController {
             return "error/404";
         }
         map.put("event", event);
-        return "event/update";
+        return "Event/update";
     }
 
     @PutMapping("/events")
@@ -116,7 +116,7 @@ public class EventController {
             response.setStatus(404);
             return "error/404";
         }
-        return "event/details";
+        return "Event/details";
     }
 
     @DeleteMapping("/events/{id}")

@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/cases/{^[\\d]$}", "/cases/files/{^[\\d]$}").hasRole("ASSOCIATION")
                 .antMatchers(HttpMethod.PUT, "/cases").hasRole("ASSOCIATION")
                 .antMatchers(HttpMethod.POST, "/cases").hasRole("ASSOCIATION")
-               // .antMatchers(HttpMethod.GET, "/cases/add", "/cases/update", "/events/**").hasRole("ASSOCIATION")
+                .antMatchers(HttpMethod.GET, "/cases/add", "/cases/update", "/events/**").hasRole("ASSOCIATION")
 
                 .antMatchers("/cards/**", "/cases/{^[\\c]$}/donate", "/donations/{^[\\d]$}").hasRole("DONATOR")
 
