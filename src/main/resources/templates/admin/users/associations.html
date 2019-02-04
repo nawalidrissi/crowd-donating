@@ -2,10 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title)">
   <th:block th:include="~{admin/layouts/master::head('Admin - Panel')}"/>
-  <link rel="stylesheet" th:href="@{/admin/js/plugins/sweetalert2/sweetalert2.min.css}"/>
-  <link rel="stylesheet" th:href="@{/admin/js/plugins/datatables/dataTables.bootstrap4.css}"/>
-  <!--<link rel="stylesheet" th:src="@{/admin/js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css}"/>-->
-
+  <link rel="stylesheet" th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.min.css}"/>
 </head>
 <body>
 
@@ -49,34 +46,28 @@
               <th>Name</th>
               <th class="d-none d-sm-table-cell" style="width: 30%;">Email</th>
               <th class="d-none d-sm-table-cell" style="width: 15%;">Username</th>
-              <th class="d-none d-sm-table-cell" style="width: 1%;">Access</th>
               <th style="width: 1%;">#</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="donator:${donators}">
-              <td class="text-center font-size-sm" th:text="${donator.id}"></td>
-              <td class="font-w600 font-size-sm" th:text="${donator.name}"></td>
-              <td class="d-none d-sm-table-cell font-size-sm" th:text="${donator.email}"></td>
-              <td class="d-none d-sm-table-cell" th:text="${donator.username}"></td>
-              <td class="d-none d-sm-table-cell">
-                <span class="badge badge-danger" th:if="${donator.banned}">Banned</span>
-                <span class="badge badge-info" th:if="${!donator.banned}">Active</span>
-              </td>
-              <td style="width: 1%;">
+            <tr th:each="association:${associations}">
+              <td class="text-center font-size-sm" th:text="${association.id}"></td>
+              <td class="font-w600 font-size-sm" th:text="${association.name}"></td>
+              <td class="d-none d-sm-table-cell font-size-sm" th:text="${association.email}"></td>
+              <td class="d-none d-sm-table-cell" th:text="${association.username}"></td>
+              <td>
                 <div class="btn-group">
-                  <a th:href="@{'/admin/users/donators/' + ${donator.username}}" type="button"
-                     class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip"
-                     title="" data-original-title="View">
-                    <i class="fa fa-fw fa-eye"></i>
+                  <a th:href="@{'/admin/users/associations' + ${association.id}}" type="button"
+                     class="btn btn-sm btn-light js-tooltip-enabled bg-white" data-toggle="tooltip"
+                     title="" data-original-title="Validate"
+                      th:data-url1="@{'/admin/users/associations/' + ${association.id} + '/validate}">
+                    <i class="fa fa-fw fa-check"></i>
                   </a>
                   <a href="javascript:void(0);" type="button"
-                     class="btn btn-sm btn-light js-tooltip-enabled ban"
+                     class="btn btn-sm btn-light js-tooltip-enabled bg-white ban"
                      data-toggle="tooltip" title="" data-original-title="Ban"
-                     th:data-url="@{'/admin/users/donators/' + ${donator.id} + '/ban'}"
-                     th:data-state="${donator.banned}">
-                    <i class="fa fa-fw fa-check" th:if="${donator.banned}"></i>
-                    <i class="fa fa-fw fa-times" th:if="${!donator.banned}"></i>
+                     th:data-url="@{'/admin/users/associations/' + ${association.id} + '/ban'}">
+                    <i class="fa fa-fw fa-times"></i>
                   </a>
                 </div>
               </td>
@@ -100,40 +91,42 @@
 <script th:src="@{/admin/js/plugins/datatables/jquery.dataTables.min.js}"></script>
 <script th:src="@{/admin/js/plugins/datatables/dataTables.bootstrap4.min.js}"></script>
 <script th:src="@{/admin/js/plugins/datatables/buttons/dataTables.buttons.min.js}"></script>
-<script th:src="@{/admin/js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.js}"></script>
 <script th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
-<script th:src="@{/admin/js/pages/be_tables_datatables.min.js}"></script>
 <script>
     $(document).ready(function () {
-        // $('.js-dataTable-full-pagination').DataTable();
+        $('.js-dataTable-full-pagination').DataTable();
         $(document).on("click", ".ban", function () {
             // TODO: add code to remove the ban to a user.
             var $this = $(this);
             $.ajax({
                 url: $this.data("url"),
                 method: "patch",
-                data: {state: !$this.data("state")},
                 success: function (data) {
-                    var message = "";
                     if (!!data) {
-                        message = "The user is now banned!";
-                        $this.children("i").removeClass("fa-times").addClass("fa-check");
-                        $this.closest("tr").find("td > span.badge")
-                            .removeClass("badge-info").addClass("badge-danger")
-                            .html("Banned");
-                    } else {
-                        message = "The user is now un-banned!";
-                        $this.children("i").removeClass("fa-check").addClass("fa-times");
-                        $this.closest("tr").find("td > span.badge")
-                            .removeClass("badge-danger").addClass("badge-info")
-                            .html("Active");
+                        Swal(
+                            'Good job!',
+                            'You clicked the button!',
+                            'success'
+                        );
                     }
-                    Swal(
-                        'Success!',
-                        message,
-                        'success'
-                    );
-                    $this.data("state", !$this.data("state"));
+                }
+            });
+        });
+        
+        $(document).on("click", ".validate", function () {
+            // TODO: add code to remove the ban to a user.
+            var $this = $(this);
+            $.ajax({
+                url: $this.data("url1"),
+                method: "patch",
+                success: function (data) {
+                    if (!!data) {
+                        Swal(
+                            'Good job!',
+                            'You clicked the button!',
+                            'success'
+                        );
+                    }
                 }
             });
         });

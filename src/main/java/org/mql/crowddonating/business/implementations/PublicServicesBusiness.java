@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.transaction.Transactional;
 
 import org.mql.crowddonating.business.IPublicServices;
+import org.mql.crowddonating.dao.AssociationRepository;
 import org.mql.crowddonating.dao.CaseRepository;
 import org.mql.crowddonating.dao.DomainRepository;
 import org.mql.crowddonating.dao.SponsorRepository;
@@ -49,6 +50,9 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Autowired
 	private SponsorRepository sponsorDao;
+
+	@Autowired
+	private AssociationRepository associationDao;
 
 	@Autowired
 	private EventRepository eventDao;
@@ -180,8 +184,7 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Override
 	public List<Association> getAllAssociations() {
-		// TODO Auto-generated method stub
-		return null;
+		return associationDao.findAll();
 	}
 
 	@Override

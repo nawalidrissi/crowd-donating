@@ -74,10 +74,11 @@ public interface IPublicServices {
 
     /* *** Donations *** */
     Donation getDonationById(long id);
-    
+
     Map<String, Object> globalStats();
-    
-	  List<Case> findLastNCases();
-	  List<Event> getLastNEvents();
-    
+
+    List<Case> findLastNCases();
+
+    List<Event> getLastNEvents();
+
 }

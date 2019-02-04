@@ -24,6 +24,11 @@ public class Sponsor {
 	public Sponsor() {
 	}
 
+	public Sponsor(long id) {
+		super();
+		this.id = id;
+	}
+
 	public long getId() {
 		return id;
 	}
