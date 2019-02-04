@@ -3,8 +3,6 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title)">
   <th:block th:include="~{admin/layouts/master::head('Admin - Panel')}"/>
-  <link rel="stylesheet"
-        th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.min.css}"/>
 </head>
 <body>
 
@@ -58,7 +56,11 @@
               <td class="d-none d-sm-table-cell" th:text="${case.description}"></td>
               <td>
                 <div class="btn-group">
-
+                  <a th:href="@{'/cases/' + ${case.slug}}" type="button"
+                     class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip"
+                     title="" data-original-title="View" target="_blank">
+                    <i class="fa fa-fw fa-eye"></i>
+                  </a>
                   <a href="javascript:void(0);" type="button"
                      class="btn btn-sm btn-light js-tooltip-enabled bg-white ban"
                      data-toggle="tooltip" title="" data-original-title="Ban"

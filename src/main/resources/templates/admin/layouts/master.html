@@ -24,6 +24,11 @@ pixelcave<!doctype html>
   <link rel="stylesheet" th:href="@{/admin/css/oneui.min.css}">
   <!-- You can include a specific file from css/themes/ folder to alter the default color theme of the template. eg: -->
   <!-- <link rel="stylesheet" id="css-theme" href="assets/css/themes/amethyst.min.css"> -->
+
+  <!-- Aditional CSS -->
+  <link rel="stylesheet" th:href="@{/admin/js/plugins/sweetalert2/sweetalert2.min.css}"/>
+  <link rel="stylesheet" th:href="@{/admin/js/plugins/datatables/dataTables.bootstrap4.css}"/>
+  <link rel="stylesheet" th:href="@{/admin/js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css}"/>
   <!-- END Stylesheets -->
 </head>
 <body>
@@ -1129,6 +1134,14 @@ MAIN CONTENT LAYOUT
       webpack is putting everything together at assets/_es6/main/app.js
   -->
   <script th:src="@{/admin/js/oneui.app.min.js}"></script>
+
+  <!-- Additional JS -->
+  <script th:src="@{/admin/js/plugins/datatables/jquery.dataTables.min.js}"></script>
+  <script th:src="@{/admin/js/plugins/datatables/dataTables.bootstrap4.min.js}"></script>
+  <script th:src="@{/admin/js/plugins/datatables/buttons/dataTables.buttons.min.js}"></script>
+  <script th:src="@{/admin/js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.js}"></script>
+  <script th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
+  <script th:src="@{/admin/js/pages/be_tables_datatables.min.js}"></script>
 </th:block>
 </body>
 </html>

@@ -2,10 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head(title)">
   <th:block th:include="~{admin/layouts/master::head('Admin - Panel')}"/>
-  <link rel="stylesheet" th:href="@{/admin/js/plugins/sweetalert2/sweetalert2.min.css}"/>
-  <link rel="stylesheet" th:href="@{/admin/js/plugins/datatables/dataTables.bootstrap4.css}"/>
-  <!--<link rel="stylesheet" th:src="@{/admin/js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css}"/>-->
-
 </head>
 <body>
 
@@ -45,8 +41,9 @@
           <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
             <thead>
             <tr>
-              <th class="text-center" style="width: 80px;">ID</th>
-              <th>Name</th>
+              <th class="text-center" style="width: 1%;">ID</th>
+              <th class="d-none d-sm-table-cell" style="width: 1%;">Avatar</th>
+              <th class="d-none d-sm-table-cell">Name</th>
               <th class="d-none d-sm-table-cell" style="width: 30%;">Email</th>
               <th class="d-none d-sm-table-cell" style="width: 15%;">Username</th>
               <th class="d-none d-sm-table-cell" style="width: 1%;">Access</th>
@@ -56,6 +53,10 @@
             <tbody>
             <tr th:each="donator:${donators}">
               <td class="text-center font-size-sm" th:text="${donator.id}"></td>
+              <td class="d-none d-sm-table-cell font-size-sm">
+                <img th:src="@{'/images/users/' + ${donator.avatar}}" th:alt="${donator.name}"
+                     class="img-avatar">
+              </td>
               <td class="font-w600 font-size-sm" th:text="${donator.name}"></td>
               <td class="d-none d-sm-table-cell font-size-sm" th:text="${donator.email}"></td>
               <td class="d-none d-sm-table-cell" th:text="${donator.username}"></td>
@@ -97,17 +98,9 @@
 
 <th:block th:include="~{admin/layouts/master::scripts}"/>
 
-<script th:src="@{/admin/js/plugins/datatables/jquery.dataTables.min.js}"></script>
-<script th:src="@{/admin/js/plugins/datatables/dataTables.bootstrap4.min.js}"></script>
-<script th:src="@{/admin/js/plugins/datatables/buttons/dataTables.buttons.min.js}"></script>
-<script th:src="@{/admin/js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.js}"></script>
-<script th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
-<script th:src="@{/admin/js/pages/be_tables_datatables.min.js}"></script>
 <script>
     $(document).ready(function () {
-        // $('.js-dataTable-full-pagination').DataTable();
         $(document).on("click", ".ban", function () {
-            // TODO: add code to remove the ban to a user.
             var $this = $(this);
             $.ajax({
                 url: $this.data("url"),

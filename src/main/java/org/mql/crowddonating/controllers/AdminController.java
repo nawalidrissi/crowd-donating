@@ -76,23 +76,11 @@ public class AdminController {
     @PostMapping("/admin/sponsors/sponsors")
     public String add(ModelMap map, String name, String url, @RequestParam("logo") MultipartFile logo,
                       String description) {
-        /*
-         * Map<String, String> errors = new HashMap<>(); map.put("errors", errors);
-         * map.put("sponsor", sponsor); try { adminBusiness.addSponsor(sponsor); if
-         * (imageFile.isEmpty())05_1961662113953587_4108013232235479040_o.jpg"); else
-         * sponsor.setLogo(Utility.upload("images/sponsors/", imageFile));
-         * adminBusiness.updateSponsor(sponsor);
-         *
-         *
-         * } catch (DataIntegrityViolationException ex) { errors.put("name",
-         * "A sponsor with the same name already exists!"); return "cases/add"; } return
-         * "redirect:sponsors/";
-         */
         Sponsor sponsor = new Sponsor();
         sponsor.setName(name);
         sponsor.setUrl(url);
         sponsor.setDescription(description);
-        sponsor.setLogo(Utility.upload("images/sponsors/", logo));
+        sponsor.setLogo(Utility.upload("images/partners/", logo));
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
         map.put("sponsor", sponsor);
@@ -101,8 +89,9 @@ public class AdminController {
         return "redirect:/admin/sponsors/sponsors";
     }
 
+    // using 'S' instead of 'Sponsors' because of AdBlock
     @ResponseBody
-    @PatchMapping("/admin/sponsors/sponsors/{id}/ban")
+    @DeleteMapping("/admin/s/{id}/delete")
     public boolean sponsorBan(ModelMap map, @PathVariable long id) {
         adminBusiness.deleteSponsor(new Sponsor(id));
         return true;
@@ -128,14 +117,14 @@ public class AdminController {
 
 
     @PutMapping("/admin/sponsors/sponsors")
-    public String update(ModelMap map, Sponsor sponsor, @RequestParam MultipartFile imageFile) {
+    public String update(ModelMap map, Sponsor sponsor, @RequestParam MultipartFile logo) {
         Map<String, String> errors = new HashMap<>();
         map.put("errors", errors);
         map.put("sponsor", sponsor);
 
         try {
-            if (!imageFile.isEmpty()) {
-                sponsor.setLogo(Utility.upload("images/sponsors/", imageFile));
+            if (!logo.isEmpty()) {
+                sponsor.setLogo(Utility.upload("images/partners/", logo));
             } else
                 sponsor.setLogo(publicServices.getSponsorById(sponsor.getId()).getLogo());
             adminBusiness.updateSponsor(sponsor);
@@ -170,8 +159,7 @@ public class AdminController {
 
     @ResponseBody
     @PatchMapping("/admin/users/associations/{id}/ban")
-    public boolean associationBan(ModelMap map, @PathVariable long id) {
-        adminBusiness.banUser(id);
-        return true;
+    public boolean associationBan(ModelMap map, @PathVariable long id, boolean state) {
+        return adminBusiness.banUser(id, state);
     }
 }

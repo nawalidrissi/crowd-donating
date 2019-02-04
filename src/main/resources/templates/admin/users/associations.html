@@ -42,10 +42,10 @@
           <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
             <thead>
             <tr>
-              <th class="text-center" style="width: 80px;">ID</th>
+              <th class="text-center" style="width: 1%;">ID</th>
               <th>Name</th>
               <th class="d-none d-sm-table-cell" style="width: 30%;">Email</th>
-              <th class="d-none d-sm-table-cell" style="width: 15%;">Username</th>
+              <th class="d-none d-sm-table-cell" style="width: 1%;">State</th>
               <th style="width: 1%;">#</th>
             </tr>
             </thead>
@@ -54,20 +54,49 @@
               <td class="text-center font-size-sm" th:text="${association.id}"></td>
               <td class="font-w600 font-size-sm" th:text="${association.name}"></td>
               <td class="d-none d-sm-table-cell font-size-sm" th:text="${association.email}"></td>
-              <td class="d-none d-sm-table-cell" th:text="${association.username}"></td>
+              <td class="d-none d-sm-table-cell">
+                <span class="badge badge-warning" th:if="${!association.enabled}">Not Valid</span>
+                <span class="badge badge-danger" th:if="${association.banned && association.enabled}">Banned</span>
+                <span class="badge badge-info" th:if="${!association.banned && association.enabled}">Active</span>
+              </td>
               <td>
                 <div class="btn-group">
-                  <a th:href="@{'/admin/users/associations' + ${association.id}}" type="button"
+                  <a th:href="@{'/association/profile/' + ${association.id}}" type="button"
                      class="btn btn-sm btn-light js-tooltip-enabled bg-white" data-toggle="tooltip"
-                     title="" data-original-title="Validate"
-                      th:data-url1="@{'/admin/users/associations/' + ${association.id} + '/validate}">
+                     title="" data-original-title="View" target="_blank">
+                    <i class="fa fa-fw fa-eye"></i>
+                  </a>
+                  <a th:if="${!association.enabled}"
+                     class="btn btn-sm btn-light js-tooltip-enabled bg-white validate"
+                     data-original-title="Validate" data-toggle="tooltip"
+                     href="javascript:void(0);" type="button"
+                     th:data-url="@{'/admin/users/associations/' + ${association.id} + '/validate'}">
                     <i class="fa fa-fw fa-check"></i>
                   </a>
-                  <a href="javascript:void(0);" type="button"
-                     class="btn btn-sm btn-light js-tooltip-enabled bg-white ban"
+                  <!--<a th:if="${association.banned && association.enabled}"-->
+                     <!--class="btn btn-sm btn-light js-tooltip-enabled bg-white ban"-->
+                     <!--data-original-title="Validate" data-toggle="tooltip"-->
+                     <!--href="javascript:void(0);" type="button"-->
+                     <!--th:data-url="@{'/admin/users/associations/' + ${association.id} + '/validate'}">-->
+                    <!--<i class="fa fa-fw fa-heart"></i>-->
+                  <!--</a>-->
+                  <!--<a th:if="${!association.banned && association.enabled}"-->
+                     <!--href="javascript:void(0);" type="button"-->
+                     <!--class="btn btn-sm btn-light js-tooltip-enabled bg-white ban"-->
+                     <!--data-toggle="tooltip" title="" data-original-title="Ban"-->
+                     <!--th:data-url="@{'/admin/users/associations/' + ${association.id} + '/ban'}">-->
+                    <!--<i class="fa fa-fw fa-times"></i>-->
+                  <!--</a>-->
+
+
+                  <a th:if="${association.enabled}"
+                     href="javascript:void(0);" type="button"
+                     class="btn btn-sm btn-light js-tooltip-enabled ban"
                      data-toggle="tooltip" title="" data-original-title="Ban"
-                     th:data-url="@{'/admin/users/associations/' + ${association.id} + '/ban'}">
-                    <i class="fa fa-fw fa-times"></i>
+                     th:data-url="@{'/admin/users/associations/' + ${association.id} + '/ban'}"
+                     th:data-state="${association.banned}">
+                    <i class="fa fa-fw fa-check" th:if="${association.banned}"></i>
+                    <i class="fa fa-fw fa-times" th:if="${!association.banned}"></i>
                   </a>
                 </div>
               </td>
@@ -96,7 +125,36 @@
     $(document).ready(function () {
         $('.js-dataTable-full-pagination').DataTable();
         $(document).on("click", ".ban", function () {
-            // TODO: add code to remove the ban to a user.
+            var $this = $(this);
+            $.ajax({
+                url: $this.data("url"),
+                method: "patch",
+                data: {state: !$this.data("state")},
+                success: function (data) {
+                    var message = "";
+                    if (!!data) {
+                        message = "The user is now banned!";
+                        $this.children("i").removeClass("fa-times").addClass("fa-check");
+                        $this.closest("tr").find("td > span.badge")
+                            .removeClass("badge-info").addClass("badge-danger")
+                            .html("Banned");
+                    } else {
+                        message = "The user is now un-banned!";
+                        $this.children("i").removeClass("fa-check").addClass("fa-times");
+                        $this.closest("tr").find("td > span.badge")
+                            .removeClass("badge-danger").addClass("badge-info")
+                            .html("Active");
+                    }
+                    Swal(
+                        'Success!',
+                        message,
+                        'success'
+                    );
+                    $this.data("state", !$this.data("state"));
+                }
+            });
+        });
+        $(document).on("click", ".validate", function () {
             var $this = $(this);
             $.ajax({
                 url: $this.data("url"),
@@ -104,29 +162,12 @@
                 success: function (data) {
                     if (!!data) {
                         Swal(
-                            'Good job!',
-                            'You clicked the button!',
+                            'Success!',
+                            'The association is now valid!',
                             'success'
                         );
                     }
-                }
-            });
-        });
-        
-        $(document).on("click", ".validate", function () {
-            // TODO: add code to remove the ban to a user.
-            var $this = $(this);
-            $.ajax({
-                url: $this.data("url1"),
-                method: "patch",
-                success: function (data) {
-                    if (!!data) {
-                        Swal(
-                            'Good job!',
-                            'You clicked the button!',
-                            'success'
-                        );
-                    }
+                    window.location.reload(true);
                 }
             });
         });
