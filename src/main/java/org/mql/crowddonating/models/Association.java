@@ -18,6 +18,8 @@ public class Association extends User {
 
     @Column(columnDefinition = "text")
     private String description;
+    
+    private String webSite;
 
     @OneToMany(mappedBy = "association", fetch = FetchType.LAZY)
     private List<Case> cases;
@@ -121,6 +123,13 @@ public class Association extends User {
         return cover;
     }
 
+    public String getWebSite() {
+		return webSite;
+	}
+    
+    public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
     public void setCover(String cover) {
         this.cover = cover;
     }

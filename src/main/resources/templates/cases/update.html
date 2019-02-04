@@ -86,7 +86,6 @@
             <div class="col s8 offset-s2">
                 <ul class="collection">
                     <li class="collection-item" th:each="file:${aCase.files}">
-                        <!--<th:block th:text="${file.path}"/>-->
                         <a th:href="@{'/files/cases/' + ${file.id}}" th:text="${file.path}" target="_blank"></a>
                         <a class="delete-file" href="#"
                            th:onclick="'event.preventDefault(); document.getElementById(\'delete-file-form-' + ${file.id} + '\').submit();'">

@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/", "/cases", "/login", "/logout", "/register", "/confirm", "/events").permitAll()
+                .antMatchers("/", "/cases", "/login", "/logout", "/register", "/confirm", "/events", "/files/association/").permitAll()
 
                 .antMatchers(HttpMethod.DELETE, "/cases/{^[\\d]$}", "/cases/files/{^[\\d]$}").hasRole("ASSOCIATION")
                 .antMatchers(HttpMethod.PUT, "/cases").hasRole("ASSOCIATION")
@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/cards/**", "/cases/{^[\\c]$}/donate", "/donations/{^[\\d]$}").hasRole("DONATOR")
 
-                .antMatchers("/sponsers/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
 
                 .and().formLogin().loginPage("/login")
                 .and().logout()

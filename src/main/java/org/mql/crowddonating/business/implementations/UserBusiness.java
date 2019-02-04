@@ -33,8 +33,7 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
 
     @Autowired
     private UserRepository userDao;
-
-
+    
     @Autowired
     private AssociationRepository associationDao;
 
@@ -76,4 +75,9 @@ public class UserBusiness extends PublicServicesBusiness implements IUserService
     public User findByEmailIgnoreCase(String email) {
         return userDao.findByEmailIgnoreCase(email);
     }
+
+	@Override
+	public Association getAssociationByUserName(String userName) {
+		return associationDao.findByUsername(userName);
+	}
 }

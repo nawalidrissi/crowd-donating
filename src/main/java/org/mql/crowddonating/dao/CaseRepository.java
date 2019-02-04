@@ -13,5 +13,5 @@ import org.springframework.data.repository.query.Param;
 public interface CaseRepository extends JpaRepository<Case, Long> {
     Page<Case> findByNameLike(String name, Pageable pageable);
     Case findBySlug(String slug);    
-	  List<Case> findFirst3ByOrderByIdDesc();
+	List<Case> findFirst3ByOrderByIdDesc();
 }

@@ -81,4 +81,8 @@ public interface IPublicServices {
 
     List<Event> getLastNEvents();
 
+	List<Case> getCasesByAssociation(long id);
+	
+	public Map<String, Object> globalStatsForAssociation(List<Case> cases);
+
 }

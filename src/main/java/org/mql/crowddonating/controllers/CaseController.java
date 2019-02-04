@@ -240,30 +240,31 @@ public class CaseController {
     @PostConstruct
     public void createAssocAndDonor() {
 
-        Role role = new Role(1, "DONATOR");
-        roleDao.save(role);
-        role = new Role(2, "ASSOCIATION");
-        roleDao.save(role);
-        role = new Role(3, "ADMIN");
-        roleDao.save(role);
-
-        Association assoc = new Association();
-        assoc.setId(1);
-        assoc.setEmail("assoc-123@gmail.com");
-        assoc.setUsername("assoc-1");
-        assoc.setName("assoc 1");
-        assoc.setCover("cover.jpg");
-        role.setRole("ASSOCIATION");
-        assoc.addRole(roleDao.findByRole("ASSOCIATION"));
-        assoc.setEnabled(true);
-        assoc.setPassword(bCryptPasswordEncoder.encode("123"));
-        assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
-        assoc.setAddress("Adress Morocco n123");
-        assoc.setPhone("053650303030");
-        assoc.setDescription("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi deleniti eaque hic laboriosam minima modi perspiciatis quia quo quos ratione saepe, similique voluptatibus voluptatum. Ab blanditiis neque odit omnis sapiente.");
-
-        publicServices.addAssociation(assoc);
-
-        System.out.println("Assoc added.");
+//        Role role = new Role(1, "DONATOR");
+//        roleDao.save(role);
+//        role = new Role(2, "ASSOCIATION");
+//        roleDao.save(role);
+//        role = new Role(3, "ADMIN");
+//        roleDao.save(role);
+//
+//        Association assoc = new Association();
+//        assoc.setId(1);
+//        assoc.setEmail("assoc-123@gmail.com");
+//        assoc.setUsername("assoc-1");
+//        assoc.setName("assoc-1");
+//        assoc.setCover("cover.jpg");
+//        role.setRole("ASSOCIATION");
+//        assoc.addRole(roleDao.findByRole("ASSOCIATION"));
+//        assoc.setEnabled(true);
+//        assoc.setBanned(false);
+//        assoc.setPassword(bCryptPasswordEncoder.encode("123"));
+//        assoc.setAvatar("bd7dec8a-a7ab-4cfb-b1bc-2114a8662c55_akali.png");
+//        assoc.setAddress("Adress Morocco n123");
+//        assoc.setPhone("053650303030");
+//        assoc.setDescription("Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi deleniti eaque hic laboriosam minima modi perspiciatis quia quo quos ratione saepe, similique voluptatibus voluptatum. Ab blanditiis neque odit omnis sapiente.");
+//
+//        publicServices.addAssociation(assoc);
+//
+//        System.out.println("Assoc added.");
     }
 }

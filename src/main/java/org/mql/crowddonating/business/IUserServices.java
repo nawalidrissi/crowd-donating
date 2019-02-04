@@ -20,4 +20,6 @@ public interface IUserServices {
     Donor getDonorByUsername(String username);
 
     User findByEmailIgnoreCase(String email);
+
+	Association getAssociationByUserName(String userName);
 }
