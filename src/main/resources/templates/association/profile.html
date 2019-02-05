@@ -114,13 +114,12 @@
                 <li class="col-md-2">
                   <i class="icon-help"></i>
                   <span class="charity-color" id="word-count4" th:text="${stats.solvedCauses}"></span>
-                  <small th:text="${stats.solvedCauses}"></small>
+                  <small th:text="#{cause.solved}"></small>
                 </li>
               </ul>
             </div>
           </div>
           <!--// Counter \\-->
-
         </div>
       </div>
     </div>
@@ -155,7 +154,12 @@
 										<h4>
 											<a th:href="@{'/cases/' + ${case.slug}}" th:text="${case.name}"></a>
 										</h4>
-										<p th:text="${#strings.substring(case.description,0,80)}"></p>
+                    <th:block th:if="${#strings.length(case.description) > 90}">
+                      <p th:text="${#strings.substring(case.description ,0 ,90)}"></p>
+                    </th:block>
+                    <th:block th:if="${#strings.length(case.description) <= 90}">
+                      <p th:text="${case.description}"></p>
+                    </th:block>
 									</section>
 									<div class="skillst">
 										<div class="progressbar1" th:data-width="${#numbers.formatDecimal(case.percentageRaised, 0, 2)}" th:data-target="${case.amount}"></div>

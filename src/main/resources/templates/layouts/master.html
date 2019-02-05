@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="en">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" lang="en">
 <head th:fragment="head(title)">
-  <meta charset="utf-8" />
+  <meta charset="utf-8"/>
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -92,16 +92,16 @@
           </div>
           <div class="col-md-6">
             <ul class="charity-strip-social">
-                   <li> 
-                   <select id="locales" class="charity-simple-btn charity-bgcolor mt-0">
-                        <title th:text="#{lang.lang}"></title>
-                        <option th:text="#{lang.lang}"></option>
-                        <option value="en" th:text="#{lang.eng}"></option>
-                        <option value="fr" th:text="#{lang.fr}"></option>
-                      </select>
+              <li>
+                <select id="locales" class="charity-simple-btn charity-bgcolor mt-0">
+                  <title th:text="#{lang.lang}"></title>
+                  <option th:text="#{lang.lang}"></option>
+                  <option value="en" th:text="#{lang.eng}"></option>
+                  <option value="fr" th:text="#{lang.fr}"></option>
+                </select>
 
-                    </li>
-                
+              </li>
+
             </ul>
           </div>
         </div>
@@ -143,27 +143,27 @@
                         <li><a th:href="@{/events/add}" th:text="#{event.add}"></a></li>
                       </ul>
                     </li>
-                   
-                    <li sec:authorize="!isAuthenticated()" ><a href="#" th:text="#{menu.signup}"></a>
+
+                    <li sec:authorize="!isAuthenticated()"><a href="#" th:text="#{menu.signup}"></a>
                       <ul class="charity-dropdown-menu">
                         <li><a th:href="@{/donator/register}" th:text="#{menu.asDonator}"></a></li>
-                        <li><a href="contact-us-view2.html" th:text="#{menu.asAssociation}"></a></li>
+                        <li><a th:href="@{/association/register}" th:text="#{menu.asAssociation}"></a></li>
                       </ul>
                     </li>
-                    
-                    <li sec:authorize="isAuthenticated()" ><a href="#" th:text="#{menu.account}"></a>
+
+                    <li sec:authorize="isAuthenticated()"><a href="#" th:text="#{menu.account}"></a>
                       <ul class="charity-dropdown-menu">
                         <li><a th:href="@{/association/profile}" th:text="#{menu.profile}"></a></li>
-                        <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{menu.logout}" ></a></li>
+                        <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{menu.logout}"></a></li>
                       </ul>
                     </li>
-                    
-                     <li class="active">
-                    	<a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{menu.login}"></a>
+
+                    <li class="active">
+                      <a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{menu.login}"></a>
                     </li>
-                    
+
                   </ul>
-                    </div>
+                </div>
               </nav>
               <!--// Navigation \\-->
               <!--<a href="contact-us.html">Donate Now</a>-->
@@ -219,21 +219,21 @@
           <h3 class="charity-footer-title">Photo Gallery</h3>
           <ul>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img1.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img1.png" alt=""></a></li>
+                src="extra-images/event-gallery-img1.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img2.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img2.png" alt=""></a></li>
+                src="extra-images/event-gallery-img2.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img3.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img3.png" alt=""></a></li>
+                src="extra-images/event-gallery-img3.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img4.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img4.png" alt=""></a></li>
+                src="extra-images/event-gallery-img4.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img5.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img5.png" alt=""></a></li>
+                src="extra-images/event-gallery-img5.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img6.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img6.png" alt=""></a></li>
+                src="extra-images/event-gallery-img6.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img1.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img1.png" alt=""></a></li>
+                src="extra-images/event-gallery-img1.png" alt=""></a></li>
             <li><a data-fancybox-group="group" href="extra-images/event-gallery-img2.png" class="fancybox"><img
-                    src="extra-images/event-gallery-img2.png" alt=""></a></li>
+                src="extra-images/event-gallery-img2.png" alt=""></a></li>
           </ul>
         </aside>
       </div>

@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/cards/**", "/cases/{^[\\c]$}/donate", "/donations/{^[\\d]$}").hasRole("DONATOR")
 
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/*").hasRole("ADMIN")
 
                 .and().formLogin().loginPage("/login")
                 .and().logout()

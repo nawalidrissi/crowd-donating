@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.mql.crowddonating.business.IAssociationBusiness;
 import org.mql.crowddonating.business.IDonorBusiness;
 import org.mql.crowddonating.business.IPublicServices;
+import org.mql.crowddonating.business.IUserServices;
 import org.mql.crowddonating.dao.RoleRepository;
 import org.mql.crowddonating.models.Association;
 import org.mql.crowddonating.models.Case;
@@ -28,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +55,10 @@ public class CaseController {
     @Autowired
     @Qualifier("donorBusiness")
     private IDonorBusiness donorBusiness;
+
+    @Autowired
+    @Qualifier("userBusiness")
+    private IUserServices userBusiness;
 
     @Autowired
     private RoleRepository roleDao;
@@ -205,6 +212,9 @@ public class CaseController {
             }
         }
         try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            Association assoc = userBusiness.getAssociationByUserName(auth.getName());
+            aCase.setAssociation(assoc);
             associationBusiness.addCase(aCase);
             if (imageFile.isEmpty())
                 aCase.setImage("blog-1.jpg");

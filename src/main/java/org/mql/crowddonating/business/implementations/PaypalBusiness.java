@@ -49,14 +49,15 @@ public class PaypalBusiness implements IPaypalBusiness {
         Payer payer = new Payer();
         payer.setPaymentMethod(paypalPayment.getMethod().toString());
         PayerInfo payerInfo = new PayerInfo();
-        payerInfo.setEmail("imouad.you-seller@gmail.com");
+        payerInfo.setEmail("imouad.you-buyer@gmail.com");
         payerInfo.setPayerId("1");
         payerInfo.setFirstName("Mouad");
         payerInfo.setLastName("Youssef");
         payer.setPayerInfo(payerInfo);
 
         Payee payee = new Payee();
-        payee.setAccountNumber("7333646453");
+//        payee.setAccountNumber("7333646453");
+        payee.setEmail("imouad.you-facilitator@gmail.com");
 
         Payment payment = new Payment();
         payment.setIntent(paypalPayment.getIntent().toString());
