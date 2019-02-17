@@ -13,7 +13,7 @@ public class Event {
     @Column
     private String title;
 
-    @Column
+    @Column(columnDefinition = "text")
     private String description;
 
     @Column

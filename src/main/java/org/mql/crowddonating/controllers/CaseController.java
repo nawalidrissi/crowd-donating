@@ -249,14 +249,13 @@ public class CaseController {
 
     @PostConstruct
     public void createAssocAndDonor() {
+        Role role = new Role(1, "DONATOR");
+        roleDao.save(role);
+        role = new Role(2, "ASSOCIATION");
+        roleDao.save(role);
+        role = new Role(3, "ADMIN");
+        roleDao.save(role);
 
-//        Role role = new Role(1, "DONATOR");
-//        roleDao.save(role);
-//        role = new Role(2, "ASSOCIATION");
-//        roleDao.save(role);
-//        role = new Role(3, "ADMIN");
-//        roleDao.save(role);
-//
 //        Association assoc = new Association();
 //        assoc.setId(1);
 //        assoc.setEmail("assoc-123@gmail.com");

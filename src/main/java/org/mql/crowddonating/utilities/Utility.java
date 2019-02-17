@@ -20,7 +20,12 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class Utility {
-    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    
+    /**
+     * [^\\w-] only latin characters
+     * [^\pL\s-] all UTF-8 characters
+     */
+    private static final Pattern NONLATIN = Pattern.compile("[^\\pL\\s-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
     public static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/";
 
