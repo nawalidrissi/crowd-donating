@@ -3,6 +3,7 @@ package org.mql.crowddonating.business.implementations;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -148,6 +149,7 @@ public class PublicServicesBusiness implements IPublicServices {
 		stats.put("solvedCauses", solvedCauses);
 		return stats;
 	}
+
 	public Case getCaseById(long id) {
 		Case aCase = caseDao.findById(id).get();
 
@@ -283,6 +285,25 @@ public class PublicServicesBusiness implements IPublicServices {
 		List<Case> cases = caseDao.findAll().stream().filter(aCase -> aCase.getAssociation().getId() == id)
 				.collect(Collectors.toList());
 		return cases;
+	}
+
+	@Override
+	public List<Case> getCasesByAssociation(Association association) {
+
+		List<Case> cases = caseDao.findAll().stream().filter(c -> c.getAssociation().getId() == association.getId())
+				.collect(Collectors.toList());
+
+		return cases;
+	}
+
+	@Override
+	public List<Event> getEventsByAssociation(Association association) {
+
+		List<Event> events = eventDao.findAll().stream().filter(c -> c.getAssociation().getId() == association.getId())
+				.collect(Collectors.toList());
+
+		return events;
+
 	}
 
 }

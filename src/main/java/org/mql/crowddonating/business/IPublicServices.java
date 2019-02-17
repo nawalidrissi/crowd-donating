@@ -23,7 +23,8 @@ public interface IPublicServices {
     Case getCaseById(long id);
 
     Page<Case> getCasesByName(String name, int page, int size);
-
+    List<Case> getCasesByAssociation(Association association);
+    
     Case getCaseBySlug(String slug);
 
     List<Type> getAllTypes();
@@ -84,5 +85,7 @@ public interface IPublicServices {
 	List<Case> getCasesByAssociation(long id);
 	
 	public Map<String, Object> globalStatsForAssociation(List<Case> cases);
+	
+	List<Event> getEventsByAssociation(Association association);
 
 }

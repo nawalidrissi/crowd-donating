@@ -24,6 +24,7 @@ import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.Role;
 import org.mql.crowddonating.models.Type;
+import org.mql.crowddonating.models.User;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -106,23 +107,30 @@ public class CaseController {
             response.setStatus(404);
             return "error/404";
         }
-
-        List<Donation> donations = publicServices.getCaseDonating(aCase);
-
-        map.put("donatingNumber", donations.size());
-        double total = 0;
-        for (Donation donation : donations) {
-            total += donation.getAmount();
-        }
-        double percentage = (total / aCase.getAmount()) * 100;
-
-        map.put("donationsTotal", total);
-        map.put("donationsPercentage", percentage);
-        map.put("donationsCount", donations.size());
         map.put("case", aCase);
+		map.put("cases", publicServices.findLastNCases());
+		map.put("events", publicServices.getLastNEvents());
         return "cases/details";
     }
 
+    @GetMapping("/cases/association/{id}")
+    public String caseByAssociation(ModelMap map, @PathVariable long id) {
+        
+    	Association association = (Association) publicServices.getAssociationById(id);
+    	map.put("cases", publicServices.getCasesByAssociation(association));
+        return "cases/cases";
+    }
+    
+    @GetMapping("/cases/association")
+    public String myCases(ModelMap map) {
+        
+    	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         Association association = userBusiness.getAssociationByUserName(auth.getName());
+         map.put("cases", publicServices.getCasesByAssociation(association));
+        return "cases/cases";
+        
+    }
+    
     @DeleteMapping("/cases/{id}")
     public String delete(@PathVariable long id, Model model) {
         Case aCase = publicServices.getCaseById(id);
@@ -255,6 +263,7 @@ public class CaseController {
         roleDao.save(role);
         role = new Role(3, "ADMIN");
         roleDao.save(role);
+
 
 //        Association assoc = new Association();
 //        assoc.setId(1);

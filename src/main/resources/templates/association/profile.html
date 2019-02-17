@@ -12,10 +12,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="charity-page-title"><h1>About Us</h1></div>
+          <div class="charity-page-title"><h1 th:text="#{about.as}"></h1></div>
           <ul class="charity-breadcrumb">
-            <li><a href="index-2.html">Home</a></li>
-            <li class="active">About Us</li>
+            <li><a href="index-2.html" th:text="#{home}"></a></li>
+            <li class="active" th:text="#{about.as}"></li>
           </ul>
         </div>
       </div>
@@ -31,9 +31,9 @@
               <h2 th:text="${association.name}"></h2>
               <p th:text="${association.description}"></p>
               <ul class="charity-list-style-one" th:each="file : ${association.files}">
-                <li><a th:href="@{'/files/association/' + ${file.path}}">Documentation</a></li>
+                <li><a th:href="@{'/files/association/' + ${file.path}}" th:text="#{documentation}"></a></li>
               </ul>
-              <a th:href="@{/association/update}" class="charity-about-btn">Modifier</a>
+              <a th:href="@{/association/update}" class="charity-about-btn" th:text="#{update}"></a>
             </div>
           </div>
           <div class="col-md-5">
@@ -45,37 +45,37 @@
       </div>
     </div>
     <div class="charity-contactus-info">
-      <div class="container">
-        <ul class="row">
-          <li class="col-md-3">
-            <div class="charity-contactus-text">
-              <i class="fa fa-phone"></i>
-              <h4>Call Us At</h4>
-              <p th:text="${association.phone}"></p>
-            </div>
-          </li>
-          <li class="col-md-3">
-            <div class="charity-contactus-text">
-              <i class="fa fa-map-marker"></i>
-              <h4>Our Location</h4>
-              <p th:text="${association.address}"></p>
-            </div>
-          </li>
-          <li class="col-md-3">
-            <div class="charity-contactus-text">
-              <i class="fa fa-envelope"></i>
-              <h4>Mail Us At</h4>
-              <p><a href="mailto:name@email.com" th:text="${association.email}"></a></p>
-            </div>
-          </li>
-          <li class="col-md-3">
-            <div class="charity-contactus-text">
-              <i class="fa fa-globe"></i>
-              <h4>Our Website</h4>
-              <p><a href="404.html" th:text="${association.webSite}"></a></p>
-            </div>
-          </li>
-        </ul>
+     <div class="container">
+      <ul class="row">
+        <li class="col-md-3">
+          <div class="charity-contactus-text">
+            <i class="fa fa-phone"></i>
+            <h4 th:text="#{call.as.at}"></h4>
+            <p th:text="${association.phone}"></p>
+          </div>
+        </li>
+        <li class="col-md-3">
+          <div class="charity-contactus-text">
+            <i class="fa fa-map-marker"></i>
+            <h4 th:text="#{our.location}"></h4>
+            <p th:text="${association.address}"></p>
+          </div>
+        </li>
+        <li class="col-md-3">
+          <div class="charity-contactus-text">
+            <i class="fa fa-envelope"></i>
+            <h4 th:text="#{mail.us.at}"></h4>
+            <p><a href="mailto:name@email.com" th:text="${association.email}"></a></p>
+          </div>
+        </li>
+        <li class="col-md-3">
+          <div class="charity-contactus-text">
+            <i class="fa fa-globe"></i>
+            <h4 th:text="#{our.website}"></h4>
+            <p><a href="404.html" th:text="${association.webSite}"></a></p>
+          </div>
+        </li>
+      </ul>
       </div>
     </div>
     <div class="charity-main-section charity-counterbg-full">

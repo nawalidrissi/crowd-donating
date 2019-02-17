@@ -15,10 +15,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div class="charity-page-title"><h1>Cause Detail</h1></div>
+          <div class="charity-page-title"><h1 th:text="#{cause.details}"></h1></div>
           <ul class="charity-breadcrumb">
-            <li><a href="index-2.html">Home</a></li>
-            <li class="active">Cause Detail</li>
+            <li><a href="index-2.html" th:text="#{home}"></a></li>
+            <li class="active" th:text="#{cause.details}"></li>
           </ul>
         </div>
       </div>
@@ -38,24 +38,24 @@
               <ul class="charity-cause-options">
                 <li>
                   <i class="fa fa-clock-o"></i>
-                  <h6>Remaining Time:</h6>
+                  <h6 th:text="#{cause.deadLine}"></h6>
                   <span th:text="${#calendars.format(case.deadLine,'MMM dd, yyyy')}"></span>
                   <!--<span>19 days left</span>-->
                 </li>
                 <li>
                   <i class="fa fa-heartbeat"></i>
-                  <h6>Donations:</h6>
+                  <h6 th:text="#{cause.donations}"></h6>
                   <span th:text="${case.nbreDonations}"></span>
                 </li>
                 <li></li>
               </ul>
               <div class="charity-cause-donate">
                 <div class="skillst">
-                  <h6>Raised: <span th:text="|${case.amountRaised} MAD|"></span></h6>
-                  <h6>Goal: <span th:text="|${case.amount} MAD|"></span></h6>
+                  <h6><span th:text="#{cause.raised}"></span><span th:text="| : ${case.amountRaised} MAD|"></span></h6>
+                  <h6><span th:text="#{cause.goal}"></span><span th:text="| : ${case.amount} MAD|"></span></h6>
                   <div class="progressbar1"
-                       th:data-width="${#numbers.formatDecimal(donationsPercentage, 0, 0)}"
-                       th:data-target="${#numbers.formatDecimal(donationsPercentage, 0, 0)}">
+                       th:data-width="${#numbers.formatDecimal(case.percentageRaised, 0, 2)}"
+                       th:data-target="${case.amount}">
                   </div>
                 </div>
                 <a th:href="@{'/cases/' + ${case.slug} + '/donate'}" class="charity-plan-btn">
@@ -74,13 +74,13 @@
             <div class="charity-tags-wrap">
               <div class="charity-post-tags">
                 <div class="charity-tags">
-                  <span>Tags:</span>
+                  <span th:text="#{tag.tags}"></span>
                   <a href="#" th:each="type, iter :${case.types}" rel="tag"
                      th:text="${#strings.concat(iter.index > 0 ? ' / ' : '', type.label)}">
                   </a>
                 </div>
                 <div class="charity-blog-social">
-                  <span>Share:</span>
+                  <span th:text="#{share.share}"></span>
                   <ul>
                     <li><a href="https://www.facebook.com/" class="fa fa-facebook"></a></li>
                     <li><a href="https://www.twitter.com/" class="fa fa-twitter"></a></li>
@@ -91,15 +91,14 @@
                 </div>
               </div>
             </div>
-            <h2 class="charity-section-heading">Admin Post</h2>
+            <h2 class="charity-section-heading" th:text="${case.association.name}"></h2>
             <div class="charity-admin-post">
               <figure>
                 <a href="404.html">
                   <img th:src="@{'/images/users/' + ${case.association.avatar}}" alt="">
                 </a>
                 <figcaption>
-                  <h6><a href="404.html" th:text="${case.association.name}"></a></h6>
-                  <span>Association</span>
+                  
                 </figcaption>
               </figure>
               <div class="charity-admin-post-text">
@@ -119,44 +118,18 @@
 
             <!--// Widget Featured Causes \\-->
             <div class="widget widget_featured_causes">
-              <h2 class="charity-widget-title">Featured Causes</h2>
-              <ul>
+              <h2 class="charity-widget-title" th:text="#{cause.feature}"></h2>
+              <ul th:each="case: ${cases}">
                 <li>
                   <figure><a href="cause-detail.html"><img
-                      src="/extra-images/featured-causes-img1.png" alt=""></a>
+                      th:src="@{'/images/cases/' + ${case.image}}" alt=""></a>
                   </figure>
                   <div class="charity-featured-text">
-                    <h6><a href="cause-detail.html">Fusce finibus prus co</a></h6>
+                    <h6><a href="cause-detail.html" th:text="${case.name}"></a></h6>
                     <div class="skillst">
-                      <div class="progressbar1" data-width="65" data-target="65"></div>
-                      <span>Raised 275$ / </span>
-                      <span> Goal 4000$</span>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <figure><a href="cause-detail.html"><img
-                      src="/extra-images/featured-causes-img2.png" alt=""></a>
-                  </figure>
-                  <div class="charity-featured-text">
-                    <h6><a href="cause-detail.html">Fusce finibus prus co</a></h6>
-                    <div class="skillst">
-                      <div class="progressbar1" data-width="65" data-target="65"></div>
-                      <span>Raised 275$ / </span>
-                      <span> Goal 4000$</span>
-                    </div>
-                  </div>
-                </li>
-                <li>
-                  <figure><a href="cause-detail.html"><img
-                      src="/extra-images/featured-causes-img3.png" alt=""></a>
-                  </figure>
-                  <div class="charity-featured-text">
-                    <h6><a href="cause-detail.html">Fusce finibus prus co</a></h6>
-                    <div class="skillst">
-                      <div class="progressbar1" data-width="65" data-target="65"></div>
-                      <span>Raised 275$ / </span>
-                      <span> Goal 4000$</span>
+                      <div class="progressbar1" th:data-width="${#numbers.formatDecimal(case.percentageRaised, 0, 2)}"
+                       th:data-target="${case.amount}"></div>
+                      <span th:text="${case.amountRaised + '/' + case.amount}"></span>
                     </div>
                   </div>
                 </li>
@@ -166,32 +139,16 @@
 
             <!--// Widget upcomimg events \\-->
             <div class="widget widget_events">
-              <h2 class="charity-widget-title">Upcoming Events</h2>
-              <ul>
+              <h2 class="charity-widget-title" th:text="#{event.upcoming}"></h2>
+              <ul th:each="event: ${events}">
                 <li>
-                  <time datetime="2008-02-14 20:00">22 Aug</time>
+                  <time datetime="2008-02-14 20:00" th:text="${#calendars.format(event.plannedDate, 'MMM dd')}"></time>
                   <div class="charity-events">
-                    <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell
-                      Street 9976</a>
+                    <h6><a th:href="@{'/events/' + ${event.id}}" th:text="${event.title}"></a></h6>
+                    <a href="event-detail.html"><i class="fa fa-map-marker"></i><span th:text="${event.address}"></span></a>
                   </div>
                 </li>
-                <li>
-                  <time datetime="2008-02-14 20:00">13 Sep</time>
-                  <div class="charity-events">
-                    <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell
-                      Street 9976</a>
-                  </div>
-                </li>
-                <li>
-                  <time datetime="2008-02-14 20:00">07 Dec</time>
-                  <div class="charity-events">
-                    <h6><a href="event-detail.html">Fusce fibus purus cos vulputate</a></h6>
-                    <a href="event-detail.html"><i class="fa fa-map-marker"></i> 1403 Blackwell
-                      Street 9976</a>
-                  </div>
-                </li>
+               
               </ul>
             </div>
           </aside>

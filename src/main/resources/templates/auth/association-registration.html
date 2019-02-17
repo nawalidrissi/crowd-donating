@@ -32,7 +32,7 @@
           
             
             <div class="form-group">
-              <label for="name" th:text="#{user.name}">Name</label>
+              <label for="name" th:text="#{user.name}"></label>
               <input type="text" class="form-control" name="name" id="name" 
                      th:field="*{name}" required>
             </div>
@@ -70,7 +70,7 @@
             </div>
             
               <div th:class="${'form-group'}">
-              <label for="domains" class="select2-tags-label control-label">Domains</label>
+              <label for="domains" class="select2-tags-label control-label" th:text="#{domains}"></label>
               <select name="associationDomains" id="domains" multiple
                       th:class="${'form-control select2-tags validate'}">
                 <option th:each="domain:${domains}" th:value="${domain.label}"
@@ -79,16 +79,14 @@
 <!--               <span class="help-block" th:if="${errors.containsKey('domains')}" th:text="${errors.get('domains')}"></span> -->
             </div>
             <div class="form-group">
-              <label for="documents" >Documents</label>
+              <label for="documents" th:text="#{documents}"></label>
               <input type="file" name="documents" id="documents" class="form-control" multiple required>
             </div>
             <div class="form-group display-flex">
               <div class="flex-1"></div>
-              <button class="btn btn-main mr-6" type="submit">
-                Valider
+              <button class="btn btn-main mr-6" type="submit" th:text="#{valider}">
               </button>
-              <button class="btn btn-main" type="reset">
-                 Annuler
+              <button class="btn btn-main" type="reset" th:text="#{annuler}">
               </button>
             </div>
             <br/><br/>

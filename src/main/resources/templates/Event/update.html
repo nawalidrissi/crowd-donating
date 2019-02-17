@@ -16,11 +16,11 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="charity-page-title">
-						<h1>Update Event</h1>
+						<h1 th:text="#{event.update}"></h1>
 					</div>
 					<ul class="charity-breadcrumb">
-						<li><a th:href="@{/}">Home</a></li>
-						<li class="active"><a th:href="@{/events}">Event List</a></li>
+						<li><a th:href="@{/}" th:text="#{home}"></a></li>
+						<li class="active"><a th:href="@{/events}" th:text="#{event.list}"></a></li>
 					</ul>
 				</div>
 			</div>
@@ -64,7 +64,7 @@
 							<br>
 							<div class="form-group display-flex">
 								<div class="flex-1"></div>
-								<button class="btn btn-main mr-6">Submit</button>
+								<button class="btn btn-main mr-6" th:text="#{submit}"></button>
 							</div>
 							<br>
 						</form>

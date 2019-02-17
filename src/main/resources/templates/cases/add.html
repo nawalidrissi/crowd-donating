@@ -38,7 +38,7 @@
               <span class="help-block" th:if="${errors.containsKey('name')}" th:text="${errors.get('name')}"></span>
             </div>
             <div class="form-group">
-              <label for="description">Description</label>
+              <label for="description" th:text="#{cause.description}"></label>
               <textarea name="description" class="validate materialize-textarea form-control" required
                         id="description" th:text="${aCase.description}"></textarea>
             </div>
@@ -53,7 +53,7 @@
                      required value="1000">
             </div>
             <div th:class="|form-group  ${errors.containsKey('types') ? 'has-error' : ''}">
-              <label for="types" class="select2-tags-label control-label">Types</label>
+              <label for="types" class="select2-tags-label control-label" th:text="#{cause.types}"></label>
               <select name="caseTypes" id="types" multiple
                       th:class="|form-control select2-tags validate ${errors.containsKey('types') ? 'invalid' : ''}|">
                 <option th:each="type:${types}" th:value="${type.label}"
@@ -66,13 +66,12 @@
               <input type="file" name="imageFile" id="image" class="form-control">
             </div>
             <div class="form-group">
-              <label for="documents" >Documents</label>
+              <label for="documents" th:text="#{documents}"></label>
               <input type="file" name="documents" id="documents" class="form-control" multiple required>
             </div>
             <div class="form-group display-flex">
               <div class="flex-1"></div>
-              <button class="btn btn-main">
-                Valider
+              <button class="btn btn-main" th:text="#{valider}">
               </button>
             </div>
           </form>

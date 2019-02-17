@@ -26,6 +26,8 @@ public class Event {
     @JoinColumn(name = "association_id")
     private Association association;
 
+    private String address;
+    
     public Event() {
     }
 
@@ -77,6 +79,14 @@ public class Event {
         this.association = association;
     }
 
+    public String getAddress() {
+		return address;
+	}
+    
+    public void setAddress(String address) {
+		this.address = address;
+	}
+    
     @Override
     public String toString() {
         return "Event [id=" + id + ", title=" + title + ", description=" + description + ", image=" + image

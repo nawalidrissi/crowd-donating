@@ -1,116 +1,125 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{/css/select2-materialize.css}" rel="stylesheet">
-    <th:block th:include="~{layouts/master::head('Crowd Donating | Home')}"/>
+<th:block th:include="~{layouts/master::head('Crowd Donating | Home')}" />
+<link rel="stylesheet" th:href="@{/css/default.css}" />
+<link rel="stylesheet" th:href="@{/css/default.date.css}" />
 </head>
 <body id="top" class="has-header-search">
-<th:block th:replace="~{layouts/master::header}"/>
+	<th:block th:include="~{layouts/master::header}" />
 
-<section class="page-title ptb-50">
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <h2>Cases</h2>
-                <ol class="breadcrumb">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/cases}">Cases</a></li>
-                    <li class="active">Update</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</section>
 
-<section class="section-padding pt-0">
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <div class="row">
-                    <form th:action="@{/cases}" th:method="put" th:object="${aCase}" id="update-form"
-                          enctype="multipart/form-data" class="col s8 offset-s2">
-                        <input type="hidden" id="id" name="id" th:value="${aCase.id}"/>
-                        <input type="hidden" id="slug" name="slug" th:value="${aCase.slug}"/>
-                        <div class="input-field">
-                            <input type="text" name="name" th:value="${aCase.name}" id="name"
-                                   th:class="|validate ${errors.containsKey('name') ? 'invalid' : ''}|">
-                            <label for="name">Name</label>
-                            <span class="helper-text" th:data-error="${errors.get('name')}" data-success=""
-                                  th:if="${errors.containsKey('name')}"></span>
-                        </div>
-                        <div class="input-field">
-                            <textarea name="description" class="validate materialize-textarea"
-                                      id="description" th:text="${aCase.description}"></textarea>
-                            <label for="description">Description</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" class="validate datepicker" name="deadLine" id="deadline"
-                                   th:value="${#calendars.format(aCase.deadLine,'MMM dd, yyyy')}">
-                            <label for="deadline">Dead line</label>
-                        </div>
-                        <div class="input-field">
-                            <input type="number" name="amount" class="validate" id="amount" th:value="${aCase.amount}">
-                            <label for="amount">Amount</label>
-                        </div>
-                        <div class="input-field">
-                            <select class="select2-tags" name="caseTypes" id="types" multiple="multiple">
-                                <option th:each="type:${aCase.types}" th:value="${type.label}"
-                                        th:text="${type.label}" selected></option>
-                                <option th:each="type:${types}" th:value="${type.label}"
-                                        th:text="${type.label}"></option>
-                            </select>
-                            <label for="types" class="select2-tags-label">Types</label>
-                        </div>
-                        <div class="input-field file-field">
-                            <div class="btn">
-                                <span><i class="material-icons">image</i></span>
-                                <input type="file" name="imageFile" id="image" th:value="${aCase.image}">
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input type="text" class="file-path validate" title="" th:value="${aCase.image}">
-                            </div>
-                        </div>
-                        <div class="input-field file-field">
-                            <div class="btn">
-                                <span><i class="material-icons">file_upload</i></span>
-                                <input type="file" name="documents" id="documents" multiple>
-                            </div>
-                            <div class="file-path-wrapper">
-                                <input type="text" class="file-path validate" title="documents names"
-                                       placeholder="Upload one or more files">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col s8 offset-s2">
-                <ul class="collection">
-                    <li class="collection-item" th:each="file:${aCase.files}">
-                        <a th:href="@{'/files/cases/' + ${file.id}}" th:text="${file.path}" target="_blank"></a>
-                        <a class="delete-file" href="#"
-                           th:onclick="'event.preventDefault(); document.getElementById(\'delete-file-form-' + ${file.id} + '\').submit();'">
-                            <i class="material-icons red-text darken-1">close</i>
-                        </a>
-                        <form th:action="@{'/cases/files/' + ${file.id}}" th:method="delete"
-                              th:id="'delete-file-form-' + ${file.id}"></form>
-                    </li>
-                </ul>
-            </div>
-            <div class="col s8 offset-s2">
-                <div class="input-field display-flex">
-                    <div class="flex-1"></div>
-                    <button class="btn-large waves-effect waves-light"
-                            onclick="event.preventDefault(); document.getElementById('update-form').submit();">
-                        Submit <i class="material-icons right">send</i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+	<div class="charity-subheader-two">
+		<span class="charity-footer-transparent"></span>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="charity-page-title">
+						<h1 th:text="#{cause.updateCause}"></h1>
+					</div>
+					<ul class="charity-breadcrumb">
+						<li><a th:href="@{'/cases'}" th:text="#{cause.causes}"></a></li>
+						<li class="active" th:text="#{update}"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 
-<th:block th:replace="~{layouts/master::footer}"/>
-<th:block th:include="~{layouts/master::js}"/>
-<script th:src="@{/js/select2.min.js}"></script>
+
+	<section class="section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 mt-50">
+					<div class="row">
+						<form th:action="@{/cases}" th:method="put" th:object="${aCase}"
+							enctype="multipart/form-data" class="col-sm-8 col-sm-offset-2">
+
+							<input type="hidden" id="id" name="id" th:value="${aCase.id}" />
+							<input type="hidden" id="slug" name="slug"
+								th:value="${aCase.slug}" />
+							<div class="form-group">
+								<label for="name" class="control-label" th:text="#{cause.name}"></label>
+								<input type="text" name="name" th:value="${aCase.name}"
+									id="name" required class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="description" th:text="#{cause.description}"></label>
+								<textarea name="description"
+									class="validate materialize-textarea form-control" required
+									id="description" th:text="${aCase.description}"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="deadline" th:text="#{cause.deadLine}"></label> <input
+									type="text" class="validate datepicker form-control"
+									name="deadLine" id="deadline"
+									th:value="${#calendars.format(aCase.deadLine,'MMM dd, yyyy')}"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="amount" th:text="#{cause.amount}"></label> <input
+									type="number" name="amount" class="validate form-control"
+									id="amount" th:value="${aCase.amount}" required value="1000">
+							</div>
+							<div
+								th:class="|form-group  ${errors.containsKey('types') ? 'has-error' : ''}">
+								<label for="types" class="select2-tags-label control-label"
+									th:text="#{cause.types}"></label> <select name="caseTypes"
+									id="types" multiple
+									th:class="|form-control select2-tags validate ${errors.containsKey('types') ? 'invalid' : ''}|">
+									<option th:each="type:${types}" th:value="${type.label}"
+										th:text="${type.label}"></option>
+								</select> <span class="help-block" th:if="${errors.containsKey('types')}"
+									th:text="${errors.get('types')}"></span>
+							</div>
+							<div class="form-group">
+								<label for="image" th:text="#{global.picture}"></label> <input
+									type="file" name="imageFile" id="image"
+									th:value="${aCase.image}" class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="documents" th:text="#{documents}"></label> <input
+									type="file" name="documents" id="documents"
+									class="form-control" multiple required>
+							</div>
+
+						</form>
+					</div>
+
+
+					<div class="form-group col-md-offset-2 ">
+						<ul class="charity-list-style-one" th:each="file:${aCase.files}">
+							<li class="collection-item"><a
+								th:href="@{'/files/cases/' + ${file.id}}" th:text="${file.path}"
+								target="_blank"></a> <a class="delete-file" href="#"
+								th:onclick="'event.preventDefault(); document.getElementById(\'delete-file-form-' + ${file.id} + '\').submit();'">
+									<i class="material-icons red-text darken-1" th:text="#{close}"></i>
+							</a>
+								<form th:action="@{'/cases/files/' + ${file.id}}"
+									th:method="delete" th:id="'delete-file-form-' + ${file.id}"></form>
+							</li>
+						</ul>
+					</div>
+
+
+
+					<div class="form-group display-flex">
+						<div class="flex-1"></div>
+						<button class="btn btn-main" th:text="#{valider}"
+							onclick="event.preventDefault(); document.getElementById('update-form').submit();">
+						</button>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<th:block th:replace="~{layouts/master::footer}" />
+	<th:block th:include="~{layouts/master::js}" />
+	<script th:src="@{/js/select2.min.js}"></script>
 </body>
 </html>

@@ -14,10 +14,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="charity-page-title">
-						<h1>Registration</h1>
+						<h1 th:text="#{registration}"></h1>
 					</div>
 					<ul class="charity-breadcrumb">
-						<li class="active">Account confirmation</li>
+						<li class="active" th:text="#{account.confirmation}"></li>
 					</ul>
 				</div>
 			</div>
@@ -33,12 +33,12 @@
 						<div class="col-md-12">
 							<div class="charity-fancy-title">
 								<div class="charity-fancy-title-wrap">
-									<h2>Congratulation</h2>
+									<h2 th:text="#{congratulation}"></h2>
 								</div>
 								<span th:text="#{messages.account.validation}"></span>
 								<br/><br>
 								<a th:href="@{/login}"
-								class="cause-strip-btn charity-color charity-bordercolor"><span>Donate for a cause</span></a>
+								class="cause-strip-btn charity-color charity-bordercolor"><span th:text="#{cause.donate}"></span></a>
 							</div>
 							
 						</div>

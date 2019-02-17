@@ -169,7 +169,7 @@
                                     <li class="col-md-6" th:each="event:${events}">
                                         <div class="charity-event-medium-wrap">
                                             <figure>
-                                            <a th:href="@{'/events/' + ${event.id}}"><img th:src="@{'/images/event/' + ${event.image}}" alt=""></a> <figcaption><a href="#">Buy Ticket</a></figcaption> </figure>
+                                            <a th:href="@{'/events/' + ${event.id}}"><img th:src="@{'/images/event/' + ${event.image}}" alt=""></a> <figcaption><a th:href="@{'/events/' + ${event.id}}" th:text="#{event.details}"></a></figcaption> </figure>
                                             <section>
                                                 <h4><a th:href="@{'/events/' + ${event.id}}" th:text="${event.title}"></a></h4>
                                                 <p th:text="${ #strings.substring(event.description, 0, 120)}"></p>
@@ -196,7 +196,7 @@
                         <div class="col-md-12">
                             <div class="charity-fancy-title">
                                 <div class="charity-fancy-title-wrap">
-                                    <h2>Our PARTNERS</h2>
+                                    <h2 th:text="#{out.partners}"></h2>
                                 </div>
                             </div>
                             <!--// Partner \\-->

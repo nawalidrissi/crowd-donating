@@ -138,11 +138,13 @@
                     <li><a th:href="@{/cases}" th:text="#{menu.causes}"></a>
                       <ul sec:authorize="hasRole('ROLE_ASSOCIATION')" class="charity-dropdown-menu">
                         <li><a th:href="@{/cases/add}" th:text="#{cause.add}"></a></li>
+                         <li><a th:href="@{/cases/association}" th:text="#{cause.Mycauses}"></a></li>
                       </ul>
                     </li>
                     <li><a th:href="@{/events}" th:text="#{menu.events}"></a>
                       <ul sec:authorize="hasRole('ROLE_ASSOCIATION')" class="charity-dropdown-menu">
                         <li><a th:href="@{/events/add}" th:text="#{event.add}"></a></li>
+                        <li><a th:href="@{/events/association}" th:text="#{event.myEvents}"></a></li>
                       </ul>
                     </li>
 

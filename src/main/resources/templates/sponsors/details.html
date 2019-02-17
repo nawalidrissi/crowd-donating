@@ -40,9 +40,9 @@
                       </div>
                       <div class="">
                         <form th:action="@{'/sponsors/' + ${sponsor.id}}" th:method="delete">
-                          <button class="btn right red" th:type="submit">Delete</button>
+                          <button class="btn right red" th:type="submit" th:text="#{delete.sponsor}"></button>
                         </form>
-                        <a class="btn right mr-8" th:href="@{'/sponsors/update/' + ${sponsor.id}}">Update</a>
+                        <a class="btn right mr-8" th:href="@{'/sponsors/update/' + ${sponsor.id}}" th:text="#{update.sponsor}"></a>
                       </div>
                     </div>
                   </header>
