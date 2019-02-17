@@ -14,11 +14,11 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="charity-page-title">
-							<h1>Event List</h1>
+							<h1 th:text="#{event.list}"></h1>
 						</div>
 						<ul class="charity-breadcrumb">
-							<li><a th:href="@{/}">Home</a></li>
-							<li class="active"><a th:href="@{/events}">Event List</a></li>
+							<li><a th:href="@{/}" th:text="#{home}"></a></li>
+							<li class="active" th:text="#{event.list}"></li>
 						</ul>
 					</div>
 				</div>
