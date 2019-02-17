@@ -18,18 +18,9 @@
 			<div class="content content-full">
 				<div
 					class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-					<h1 class="flex-sm-fill h3 my-2">
-						Page Layout <small class="font-size-base font-w400 text-muted">Default</small>
-					</h1>
-					<nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
-						<ol class="breadcrumb breadcrumb-alt">
-							<li class="breadcrumb-item">Layout</li>
-							<li class="breadcrumb-item">Page</li>
-							<li class="breadcrumb-item" aria-current="page"><a
-								class="link-fx" href="">Default</a></li>
-						</ol>
-					</nav>
-				</div>
+					<h1 class="flex-sm-fill h3 my-2" th:text="#{add.sponsor}">
+						</h1>
+		</div>
 			</div>
 		</div>
 		<!-- END Hero --> <!-- Page Content -->
@@ -80,25 +71,25 @@
 							<div class="col-lg-8 col-xl-5">
 
 								<div class="form-group">
-									<label for="example-email-input">Name</label> <input
+									<label for="example-email-input" th:text="#{sponsor.name}"></label><input
 										type="text" class="form-control" name="name"
-										th:value="${sponsor.name}" id="name" placeholder="Name Input">
+										th:value="${sponsor.name}" id="name" th:placeholder="#{Name.Input}">
 								</div>
 								<div class="form-group">
-									<label class="d-block" for="LOGO" th:value="${sponsor.logo}">LOGO</label>
+									<label class="d-block" for="LOGO" th:value="${sponsor.logo}"></label>
 									<input type="file" id="logo" name="logo">
 								</div>
 								<div class="form-group">
-									<label for="example-textarea-input">Description</label>
+									<label for="example-textarea-input" th:text="#{sponsor.description}"></label>
 									<textarea class="form-control" id="example-textarea-input"
 										name="description" rows="4"
-										placeholder="Description content.."
+										th:placeholder="#{Description.content}"
 										th:value="${sponsor.description}"></textarea>
 								</div>
 								<div class="form-group">
-									<label for="example-email-input">URL</label> <input type="text"
+									<label for="example-email-input" th:text="#{sponsor.url}"></label> <input type="text"
 										class="form-control" name="url" th:value="${sponsor.url}"
-										id="url" placeholder="URL Input">
+										id="url" th:placeholder="#{URL.Input}">
 								</div>
 
 							</div>
@@ -106,7 +97,7 @@
 						</div>
 						<div class="row items-push">
 							<div class="col-lg-7 offset-lg-4">
-								<button type="submit" class="btn btn-primary">Submit</button>
+								<button type="submit" class="btn btn-primary" th:text="#{sponsor.submit}"></button>
 							</div>
 						</div>
 					</form>

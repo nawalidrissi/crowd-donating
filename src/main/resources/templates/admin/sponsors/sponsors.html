@@ -18,18 +18,8 @@
       <div class="content content-full">
         <div
             class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-          <h1 class="flex-sm-fill h3 my-2">
-            Page Layout
-            <small class="font-size-base font-w400 text-muted">Default</small>
+          <h1 class="flex-sm-fill h3 my-2" th:text="#{sponsor.sponsors}">
           </h1>
-          <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-alt">
-              <li class="breadcrumb-item">Layout</li>
-              <li class="breadcrumb-item">Page</li>
-              <li class="breadcrumb-item" aria-current="page"><a
-                  class="link-fx" href="">Default</a></li>
-            </ol>
-          </nav>
         </div>
       </div>
     </div>
@@ -42,10 +32,10 @@
               class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
             <thead>
             <tr>
-              <th class="text-center" style="width: 1%;">ID</th>
-              <th class="d-none d-sm-table-cell" style="width: 1%;">Logo</th>
-              <th class="d-none d-sm-table-cell">Name</th>
-              <th class="d-none d-sm-table-cell">URL</th>
+              <th class="text-center" style="width: 1%;" th:text="#{sponsor.id}"></th>
+              <th class="d-none d-sm-table-cell" style="width: 1%;" th:text="#{sponsor.logo}"></th>
+              <th class="d-none d-sm-table-cell" th:text="#{sponsor.name}"></th>
+              <th class="d-none d-sm-table-cell" th:text="#{sponsor.url}"></th>
               <th style="width: 1%;">#</th>
             </tr>
             </thead>
