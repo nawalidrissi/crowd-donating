@@ -84,10 +84,10 @@ public class CaseController {
     }
 
     @GetMapping("/cases/search")
-    public String cases(Model model, @RequestParam(name = "name") String name,
+    public String cases(Model model, @RequestParam(name = "s") String s,
                         @RequestParam(name = "page", defaultValue = "1") int page,
                         @RequestParam(name = "size", defaultValue = "8") int size) {
-        Page<Case> cases = publicServices.getCasesByName("%" + name + "%", page - 1, size);
+        Page<Case> cases = publicServices.getCasesByName("%" + s + "%", page - 1, size);
         return getPageCases(model, page, cases);
     }
 

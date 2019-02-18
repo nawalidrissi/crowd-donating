@@ -53,8 +53,17 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
         return caseDao.save(aCase);
     }
 
+    @Override
     public void deleteCase(long id) {
         caseDao.deleteById(id);
+    }
+
+    @Override
+    public boolean disableCase(long id, boolean state) {
+        Case aCase = caseDao.findById(id).get();
+        aCase.setDisabled(state);
+        caseDao.save(aCase);
+        return state;
     }
 
     public Type addType(Type type) {

@@ -93,7 +93,12 @@
           <div class="col-md-6">
             <ul class="charity-strip-social">
               <li>
-                <input type="search" th:value="#{searsh.searsh}">
+                <form role="search" method="get" th:action="@{/cases/search}"
+                      class="search-form">
+                  <input type="text" class="form-control" value="" name="s"
+                         th:value="${name}" id="s" th:placeholder="#{searsh.searsh}">
+                  <input type="submit" class="display-none"/>
+                </form>
               </li>
               <li>
                 <select id="locales" class="charity-simple-btn charity-bgcolor mt-0">
@@ -138,7 +143,7 @@
                     <li><a th:href="@{/cases}" th:text="#{menu.causes}"></a>
                       <ul sec:authorize="hasRole('ROLE_ASSOCIATION')" class="charity-dropdown-menu">
                         <li><a th:href="@{/cases/add}" th:text="#{cause.add}"></a></li>
-                         <li><a th:href="@{/cases/association}" th:text="#{cause.Mycauses}"></a></li>
+                        <li><a th:href="@{/cases/association}" th:text="#{cause.Mycauses}"></a></li>
                       </ul>
                     </li>
                     <li><a th:href="@{/events}" th:text="#{menu.events}"></a>

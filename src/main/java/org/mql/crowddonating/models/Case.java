@@ -35,6 +35,9 @@ public class Case {
     @Column
     private String image;
 
+    @Column
+    private boolean disabled;
+
     @ManyToOne
     @JoinColumn(name = "association_id")
     private Association association;
@@ -202,7 +205,16 @@ public class Case {
     public void setNbreDonations(int nbreDonations) {
 		this.nbreDonations = nbreDonations;
 	}
-    
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public Case setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Case{" +

@@ -144,10 +144,16 @@ public class AdminController {
     }
 
     @ResponseBody
-    @PatchMapping("/admin/causes/causes/{id}/ban")
-    public boolean CaseBan(ModelMap map, @PathVariable long id) {
+    @PatchMapping("/admin/causes/causes/{id}/delete")
+    public boolean CaseDelete(ModelMap map, @PathVariable long id) {
         associationBusiness.deleteCase(id);
         return true;
+    }
+
+    @ResponseBody
+    @PatchMapping("/admin/causes/causes/{id}/ban")
+    public boolean CaseBan(ModelMap map, @PathVariable long id, boolean state) {
+        return associationBusiness.disableCase(id, state);
     }
 
     @ResponseBody

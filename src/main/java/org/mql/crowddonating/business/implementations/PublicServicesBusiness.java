@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.mql.crowddonating.business.IPublicServices;
@@ -29,6 +30,7 @@ import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,272 +40,268 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class PublicServicesBusiness implements IPublicServices {
 
-	@Autowired
-	private CaseRepository caseDao;
+    @Autowired
+    private CaseRepository caseDao;
 
-	@Autowired
-	private TypeRepository typeDao;
+    @Autowired
+    private TypeRepository typeDao;
 
-	@Autowired
-	private UserRepository userDao;
+    @Autowired
+    private UserRepository userDao;
 
-	@Autowired
-	private DonorRepository danatorDao;
+    @Autowired
+    private DonorRepository danatorDao;
 
-	@Autowired
-	private SponsorRepository sponsorDao;
+    @Autowired
+    private SponsorRepository sponsorDao;
 
-	@Autowired
-	private AssociationRepository associationDao;
+    @Autowired
+    private AssociationRepository associationDao;
 
-	@Autowired
-	private EventRepository eventDao;
+    @Autowired
+    private EventRepository eventDao;
 
-	@Autowired
-	private DonationRepository donationDao;
+    @Autowired
+    private DonationRepository donationDao;
 
-	@Autowired
-	private DomainRepository domainDao;
+    @Autowired
+    private DomainRepository domainDao;
 
-	public Page<Case> getAllCases(int page, int size) {
-		Page<Case> pageCases = caseDao.findAll(PageRequest.of(page, size));
+    public Page<Case> getAllCases(int page, int size) {
+        Page<Case> pageCases = caseDao.findAllByDisabledFalse(PageRequest.of(page, size));
 
-		for (Case aCase : pageCases) {
-			aCase = calculCaseStats(aCase);
-		}
+        for (Case aCase : pageCases) {
+            aCase = calculCaseStats(aCase);
+        }
 
-		return pageCases;
-	}
+        return pageCases;
+    }
 
-	private Case calculCaseStats(Case aCase) {
-		double totalRaised = 0;
-		double percentageRased = 0;
+    private Case calculCaseStats(Case aCase) {
+        double totalRaised = 0;
+        double percentageRased = 0;
 
-		List<Donation> donations = donationDao.findByACase(aCase);
-		for (Donation donation : donations) {
-			totalRaised += donation.getAmount();
-		}
-		aCase.setAmountRaised(totalRaised);
-		aCase.setNbreDonations(donations.size());
-		aCase.setPercentageRaised(totalRaised * 100 / aCase.getAmount());
-		return aCase;
-	}
+        List<Donation> donations = donationDao.findByACase(aCase);
+        for (Donation donation : donations) {
+            totalRaised += donation.getAmount();
+        }
+        aCase.setAmountRaised(totalRaised);
+        aCase.setNbreDonations(donations.size());
+        aCase.setPercentageRaised(totalRaised * 100 / aCase.getAmount());
+        return aCase;
+    }
 
-	public Map<String, Object> globalStats() {
-		Map<String, Object> stats = new HashMap<>();
+    public Map<String, Object> globalStats() {
+        Map<String, Object> stats = new HashMap<>();
 
-		double globalAmount = 0;
-		double globalRaised = 0;
-		double percentageRaised = 0;
-		int globalNbreDonations = 0;
-		int solvedCauses = 0;
+        double globalAmount = 0;
+        double globalRaised = 0;
+        double percentageRaised = 0;
+        int globalNbreDonations = 0;
+        int solvedCauses = 0;
 
-		List<Case> cases = caseDao.findAll();
-		for (Case aCase : cases) {
-			globalAmount += aCase.getAmount();
-			globalNbreDonations += aCase.getNbreDonations();
+        List<Case> cases = caseDao.findAll();
+        for (Case aCase : cases) {
+            globalAmount += aCase.getAmount();
+            globalNbreDonations += aCase.getNbreDonations();
 
-			aCase = calculCaseStats(aCase);
-			if (aCase.getAmountRaised() >= aCase.getAmount())
-				solvedCauses++;
+            aCase = calculCaseStats(aCase);
+            if (aCase.getAmountRaised() >= aCase.getAmount())
+                solvedCauses++;
 
-			globalRaised += aCase.getAmountRaised();
+            globalRaised += aCase.getAmountRaised();
 
-		}
+        }
 
-		stats.put("globalAmount", globalAmount);
-		stats.put("globalRaised", globalRaised);
-		stats.put("percentageRaised", globalRaised * 100 / globalAmount);
-		stats.put("globalTotalDonations", globalNbreDonations);
-		stats.put("nbreDonators", donationDao.findAll().size());
-		stats.put("solvedCauses", solvedCauses);
-		return stats;
-	}
+        stats.put("globalAmount", globalAmount);
+        stats.put("globalRaised", globalRaised);
+        stats.put("percentageRaised", globalRaised * 100 / globalAmount);
+        stats.put("globalTotalDonations", globalNbreDonations);
+        stats.put("nbreDonators", donationDao.findAll().size());
+        stats.put("solvedCauses", solvedCauses);
+        return stats;
+    }
 
-	public Map<String, Object> globalStatsForAssociation(List<Case> cases) {
-		Map<String, Object> stats = new HashMap<>();
+    public Map<String, Object> globalStatsForAssociation(List<Case> cases) {
+        Map<String, Object> stats = new HashMap<>();
 
-		double globalAmount = 0;
-		double globalRaised = 0;
-		double percentageRaised = 0;
-		int globalNbreDonations = 0;
-		int solvedCauses = 0;
+        double globalAmount = 0;
+        double globalRaised = 0;
+        double percentageRaised = 0;
+        int globalNbreDonations = 0;
+        int solvedCauses = 0;
 
-		for (Case aCase : cases) {
-			globalAmount += aCase.getAmount();
-			globalNbreDonations += aCase.getNbreDonations();
+        for (Case aCase : cases) {
+            globalAmount += aCase.getAmount();
+            globalNbreDonations += aCase.getNbreDonations();
 
-			aCase = calculCaseStats(aCase);
-			if (aCase.getAmountRaised() >= aCase.getAmount())
-				solvedCauses++;
+            aCase = calculCaseStats(aCase);
+            if (aCase.getAmountRaised() >= aCase.getAmount())
+                solvedCauses++;
 
-			globalRaised += aCase.getAmountRaised();
+            globalRaised += aCase.getAmountRaised();
 
-		}
+        }
 
-		stats.put("globalAmount", globalAmount);
-		stats.put("globalRaised", globalRaised);
-		stats.put("percentageRaised", globalRaised * 100 / globalAmount);
-		stats.put("globalTotalDonations", globalNbreDonations);
-		stats.put("nbreDonators", donationDao.findAll().size());
-		stats.put("solvedCauses", solvedCauses);
-		return stats;
-	}
+        stats.put("globalAmount", globalAmount);
+        stats.put("globalRaised", globalRaised);
+        stats.put("percentageRaised", globalRaised * 100 / globalAmount);
+        stats.put("globalTotalDonations", globalNbreDonations);
+        stats.put("nbreDonators", donationDao.findAll().size());
+        stats.put("solvedCauses", solvedCauses);
+        return stats;
+    }
 
-	public Case getCaseById(long id) {
-		Case aCase = caseDao.findById(id).get();
+    public Case getCaseById(long id) {
+        Case aCase = caseDao.findById(id).get();
 
-		aCase = calculCaseStats(aCase);
+        aCase = calculCaseStats(aCase);
 
-		return aCase;
-	}
+        return aCase;
+    }
 
-	public Page<Case> getCasesByName(String name, int page, int size) {
-		Page<Case> pageCases = caseDao.findByNameLike(name, PageRequest.of(page, size));
-		for (Case aCase : pageCases) {
-			aCase = calculCaseStats(aCase);
-		}
-		return pageCases;
-	}
+    public Page<Case> getCasesByName(String name, int page, int size) {
+        Page<Case> pageCases = caseDao.findByNameLikeAndDisabledFalse(name, PageRequest.of(page, size));
+        for (Case aCase : pageCases) {
+            aCase = calculCaseStats(aCase);
+        }
+        return pageCases;
+    }
 
-	@Override
-	public Case getCaseBySlug(String slug) {
-		Case aCase = caseDao.findBySlug(slug);
-		aCase = calculCaseStats(aCase);
-		return aCase;
-	}
+    @Override
+    public Case getCaseBySlug(String slug) {
+        Case aCase = caseDao.findBySlugAndDisabledFalse(slug);
+        if (aCase == null)
+            return null;
+        aCase = calculCaseStats(aCase);
+        return aCase;
+    }
 
-	public List<Type> getAllTypes() {
-		return typeDao.findAll();
-	}
+    public List<Type> getAllTypes() {
+        return typeDao.findAll();
+    }
 
-	@Override
-	public Association addAssociation(Association association) {
-		return userDao.save(association);
-	}
+    @Override
+    public Association addAssociation(Association association) {
+        return userDao.save(association);
+    }
 
-	@Override
-	public User login(String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<Event> getAllEvents() {
+        return eventDao.findAll();
+    }
 
-	@Override
-	public List<Event> getAllEvents() {
-		return eventDao.findAll();
-	}
+    @Override
+    public Event getEventById(long id) {
+        return eventDao.getOne(id);
+    }
 
-	@Override
-	public Event getEventById(long id) {
-		return eventDao.getOne(id);
-	}
+    @Override
+    public List<Event> getEventByName(String name) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public List<Event> getEventByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<Sponsor> getAllSponsors() {
+        return sponsorDao.findAll();
+    }
 
-	@Override
-	public List<Sponsor> getAllSponsors() {
-		return sponsorDao.findAll();
-	}
+    @Override
+    public Sponsor getSponsorById(long id) {
+        return sponsorDao.getOne(id);
+    }
 
-	@Override
-	public Sponsor getSponsorById(long id) {
-		return sponsorDao.getOne(id);
-	}
+    @Override
+    public List<Association> getAllAssociations() {
+        return associationDao.findAll();
+    }
 
-	@Override
-	public List<Association> getAllAssociations() {
-		return associationDao.findAll();
-	}
+    @Override
+    public List<Association> getAssociationsByDomain() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public List<Association> getAssociationsByDomain() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<Association> getAssociationsByName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public List<Association> getAssociationsByName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public User getAssociationById(long id) {
+        return userDao.findById(id).get();
+    }
 
-	@Override
-	public User getAssociationById(long id) {
-		return userDao.findById(id).get();
-	}
+    @Override
+    public List<Domain> getAllDomains() {
+        return domainDao.findAll();
+    }
 
-	@Override
-	public List<Domain> getAllDomains() {
-		return domainDao.findAll();
-	}
+    @Override
+    public Type getTypeById(long id) {
+        return typeDao.getOne(id);
+    }
 
-	@Override
-	public Type getTypeById(long id) {
-		return typeDao.getOne(id);
-	}
+    @Override
+    public Page<Sponsor> getSponsorByName(String name, int page, int size) {
+        return sponsorDao.findByNameLike(name, PageRequest.of(page, size));
+    }
 
-	@Override
-	public Page<Sponsor> getSponsorByName(String name, int page, int size) {
-		return sponsorDao.findByNameLike(name, PageRequest.of(page, size));
-	}
+    public Donor addDonor(Donor donor) {
+        return userDao.save(donor);
+    }
 
-	public Donor addDonor(Donor donor) {
-		return userDao.save(donor);
-	}
+    @Override
+    public List<Donation> getCaseDonating(Case aCase) {
+        return donationDao.findByACase(aCase);
+    }
 
-	@Override
-	public List<Donation> getCaseDonating(Case aCase) {
-		return donationDao.findByACase(aCase);
-	}
+    @Override
+    public Donation getDonationById(long id) {
+        return donationDao.findById(id).get();
+    }
 
-	@Override
-	public Donation getDonationById(long id) {
-		return donationDao.findById(id).get();
-	}
+    @Override
+    public User findUserByUsername(String userName) {
+        return userDao.findByUsername(userName);
+    }
 
-	@Override
-	public User findUserByUsername(String userName) {
-		return userDao.findByUsername(userName);
-	}
+    @Override
+    public List<Case> findLastNCases() {
+        return caseDao.findFirst3ByDisabledFalseOrderByIdDesc();
+    }
 
-	@Override
-	public List<Case> findLastNCases() {
-		return caseDao.findFirst3ByOrderByIdDesc();
-	}
+    @Override
+    public List<Event> getLastNEvents() {
+        return eventDao.findFirst4ByOrderByIdDesc();
+    }
 
-	@Override
-	public List<Event> getLastNEvents() {
-		return eventDao.findFirst4ByOrderByIdDesc();
-	}
+    @Override
+    public List<Case> getCasesByAssociation(long id) {
+        List<Case> cases = caseDao.findAll().stream().filter(aCase -> aCase.getAssociation().getId() == id)
+                .collect(Collectors.toList());
+        return cases;
+    }
 
-	@Override
-	public List<Case> getCasesByAssociation(long id) {
-		List<Case> cases = caseDao.findAll().stream().filter(aCase -> aCase.getAssociation().getId() == id)
-				.collect(Collectors.toList());
-		return cases;
-	}
+    @Override
+    public List<Case> getCasesByAssociation(Association association) {
 
-	@Override
-	public List<Case> getCasesByAssociation(Association association) {
+        List<Case> cases = caseDao.findAll().stream().filter(c -> c.getAssociation().getId() == association.getId())
+                .collect(Collectors.toList());
 
-		List<Case> cases = caseDao.findAll().stream().filter(c -> c.getAssociation().getId() == association.getId())
-				.collect(Collectors.toList());
+        return cases;
+    }
 
-		return cases;
-	}
+    @Override
+    public List<Event> getEventsByAssociation(Association association) {
 
-	@Override
-	public List<Event> getEventsByAssociation(Association association) {
+        List<Event> events = eventDao.findAll().stream().filter(c -> c.getAssociation().getId() == association.getId())
+                .collect(Collectors.toList());
 
-		List<Event> events = eventDao.findAll().stream().filter(c -> c.getAssociation().getId() == association.getId())
-				.collect(Collectors.toList());
+        return events;
 
-		return events;
-
-	}
+    }
 
 }

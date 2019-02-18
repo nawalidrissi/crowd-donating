@@ -44,9 +44,9 @@ public class CaseBusinessTest {
 
 	@Test
 	void getCaseBySlog_ShouldReturnOne() {
-		when(caseDao.findBySlug("test-demo")).thenReturn(new Case());
+		when(caseDao.findBySlugAndDisabledFalse("test-demo")).thenReturn(new Case());
 		assertThat(service.getCaseBySlug("test-demo"), instanceOf(Case.class));
-		verify(caseDao).findBySlug("test-demo");
+		verify(caseDao).findBySlugAndDisabledFalse("test-demo");
 	}
 
 }

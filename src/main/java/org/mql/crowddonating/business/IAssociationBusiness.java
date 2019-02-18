@@ -16,6 +16,7 @@ public interface IAssociationBusiness extends IUserServices{
     Case addCase(Case aCase);
     Case updateCase(Case aCase);
     void deleteCase(long id);
+    boolean disableCase(long id, boolean state);
     
     /* *** cases types *** */
     Type addType(Type type);
