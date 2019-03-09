@@ -87,10 +87,11 @@ public class PaypalBusiness implements IPaypalBusiness {
         Payment payment = executePayment(paymentId, payerId);
 
         if (payment.getState().equals("approved")) {
-            String currencyConverterApiJson = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
-            JSONObject obj = new JSONObject(currencyConverterApiJson);
-            double dollarPrice = obj.getDouble("MAD_USD");
+//            String currencyConverterApiJson = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
+//            JSONObject obj = new JSONObject(currencyConverterApiJson);
+//            double dollarPrice = obj.getDouble("MAD_USD");
 
+            double dollarPrice = 9.54;
             JSONObject json = new JSONObject(payment.toJSON());
             String payment_id = json.getString("id");
             String custom = json.getJSONArray("transactions")

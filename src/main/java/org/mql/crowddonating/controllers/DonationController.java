@@ -32,6 +32,7 @@ public class DonationController {
     public String donateForm(Model model, @PathVariable String slug) {
 
         Case aCase = publicServices.getCaseBySlug(slug);
+        //TODO: check this out
         Donor donor = donorBusiness.getDonorById(2);
         model.addAttribute("donor", donor);
 

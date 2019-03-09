@@ -39,10 +39,13 @@ public class PaypalController {
         String successUrl = Utility.getBaseURL(request) + PAYPAL_SUCCESS_URL;
 
         try {
-            String json = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
+            //TODO: fix this
+//            String json = Utility.getJsonFromUrl("http://free.currencyconverterapi.com/api/v6/convert?q=MAD_USD&compact=ultra");
 
-            JSONObject obj = new JSONObject(json);
-            double dollarPrice = obj.getDouble("MAD_USD");
+//            JSONObject obj = new JSONObject(json);
+//            double dollarPrice = obj.getDouble("MAD_USD");
+
+            double dollarPrice = 9.54;
 
             JSONObject custom = new JSONObject();
             custom.put("case_id", id);
