@@ -1,0 +1,1 @@
+web:java -jar target/crowd-donating-1.0-SNAPSHOT.jar
