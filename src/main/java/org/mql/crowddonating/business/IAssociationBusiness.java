@@ -40,8 +40,9 @@ public interface IAssociationBusiness extends IUserServices{
 	/* *** for signup *** */
 	void signup(Association association);
 	
-	Project deleteproject(int id);
 	String addProject(Project project);
 	String updateProject(Project project);
+	void deleteProject(int id);
+	boolean disableProject(int id, boolean state);
 	
 }
