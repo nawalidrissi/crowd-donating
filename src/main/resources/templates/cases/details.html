@@ -162,9 +162,9 @@
 
 <th:block th:replace="~{layouts/master::footer}"/>
 <th:block th:include="~{layouts/master::js}"/>
-<script th:src="@{/admin/js/plugins/sweetalert2/sweetalert2.all.min.js}"></script>
+<script th:src="@{/script/sweetalert2.all.min.js}"></script>
 <script th:if="${(param.success != null) and (param.success[0] == 'true')}">
-    Swal(
+    Swal.fire(
         'Good job!',
         'Your donation have been sent successfully!',
         'success'
