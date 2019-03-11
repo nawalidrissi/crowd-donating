@@ -44,6 +44,9 @@ public class UserController {
         List<Case> cases = publicServices.getCasesByAssociation(assoc.getId());
         map.put("cases", cases);
 		map.put("stats", publicServices.globalStatsForAssociation(cases));
+		
+		map.put("projects", publicServices.getProjectsByAssociation(assoc));
+		map.put("pstats", publicServices.globalProjectsStatsForAssociation(assoc));
 	}
     
     @GetMapping("/association/profile/{id}")
