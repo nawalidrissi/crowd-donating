@@ -44,14 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/", "/cases", "/login", "/logout", "/register", "/confirm", "/events", "/files/association/").permitAll()
+                .antMatchers("/", "/cases", "/login", "/logout", "/register", "/confirm", "/events", "/files/association/", "/projects").permitAll()
 
                 .antMatchers(HttpMethod.DELETE, "/cases/{^[\\d]$}", "/cases/files/{^[\\d]$}").hasRole("ASSOCIATION")
                 .antMatchers(HttpMethod.PUT, "/cases").hasRole("ASSOCIATION")
-                .antMatchers(HttpMethod.POST, "/cases").hasRole("ASSOCIATION")
-                .antMatchers(HttpMethod.GET, "/cases/add", "/cases/update", "/events/**").hasRole("ASSOCIATION")
+                .antMatchers(HttpMethod.POST, "/cases", "/projects").hasRole("ASSOCIATION")
+                .antMatchers(HttpMethod.GET, "/cases/add", "/cases/update", "/events/**", "/projects/add").hasRole("ASSOCIATION")
 
-                .antMatchers("/cards/**", "/cases/{^[\\c]$}/donate", "/donations/{^[\\d]$}").hasRole("DONATOR")
+                .antMatchers("/cards/**", "/cases/{^[\\c]$}/donate", "/donations/{^[\\d]$}", "/projects/{^[\\c]$}/donate").hasRole("DONATOR")
 
                 .antMatchers("/admin/**").hasRole("ADMIN")
 

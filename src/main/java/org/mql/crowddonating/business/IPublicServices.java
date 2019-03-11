@@ -9,6 +9,7 @@ import org.mql.crowddonating.models.Domain;
 import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.Event;
+import org.mql.crowddonating.models.Project;
 import org.mql.crowddonating.models.Sponsor;
 import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.models.User;
@@ -85,5 +86,16 @@ public interface IPublicServices {
 	public Map<String, Object> globalStatsForAssociation(List<Case> cases);
 	
 	List<Event> getEventsByAssociation(Association association);
+	
+	List<Project> getAllProject();
+	Project getProject(String slug);
+	List<Project> getProjects(String name);
+
+	List<Project> getProjectsByAssociation(Association association);
+
+	List<Project> findLastNProjects();
+
+	Map<String, Object> projectGlobalStats();
+	Map<String, Object> globalProjectsStatsForAssociation(Association association);
 
 }

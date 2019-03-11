@@ -1,0 +1,54 @@
+obj={nom:"incetion",realisateur:{nom:"nolan",prenom:"christopher"},annee:2000,acteurs:[{nom:"Decaprio",prenom:"Leonardo"},{nom:"tom",prenom:"hanks"}],Rea_places:["USA","FR", "ITALY"], 
+"location": {"type": "Point",
+	      "coordinates": [25.197233, 55.274147]
+	    }
+};
+
+db.masters.createIndex( { "adress_fac.location" : "2dsphere" } )
+
+db.movies.find(
+{
+   "location": {
+     $near: {
+       $geometry: {
+          type: "Point" ,
+          coordinates: [25.197233, 55.274147]
+       },
+     }
+   }
+});
+
+db.movies.find(
+   {
+     "location":
+       { 
+		$near :
+          {
+            $geometry: { type: "Point",  coordinates: [25.197233, 55.274147] },
+            $minDistance: 0,
+            $maxDistance: 5000
+          },
+       }
+   }
+);
+
+var obj = {name : "Rabat", "location": {"type": "Point",
+	      "coordinates": [34.197233, 25.274147]
+	    }};
+		
+db.places.find(
+   {
+     location:
+       { $near :
+          {
+            $geometry: { type: "Point",  coordinates: [25.197233, 55.274147] },
+            $minDistance: 0,
+            $maxDistance: 5000
+          }
+       }
+   }
+);
+
+db.places.find(
+   { location : { $near : [ -73.9667, 40.78 ], $maxDistance: 0.10 } }
+);

@@ -1,0 +1,72 @@
+
+	1. les exigences d'un projet informatique :
+		b. Exigences Fonctionnelles
+			- Satisfaire les besoins fonctionnels (métiers) de l’entreprise
+		a. exigences techniques :
+			- Performances : Temps de réponse, Equilibrage de charges et Tolérances aux panes, problème de montée en charge : Vers une architecture Distribuée scalable
+			- Maintenance : l’application doit être facile à maintenir : Une application doit évoluer dans le temps, L’application doit être fermée à la modification et ouverte à l’extension
+			- Sécurité : L’application doit prévoir des solutions pour toutes les failles de sécurités
+			- Persistances des données dans des SGBD appropriés, Gestion des Transactions
+			- Créer différents types de clients pour accéder à l’application : Web, Mobile, Desktop
+			
+		 Il est très difficile de développer un système logiciel qui respecte ces exigences sans utiliser l’expérience des autres.
+		 
+		 Utilisation des frameworks, permettre au développeur de s’occuper uniquement du code métier (Exigences fonctionnelles) et c’est le Framework qui s’occupe du code technique (Exigences Techniques)
+		 
+	2. Serveur d'application :
+		• Permet de déployer les applications
+		• Gérer le cycle de vie des applications
+		• Fournie l’infrastructure nécessaire pour faire fonctionner les applications de bonnes qualités
+		• Offre un Framework d’Invertion de Contrôle (IOC) : Spring IOC ou EJB
+		• Exemple : JBoss, Glashfish, Web Sphere, ou encore (Tomcat+Spring,) etc...
+		
+	3. Couche Métier :
+		• Permet d’implémenter la logique métier de l’application, implémente les règles de gestion de l'application, tels que le calcul d'un salaire ou d'une facture. Cette couche utilise des données provenant de l'utilisateur via la couche [web] et du SGBD via la couche [dao]
+		
+		- les EJB : Les Entreprise Java Bean ou EJB sont des composants qui permettent de d’implémenter la logique métier. Ce sont des composant distribués, c’est-à-dire déployés sur des serveurs distants, et qui s’exécutent au sein d’un conteneur EJB qui fait partie du serveur d’application JEE. 
+		
+		- EJB permet de séparer le code métier qui est propre aux spécifications fonctionnelles du code technique (spécification non fonctionnel)
+		
+		- Le rôle du conteneur EJB et de :
+			. Gérer le cycle de vie des composants EJB de votre application
+				.. Instanciation
+				.. Accès au bean
+				.. Sérialisation
+				.. Désérialisation
+				.. Destruction du bean
+			
+		- Spring est un framework modulaire. Cela ne vient pas comme un paquet ou un paquet de plusieurs modules. Différents composants de spring sont fournis en tant que modules indépendants. Cela nous donne une flexibilité d'utilisation dont nous avons besoin et laisse le reste.
+		
+		- L'inversion de contrôle est un terme utilisé dans la programmation orientée objet, par lequel le contrôle d'un objet ou d'un ensemble d'objets est attribué à un framework ou à un conteneur fourni par le framework.
+				
+		- RMI : Remote Method Invocation
+			. Est un middleware java qui permet de créer des applications orientée objets distribués.
+			. Avec RMI un Objet java O1, déployé dans une application A1, dans une machine M1 peut faire appel aux méthode d’une autre objet O2, déployé dans une application A2, dans une machine M2 à travers des intermédiaires :
+				.. STUB : Proxy Coté Client
+				.. SKELETON : Proxy Coté Serveur
+		
+	4. Couche DAO:
+		• Couche technique qui représente la couche d’accès aux données de l’application
+		
+		- JPA : I 'utilisation de JPA laisse votre code indépendant de Framework ORM utilisé
+		- ORM : Le terme mapping objet/relationnel (ORM) décrit la technique consistant à faire le lien entre la
+		représentation objet des données et sa représentation relationnelle basée sur un schéma SQL
+
+	5. Couche Web:
+		• Permet d’implémenter la logique présentation Web de l’application ( Servlet et JSP )
+		• Dans cette partie on utilise des Framework MVC comme Spring MVC, Struts, JSF, ..
+		• Cette couche reçoit le requêtes HTTP du client web
+		• Faire appel à la couche métier pour effectuer les traitement
+		• Envoie un résultat HTML au client, en utilisant un moteur de Template comme Tymeleaf dans une réponse HTTP
+				
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

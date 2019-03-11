@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <div class="charity-page-title"><h1 th:text="#{donation.page}"></h1></div>
         <ul class="charity-breadcrumb">
-          <li><a th:href="@{/}" th:text="#{home}"></a></li>
+          <li><a href="index-2.html" th:text="#{home}"></a></li>
           <li class="active" th:text="#{donation.page}"></li>
         </ul>
       </div>
@@ -61,9 +61,9 @@
                 </div>
               </li>
             </ul>
-            <form th:action="@{/cases/paypal}" method="post" th:object="${donation}">
+            <form th:action="@{/projects/paypal}" method="post" th:object="${donation}">
               <input type="hidden" id="donation-value" name="value" value="50.0">
-              <input type="hidden" name="id" th:value="${donation.case.id}">
+              <input type="hidden" name="id" th:value="${donation.project.id}">
               <button type="submit" class="btn btn-main pull-right mb-24">
                 <i class="fa fa-paypal"></i> <span th:text="#{cause.donate}"></span>
               </button>

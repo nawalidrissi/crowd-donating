@@ -5,6 +5,7 @@ import org.mql.crowddonating.dao.AssociationRepository;
 import org.mql.crowddonating.dao.CaseRepository;
 import org.mql.crowddonating.dao.DomainRepository;
 import org.mql.crowddonating.dao.EventRepository;
+import org.mql.crowddonating.dao.ProjectRepository;
 import org.mql.crowddonating.dao.RoleRepository;
 import org.mql.crowddonating.dao.TypeRepository;
 import org.mql.crowddonating.models.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -36,6 +38,9 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
     
     @Autowired
     private DomainRepository domainDao;
+    
+    @Autowired
+    private ProjectRepository projectDao;
     
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -117,5 +122,26 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
 		association.setPassword(bCryptPasswordEncoder.encode(association.getPassword()));
 		associationDao.save(association);
 		
+	}
+
+	@Override
+	public Project deleteproject(int id) {
+		Project p = projectDao.findById(id).orElseThrow();
+		projectDao.deleteById(id);
+		return p;
+	}
+
+	@Override
+	public String addProject(Project project) {
+		project.setName(Utility.cleanupSpaces(project.getName()));
+		project.setDescription(Utility.cleanupSpaces(project.getDescription()));
+		project.setSlug(Utility.toSlug(project.getName()));
+		projectDao.save(project);
+		return project.getSlug();
+	}
+
+	@Override
+	public String updateProject(Project project) {
+		return addProject(project);
 	}
 }

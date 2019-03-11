@@ -1,0 +1,35 @@
+var obj = {
+	"nom_Formation":"Master qualité du logiciel",
+  	"Chef_formation":{ 
+		"nom":" Chenfour ", 
+		"prenom":" Noureddine " 
+	},
+	"annee_ouve":2008,
+	"Tag": ["MQL","meilleur Master","Java" ],
+	"Professeurs": [
+		{"nom": "Chenfour", "prenom": "Noureddine"},
+		{"nom": "Habib", "prenom": "Nfaoui"}
+   ],
+	"faculte": "FSDM",
+	"location":{ 	
+			"type" : "Point",
+			"Coordinates" : [-73.856077, 40.848447 ]
+		}
+};
+
+
+db.masters.createIndex( { location : "2dsphere" } )
+
+db.masters.find(
+   {
+     "location":
+       { $near :
+          {
+            $geometry: { type: "Point",  "coordinates": [-73.856077, 40.848447]},
+            $minDistance: 0,
+            $maxDistance: 4000
+          }
+       }
+   }
+);
+

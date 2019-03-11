@@ -1,0 +1,155 @@
+MongoDB shell version v4.0.6
+connecting to: mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("8b0f7ef8-b20b-4983-8f79-4e17e48a98ef") }
+MongoDB server version: 4.0.6
+Server has startup warnings:
+2019-02-22T08:28:22.273+0100 I CONTROL  [initandlisten]
+2019-02-22T08:28:22.273+0100 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2019-02-22T08:28:22.273+0100 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2019-02-22T08:28:22.273+0100 I CONTROL  [initandlisten]
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+> show dbs;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use shop
+switched to db shop
+> show dbs;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> db.rayons.insert({"name":"Produit 1"})
+WriteResult({ "nInserted" : 1 })
+> show dbs;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+shop    0.000GB
+> db.createCollection("RAYONS")
+{ "ok" : 1 }
+> show collections
+RAYONS
+rayons
+> obj={"name":"douhi",emails:["xxx","yyyy"], age:24}
+{ "name" : "meriem rahmouni", "emails" : [ "xxx", "yyyy" ] }
+> db.vendeurs.insert(obj)
+WriteResult({ "nInserted" : 1 })
+> db.vendeurs.find()
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "name" : "meriem rahmouni", "emails" : [ "xxx", "yyyy" ] }
+> obj={"Fname":"Hatim",age: 18}
+{ "Fname" : "Hatim", "age" : 18 }
+> db.vendeurs.insert(obj)
+WriteResult({ "nInserted" : 1 })
+> db.vendeurs.find()
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "name" : "meriem rahmouni", "emails" : [ "xxx", "yyyy" ] }
+{ "_id" : ObjectId("5c6fc28fc8d30a6a6aa79706"), "Fname" : "Hatim", "age" : 18 }
+> obj={_id : 100 ,"Fname":"Hatim",age: 18}
+{ "_id" : 100, "Fname" : "Hatim", "age" : 18 }
+> db.vendeurs.insert(obj)
+WriteResult({ "nInserted" : 1 })
+> db.vendeurs.find()
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "name" : "meriem rahmouni", "emails" : [ "xxx", "yyyy" ] }
+{ "_id" : ObjectId("5c6fc28fc8d30a6a6aa79706"), "Fname" : "Hatim", "age" : 18 }
+{ "_id" : 100, "Fname" : "Hatim", "age" : 18 }
+> obj={_id : 1001 ,"name":"Restaurant de la paix",adress:{rue : "FAR", batiment: 35 , zipCode : 30040 , coordinates :[73.055,-78.55]}}
+{
+        "_id" : 1001,
+        "name" : "Restaurant de la paix",
+        "adress" : {
+                "rue" : "FAR",
+                "batiment" : 35,
+                "zipCode" : 30040,
+                "coordinates" : [
+                        73.055,
+                        -78.55
+                ]
+        }
+}
+> db.restos.insert(obj)
+WriteResult({ "nInserted" : 1 })
+> db.vendeurs.find()
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "name" : "meriem rahmouni", "emails" : [ "xxx", "yyyy" ] }
+{ "_id" : ObjectId("5c6fc28fc8d30a6a6aa79706"), "Fname" : "Hatim", "age" : 18 }
+{ "_id" : 100, "Fname" : "Hatim", "age" : 18 }
+> db.restos.find()
+{ "_id" : 1001, "name" : "Restaurant de la paix", "adress" : { "rue" : "FAR", "batiment" : 35, "zipCode" : 30040, "coordinates" : [ 73.055, -78.55 ] } }
+> db.vendeurs.find({name : "meriem rahmouni"})
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "name" : "meriem rahmouni", "emails" : [ "xxx", "yyyy" ] }
+> db.vendeurs.find({name : "meriem rahmouni"}, {name : 0})
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "emails" : [ "xxx", "yyyy" ] }
+> db.vendeurs.find({name : "meriem rahmouni"}, {name : 0}, {_id : 0})
+{ "_id" : ObjectId("5c6fc217c8d30a6a6aa79705"), "emails" : [ "xxx", "yyyy" ] }
+> db.vendeurs.find({name : "meriem rahmouni"}, {name : 0, _id : 0})
+{ "emails" : [ "xxx", "yyyy" ] }
+
+
+
+
+
+*****************************************
+
+
+> db.movies.find({realisateur : {$elemMatch: {"nom": "clint", "prenom": "Eastwood"}}});
+> db.movies.find({acteurs : {$elemMatch: {"nom": "Decaprio", "prenom": "Leanardo"}}});
+> db.movies.find({acteurs : {$elemMatch: {"nom": "Decaprio", "prenom": "Leonardo"}}});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.movies.find({acteurs : {$elemMatch: {"nom": "Decaprio"}}});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.movies.find({"realisateur.nom" : "clint", annee : {$lt : 2000}});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.movies.find({"realisateur.nom" : "clint", "realisateur.prenom" : "Eastwood"});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.movies.find({"realisateur.nom" : "clint"});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.movies.find({annee : {$lt : 2000}});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.movies.find({annee : 1992});
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ] }
+> db.vendeurs.update({nom : "catch me if you can"}, {$set : {address : [ville: "oujda", rue: "med 5", postal:2000]}})
+2019-02-28T11:27:35.760+0100 E QUERY    [js] SyntaxError: missing ] after element list @(shell):1:75
+> db.movies.update({nom : "catch me if you can"}, {$set : {address : [ville: "oujda", rue: "med 5", postal:2000]}})
+2019-02-28T11:28:44.273+0100 E QUERY    [js] SyntaxError: missing ] after element list @(shell):1:73
+> db.movies.update({nom : "catch me if u can"}, {$set : {address : [ville: "oujda", rue: "med 5", postal:2000]}})
+2019-02-28T11:29:14.880+0100 E QUERY    [js] SyntaxError: missing ] after element list @(shell):1:71
+> db.movies.update({nom : "catch me if u can"}, {$set : {address : {ville: "oujda", rue: "med 5", postal:2000}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.movies.find()
+{ "_id" : ObjectId("5c77b1294e5025cbba45f941"), "name" : "ahmed", "age" : 40 }
+{ "_id" : ObjectId("5c77b16d4e5025cbba45f942"), "nom" : "catch me if u can", "realisateur" : { "nom" : "clint", "prenom" : "Eastwood" }, "annee" : 1992, "acteurs" : [ { "nom" : "Decaprio", "prenom" : "Leonardo" }, { "nom" : "Ali", "prenom" : "MQLISTE" } ], "Rea_places" : [ "USA", "FR" ], "address" : { "ville" : "oujda", "rue" : "med 5", "postal" : 2000 } }
+
+
+
+
+db.movies.update({nom : "TITANIC"}, {$set : {"realisateur": {"nom": "Clint", "prenom": "Eastwood"}}});
+
+db.master.update({nom : "Master qualité du logiciel"}, {$set : {"location":{ 	
+			"type" : "Point",
+			"Coordinates" : [-73.856077, 40.848447 ]
+		}}});
+
+
+db.movies.createIndex( { "realisateur.location" : "2dsphere" } )
+
+db.movies.find(
+   {
+     "realisateur.location":
+       { $near :
+          {
+            $geometry: { type: "Point",  "coordinates": [ 30.197233,52.274147] },
+            $minDistance: 0,
+            $maxDistance: 5000
+          }
+       }
+   }
+);

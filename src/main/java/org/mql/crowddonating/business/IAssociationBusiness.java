@@ -8,6 +8,7 @@ import org.mql.crowddonating.models.Domain;
 import org.mql.crowddonating.models.Donation;
 import org.mql.crowddonating.models.Donor;
 import org.mql.crowddonating.models.Event;
+import org.mql.crowddonating.models.Project;
 import org.mql.crowddonating.models.Type;
 
 public interface IAssociationBusiness extends IUserServices{
@@ -38,4 +39,9 @@ public interface IAssociationBusiness extends IUserServices{
     
 	/* *** for signup *** */
 	void signup(Association association);
+	
+	Project deleteproject(int id);
+	String addProject(Project project);
+	String updateProject(Project project);
+	
 }

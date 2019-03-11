@@ -93,5 +93,41 @@ public class PaypalController {
     public String cancel() {
         return "Canceled.";
     }
+    
+    @PostMapping("/projects/paypal")
+    public String payProject(HttpServletRequest request, @RequestParam long id, @RequestParam double value) {
+        String cancelUrl = Utility.getBaseURL(request) + PAYPAL_CANCEL_URL;
+        String successUrl = Utility.getBaseURL(request) + PAYPAL_SUCCESS_URL;
+
+        try {
+            double dollarPrice = 9.54;
+
+            JSONObject custom = new JSONObject();
+            custom.put("project_id", id);
+            custom.put("mad_amount", value);
+
+            PaypalPayment paypalPayment = new PaypalPaymentBuilder()
+                    .setTotal(value * dollarPrice)
+                    .setCurrency("USD")
+                    .setMethod(PaypalPaymentMethod.paypal)
+                    .setIntent(PaypalPaymentIntent.sale)
+                    .setCancelUrl(cancelUrl)
+                    .setSuccessUrl(successUrl)
+                    // TODO: update this
+                    .setDescription("Crowd Donating payment description")
+                    .setCustom(custom.toString())
+                    .build();
+            Payment payment = paypalBusiness.createPayment(paypalPayment);
+
+            for (Links links : payment.getLinks()) {
+                if (links.getRel().equals("approval_url")) {
+                    return "redirect:" + links.getHref();
+                }
+            }
+        } catch (PayPalRESTException e) {
+            System.err.println(e.getMessage());
+        }
+        return "redirect:/paypal";
+    }
 
 }

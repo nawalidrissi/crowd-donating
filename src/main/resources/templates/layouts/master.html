@@ -146,6 +146,12 @@
                         <li><a th:href="@{/cases/association}" th:text="#{cause.Mycauses}"></a></li>
                       </ul>
                     </li>
+                     <li><a th:href="@{/projects}" th:text="#{menu.projects}"></a>
+                  	 	<ul sec:authorize="hasRole('ROLE_ASSOCIATION')" class="charity-dropdown-menu">
+                        <li><a th:href="@{/projects/add}" th:text="#{crud.add}"></a></li>
+                        <li><a th:href="@{/projects/association}" th:text="#{menu.Myprojects}"></a></li>
+                      </ul>
+                    </li>
                     <li><a th:href="@{/events}" th:text="#{menu.events}"></a>
                       <ul sec:authorize="hasRole('ROLE_ASSOCIATION')" class="charity-dropdown-menu">
                         <li><a th:href="@{/events/add}" th:text="#{event.add}"></a></li>
