@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
-
 @Service
 @Transactional
 public class AssociationBusiness extends UserBusiness implements IAssociationBusiness {
@@ -125,8 +123,8 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
 	}
 
 	@Override
-	public Project deleteproject(int id) {
-		Project p = projectDao.findById(id).orElseThrow();
+	public Project deleteproject(long id) {
+		Project p = projectDao.findById(id).orElse(null);
 		projectDao.deleteById(id);
 		return p;
 	}

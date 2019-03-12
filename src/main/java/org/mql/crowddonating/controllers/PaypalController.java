@@ -45,7 +45,7 @@ public class PaypalController {
 //            JSONObject obj = new JSONObject(json);
 //            double dollarPrice = obj.getDouble("MAD_USD");
 
-            double dollarPrice = 9.54;
+            double dollarPrice = 0.103851;
 
             JSONObject custom = new JSONObject();
             custom.put("case_id", id);
@@ -93,14 +93,13 @@ public class PaypalController {
     public String cancel() {
         return "Canceled.";
     }
-    
+
     @PostMapping("/projects/paypal")
     public String payProject(HttpServletRequest request, @RequestParam long id, @RequestParam double value) {
         String cancelUrl = Utility.getBaseURL(request) + PAYPAL_CANCEL_URL;
         String successUrl = Utility.getBaseURL(request) + PAYPAL_SUCCESS_URL;
-
         try {
-            double dollarPrice = 9.54;
+            double dollarPrice = 0.103851;
 
             JSONObject custom = new JSONObject();
             custom.put("project_id", id);
@@ -114,7 +113,7 @@ public class PaypalController {
                     .setCancelUrl(cancelUrl)
                     .setSuccessUrl(successUrl)
                     // TODO: update this
-                    .setDescription("Crowd Donating payment description")
+                    .setDescription("Crowd Donating - Donating for a project")
                     .setCustom(custom.toString())
                     .build();
             Payment payment = paypalBusiness.createPayment(paypalPayment);

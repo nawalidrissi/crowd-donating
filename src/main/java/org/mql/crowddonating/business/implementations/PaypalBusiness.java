@@ -106,7 +106,17 @@ public class PaypalBusiness implements IPaypalBusiness {
             double transaction_fee = json.getJSONObject("transaction_fee").getDouble("value");
             double amount = json.getJSONObject("amount").getDouble("total");
 
-            long case_id = new JSONObject(custom).getLong("case_id");
+            Long case_id = null, project_id = null;
+            try {
+                case_id = new JSONObject(custom).getLong("case_id");
+            } catch (Exception ignored) {
+            }
+            try {
+                project_id = new JSONObject(custom).getLong("project_id");
+            } catch (Exception ignored) {
+            }
+//            case_id = new JSONObject(custom).getLong("case_id");
+//            project_id = new JSONObject(custom).getLong("project_id");
             double mad_amount = new JSONObject(custom).getDouble("mad_amount");
 
             transaction_fee = Utility.round((transaction_fee * dollarPrice), 2);
@@ -121,11 +131,15 @@ public class PaypalBusiness implements IPaypalBusiness {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             donation.setDonor(donorBusiness.getByUsername(auth.getName()));
-            donation.setCase(publicServices.getCaseById(case_id));
+            donation.setCase(case_id == null ? null : publicServices.getCaseById(case_id));
+            donation.setProject(project_id == null ? null : publicServices.getProjectById(project_id));
 
             donorBusiness.addDonation(donation);
 
-            return "/cases/" + publicServices.getCaseById(case_id).getSlug();
+            if (case_id != null)
+                return "/cases/" + publicServices.getCaseById(case_id).getSlug();
+            else if (project_id != null)
+                return "/projects/" + publicServices.getProjectById(project_id).getSlug();
         }
         return "/error/500";
     }

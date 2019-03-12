@@ -338,6 +338,11 @@ public class PublicServicesBusiness implements IPublicServices {
 	}
 
 	@Override
+	public Project getProjectById(long id) {
+		return projectDao.getOne(id);
+	}
+
+	@Override
 	public List<Project> getProjects(String name) {
 		return projectDao.findAll().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList());
 	}

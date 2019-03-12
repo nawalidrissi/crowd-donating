@@ -88,7 +88,8 @@ public interface IPublicServices {
 	List<Event> getEventsByAssociation(Association association);
 	
 	List<Project> getAllProject();
-	Project getProject(String slug);
+    Project getProject(String slug);
+    Project getProjectById(long id);
 	List<Project> getProjects(String name);
 
 	List<Project> getProjectsByAssociation(Association association);
