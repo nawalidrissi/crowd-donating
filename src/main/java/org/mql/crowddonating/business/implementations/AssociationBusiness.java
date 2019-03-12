@@ -140,12 +140,20 @@ public class AssociationBusiness extends UserBusiness implements IAssociationBus
 	public String updateProject(Project project) {
 		return addProject(project);
 	}
-
+  
 	@Override
 	public boolean disableProject(long id, boolean state) {
 		Project project = projectDao.findById(id).get();
 		project.setDisabled(state);
 		projectDao.save(project);
+		return state;
+	}
+
+	@Override
+	public boolean urgentACase(long id, boolean state) {
+		Case c = caseDao.findById(id).get();
+		c.setUrgent(state);
+		caseDao.save(c);
 		return state;
 	}
 }

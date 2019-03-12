@@ -67,6 +67,8 @@ public class Case {
     
     @Transient
     private int nbreDonations;
+    
+    private boolean urgent;
 
     public Case() {
         this.association = new Association(1);
@@ -111,7 +113,15 @@ public class Case {
         this.slug = slug;
     }
 
-    public String getImage() {
+    public boolean isUrgent() {
+		return urgent;
+	}
+
+	public void setUrgent(boolean urgent) {
+		this.urgent = urgent;
+	}
+
+	public String getImage() {
         return image;
     }
 

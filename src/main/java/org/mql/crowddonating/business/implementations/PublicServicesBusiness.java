@@ -153,7 +153,7 @@ public class PublicServicesBusiness implements IPublicServices {
 		stats.put("globalRaised", globalRaised);
 		stats.put("percentageRaised", globalRaised * 100 / globalAmount);
 		stats.put("globalTotalDonations", globalNbreDonations);
-		stats.put("nbreDonators", donationDao.findAll().size());
+		stats.put("nbreDonators", donationDao.findAll().stream().filter(d -> d.getProject() == null).collect(Collectors.toList()).size());
 		stats.put("solvedCauses", solvedCauses);
 		return stats;
 	}
@@ -312,7 +312,11 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Override
 	public List<Project> getAllProject() {
-		return getProjectStatus(projectDao.findAll());
+		List<Project> projects = projectDao.findAll();
+		for (Project project : projects) {
+			calculProjectStats(project);
+		}
+		return projects;
 	}
 
 	private List<Project> getProjectStatus(List<Project> projects) {
@@ -334,7 +338,7 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Override
 	public Project getProject(String slug) {
-		return projectDao.findBySlug(slug);
+		return calculProjectStats(projectDao.findBySlug(slug));
 	}
 
 	@Override
@@ -361,6 +365,9 @@ public class PublicServicesBusiness implements IPublicServices {
 
 	@Override
 	public Map<String, Object> projectGlobalStats() {
+		
+		
+		
 		Map<String, Object> stats = new HashMap<>();
 
 		double p_globalAmount = 0;
@@ -368,7 +375,7 @@ public class PublicServicesBusiness implements IPublicServices {
 		int p_globalNbreDonations = 0;
 		int p_solvedProjects = 0;
 
-		List<Project> projects =  getProjectStatus(projectDao.findAll());
+		List<Project> projects =  getAllProject();
 	
 		
 		for (Project project : projects) {
@@ -386,8 +393,8 @@ public class PublicServicesBusiness implements IPublicServices {
 		stats.put("globalRaised", p_globalRaised);
 		stats.put("percentageRaised", p_globalRaised * 100 / p_globalAmount);
 		stats.put("globalTotalDonations", p_globalNbreDonations);
-		stats.put("nbreDonators", donationDao.findAll().size());
-		stats.put("solvedCauses", p_solvedProjects);
+		stats.put("nbreDonators", donationDao.findAll().stream().filter(d -> d.getCase() == null).collect(Collectors.toList()).size());
+		stats.put("solvedProjects", p_solvedProjects);
 		return stats;
 	}
 	
@@ -420,6 +427,20 @@ public class PublicServicesBusiness implements IPublicServices {
 		stats.put("nbreDonators", donationDao.findAll().size());
 		stats.put("solvedCauses", p_solvedProjects);
 		return stats;
+	}
+	
+	private Project calculProjectStats(Project project) {
+		double totalRaised = 0;
+		double percentageRased = 0;
+
+		List<Donation> donations = donationDao.findByProject(project);
+		for (Donation donation : donations) {
+			totalRaised += donation.getAmount();
+		}
+		project.setAmountRaised(totalRaised);
+		project.setNbreDonations(donations.size());
+		project.setPercentageRaised(totalRaised * 100 / project.getAmount());
+		return project;
 	}
 
 }

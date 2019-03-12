@@ -23,6 +23,8 @@
       </div>
     </div>
     <!-- END Hero --> <!-- Page Content -->
+    
+    
     <div class="content">
       <div class="block">
         <div class="block-content block-content-full">
@@ -35,7 +37,7 @@
               <th th:text="#{cause.name}"></th>
               <th class="d-none d-sm-table-cell" th:text="#{cause.slug}"></th>
               <th class="d-none d-sm-table-cell" th:text="#{cause.description}"></th>
-              <th class="d-none d-sm-table-cell" style="width: 1%;" th:text="#{donator.access}"></th>
+              <th class="d-none d-sm-table-cell" style="width: 1%;">Urgent</th>
               <th style="width: 1%;">#</th>
             </tr>
             </thead>
@@ -54,15 +56,28 @@
                 </th:block>
               </td>
               <td class="d-none d-sm-table-cell">
-                <span class="badge badge-danger" th:if="${case.disabled}">Disabled</span>
-                <span class="badge badge-info" th:if="${!case.disabled}">Enabled</span>
+                <span class="badge badge-urgent badge-warning" th:if="${case.urgent}">Urgent</span>
+                <span class="badge badge-urgent badge-success" th:if="${!case.urgent}">Not urgent</span>
+              </td>
+              <td class="d-none d-sm-table-cell">
+                <span class="badge badge-disabled badge-danger" th:if="${case.disabled}">Disabled</span>
+                <span class="badge badge-disabled badge-info" th:if="${!case.disabled}">Enabled</span>
               </td>
               <td>
                 <div class="btn-group">
+                
                   <a th:href="@{'/cases/' + ${case.slug}}" type="button"
                      class="btn btn-sm btn-light js-tooltip-enabled" data-toggle="tooltip"
                      title="" data-original-title="View" target="_blank">
                     <i class="fa fa-fw fa-eye"></i>
+                  </a>
+                   <a href="javascript:void(0);" type="button"
+                     class="btn btn-sm btn-light js-tooltip-enabled bg-white urgent"
+                     data-toggle="tooltip" title="" data-original-title="Urgent"
+                     th:data-url="@{'/admin/causes/causes/' + ${case.id} + '/urgent'}"
+                     th:data-state="${case.urgent}">
+                    <i class="fa fa-fw fa-cog" th:if="${case.urgent}"></i>
+                    <i class="fa fa-fw fa-cog" th:if="${!case.urgent}"></i>
                   </a>
                   <a href="javascript:void(0);" type="button"
                      class="btn btn-sm btn-light js-tooltip-enabled bg-white ban"
@@ -126,13 +141,13 @@
                             if (!!data) {
                                 message = "The case is now disabled!";
                                 $this.children("i").removeClass("fa-times").addClass("fa-check");
-                                $this.closest("tr").find("td > span.badge")
+                                $this.closest("tr").find("td > span.badge-disabled")
                                     .removeClass("badge-info").addClass("badge-danger")
                                     .html("Disabled");
                             } else {
                                 message = "The case is now enabled!";
                                 $this.children("i").removeClass("fa-check").addClass("fa-times");
-                                $this.closest("tr").find("td > span.badge")
+                                $this.closest("tr").find("td > span.badge-disabled")
                                     .removeClass("badge-danger").addClass("badge-info")
                                     .html("Enabled");
                             }
@@ -146,7 +161,52 @@
                     });
                 }
             });
-        });
+        }
+        );
+        
+        $(document).on("click", ".urgent", function () {
+            var $this = $(this);
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want this operation as urgent one",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Success!'
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        url: $this.data("url"),
+                        method: "PATCH",
+                        data: {state: !$this.data("state")},
+                        success: function (data) {
+                            var message = "";
+                            if (!!data) {
+                                message = "The case is now urgent!";
+                                $this.children("i");
+                                $this.closest("tr").find("td > span.badge-urgent")
+                                    .removeClass("badge-success").addClass("badge-warning")
+                                    .html("Urgent");
+                            } else {
+                                message = "The case is now not urgent!";
+                                $this.children("i");
+                                $this.closest("tr").find("td > span.badge-urgent")
+                                    .removeClass("badge-warning").addClass("badge-success")
+                                    .html("Not urgent");
+                            }
+                            Swal(
+                                'Success!',
+                                message,
+                                'success'
+                            );
+                            $this.data("state", !$this.data("state"));
+                        }
+                    });
+                }
+            });
+        }
+        );
 
         $(document).on("click", ".delete", function () {
             var $this = $(this);

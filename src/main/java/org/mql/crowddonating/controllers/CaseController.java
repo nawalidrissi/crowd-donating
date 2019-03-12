@@ -98,7 +98,7 @@ public class CaseController {
         model.addAttribute("cases", type.getCases());
         model.addAttribute("currentPage", 1);
         return "cases/cases";
-    }
+    }   
 
     @GetMapping("/cases/{slug}")
     public String caseBySlug(ModelMap map, @PathVariable String slug, HttpServletResponse response) {

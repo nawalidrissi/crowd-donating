@@ -176,6 +176,12 @@ public class AdminController {
     }
 
     @ResponseBody
+    @PatchMapping("/admin/causes/causes/{id}/urgent")
+    public boolean CaseUrgent(ModelMap map, @PathVariable long id, boolean state) {
+        return associationBusiness.urgentACase(id, state);
+    }
+    
+    @ResponseBody
     @PatchMapping("/admin/users/associations/{id}/validate")
     public boolean association(ModelMap map, @PathVariable long id) {
         adminBusiness.validateAssociation(id);

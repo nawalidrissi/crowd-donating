@@ -168,13 +168,17 @@
 
                     <li sec:authorize="isAuthenticated()"><a href="#" th:text="#{menu.account}"></a>
                       <ul class="charity-dropdown-menu">
-                        <li><a th:href="@{/association/profile}" th:text="#{menu.profile}"></a></li>
+                        <li sec:authorize="!hasRole('ROLE_ADMIN')"><a th:href="@{/association/profile}" th:text="#{menu.profile}"></a></li>
+                        <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin}">Dashboard</a></li>
                         <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}" th:text="#{menu.logout}"></a></li>
                       </ul>
                     </li>
 
-                    <li class="active">
-                      <a sec:authorize="!isAuthenticated()" th:href="@{/login}" th:text="#{menu.login}"></a>
+                    <li class="active" sec:authorize="!isAuthenticated()" >
+                      <a th:href="@{/login}" th:text="#{menu.login}"></a>
+                    </li>
+                    <li sec:authorize="!isAuthenticated()" >
+                      <a th:href="@{/contact}">Contact</a>
                     </li>
 
                   </ul>
