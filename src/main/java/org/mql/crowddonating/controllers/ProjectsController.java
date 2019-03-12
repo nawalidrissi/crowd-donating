@@ -1,7 +1,7 @@
 package org.mql.crowddonating.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,10 +10,8 @@ import org.mql.crowddonating.business.IPublicServices;
 import org.mql.crowddonating.business.IUserServices;
 import org.mql.crowddonating.business.implementations.PublicServicesBusiness;
 import org.mql.crowddonating.models.Association;
-import org.mql.crowddonating.models.Case;
 import org.mql.crowddonating.models.File;
 import org.mql.crowddonating.models.Project;
-import org.mql.crowddonating.models.Type;
 import org.mql.crowddonating.utilities.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,7 +48,8 @@ public class ProjectsController {
 
 	@GetMapping("/projects")
 	public String home(Model model) {
-		model.addAttribute("projects", publicBusiness.getAllProject());
+		List<Project> projects = publicBusiness.getAllProject().stream().filter(p -> p.isDisabled() == false).collect(Collectors.toList());
+		model.addAttribute("projects", projects);
 		return "projects/projects";
 	}
 
@@ -116,7 +115,9 @@ public class ProjectsController {
     public String projectByAssociation(ModelMap map, @PathVariable long id) {
         
     	Association association = (Association) publicServices.getAssociationById(id);
-    	map.put("projects", publicServices.getProjectsByAssociation(association));
+		List<Project> projects =  publicServices.getProjectsByAssociation(association).stream().filter(p -> p.isDisabled() == false).collect(Collectors.toList());
+
+    	map.put("projects",projects);
         return "projects/projects";
     }
     
@@ -125,7 +126,8 @@ public class ProjectsController {
         
     	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
          Association association = userBusiness.getAssociationByUserName(auth.getName());
-         map.put("projects", publicServices.getProjectsByAssociation(association));
+ 		List<Project> projects =  publicServices.getProjectsByAssociation(association).stream().filter(p -> p.isDisabled() == false).collect(Collectors.toList());
+         map.put("projects", projects);
         return "projects/projects";
         
     }

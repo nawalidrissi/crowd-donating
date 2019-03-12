@@ -143,6 +143,25 @@ public class AdminController {
         return "admin/causes/causes";
     }
 
+    @GetMapping("/admin/projects/projects")
+    public String projectsList(ModelMap map) {
+        map.put("projects", publicServices.getAllProject());
+        return "admin/projects/projects";
+    }
+    
+    @ResponseBody
+    @PatchMapping("/admin/projects/projects/{id}/delete")
+    public boolean projectDelete(ModelMap map, @PathVariable int id) {
+        associationBusiness.deleteProject(id);
+        return true;
+    }
+
+    @ResponseBody
+    @PatchMapping("/admin/projects/projects/{id}/ban")
+    public boolean projectBan(ModelMap map, @PathVariable int id, boolean state) {
+        return associationBusiness.disableProject(id, state);
+    }
+    
     @ResponseBody
     @PatchMapping("/admin/causes/causes/{id}/delete")
     public boolean CaseDelete(ModelMap map, @PathVariable long id) {
