@@ -1,0 +1,12 @@
+ - recherche de livre par mot clé : aficher nom editeur / list des nom des autheurs
+
+ - recherche de tous les livres ecrit par un autheur donnée 
+	. combobox => authors
+	
+ - afficher la liste de tous les document publié par un editeur donnée
+ 
+ - la liste de tous les autheur qui on écrit des livre publié par un editeur donnée
+
+ - la liste de tous les editeurs eyant publié des livers autours d'un thematique bien detérminé
+ 
+ 

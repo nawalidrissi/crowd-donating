@@ -7516,3 +7516,12 @@ blockquote {
 .swal2-popup {
     font-size: 1.6rem !important;
 }
+
+a.link {
+    color: #0080ff;
+}
+
+.object-embed {
+    width: 100% !important;
+    height: 450px;
+}

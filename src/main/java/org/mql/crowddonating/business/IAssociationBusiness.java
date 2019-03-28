@@ -44,7 +44,6 @@ public interface IAssociationBusiness extends IUserServices{
 	String addProject(Project project);
 	String updateProject(Project project);
 
-  void deleteProject(long id);
 	boolean disableProject(long id, boolean state);
 	boolean urgentACase(long id, boolean state);
 

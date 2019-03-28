@@ -1,0 +1,64 @@
+
+					// Where		// Select A, B
+> db.vendeurs.find({name:"Hatim"}, {_id: 0, name: 1})
+
+> db.vendeurs.find({age: {$in: [20, 27]}});
+
+> db.vendeurs.find({age: {$in: [20, 27]}}).sort({age: -1})
+
+									   $unset
+> db.vendeurs.update({name: "Hatim"}, {$set: {celibataire: true}}, {multi: true});
+
+> db.vendeurs.update({name: "Hatim"}, {$pop: {langues: -1}});	
+
+> db.vendeurs.update({name: "Hatim"}, {$push: {langues: {$each: ["GR", "ES"]}}});
+
+
+
+// 1
+> db.movies.find({annee: 1992})
+//2
+> db.movies.find({annee: {$lt : 2000}})
+//3
+> db.movies.find({realisateur: {nom: "clint", prenom: "Eastwood"}})
+//4
+> db.movies.find({"realisateur.nom": "clint"})
+//5
+> db.movies.find({"realisateur.nom": "clint", annee: {$lt : 2000}})
+//6
+> db.movies.find({acteurs: {nom: "Decaprio", prenom: "Leonardo"}})
+> db.movies.find({acteurs: {$elemMatch: {"nom": "Decaprio", "prenom": "Leonardo"}}})
+//7 
+> db.movies.find({"acteurs.nom": "Ali"})
+//8
+> db.movies.update({"nom" : "catch me if u can"}, {$set: {adresse: "HollyWood"}})
+//9
+
+
+
+db.movies.update({"nom" : "Catch me if you can"}, {$set : {"realisateur.location": {"type": "Point", "coordinates": [34.6802417, -1.9128836]}}});
+db.movies.update({"nom" : "Public enemies"}, {$set : {"realisateur.location": {"type": "Point", "coordinates": [34.6782717, -1.913946]}}});
+db.movies.update({"nom" : "Prestige"}, {$set : {"realisateur.location": {"type": "Point", "coordinates": [34.6218781, -2.0051407]}}});
+
+db.movies.createIndex( { "realisateur.location" : "2dsphere" } )
+
+db.movies.find(
+   {
+     "realisateur.location":
+       { $near :
+          {
+            $geometry: { type: "Point",  "coordinates": [34.6802417, -1.9128836] },
+            $minDistance: 1,
+            $maxDistance: 5000
+          }
+       }
+   }
+).pretty();
+
+
+
+
+
+
+
+

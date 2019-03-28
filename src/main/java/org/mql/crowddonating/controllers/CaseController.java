@@ -247,8 +247,9 @@ public class CaseController {
         for (MultipartFile doc : documents) {
             if (!"".equals(doc.getName())) {
                 File file = new File();
-                file.setPath(Utility.upload("files/cases/", doc));
-                file.setType("document");
+                String fileName = Utility.upload("files/cases/", doc);
+                file.setPath(fileName);
+                file.setType(fileName.substring(fileName.lastIndexOf(".") + 1));
                 file.setCase(aCase);
                 associationBusiness.saveFile(file);
             }
