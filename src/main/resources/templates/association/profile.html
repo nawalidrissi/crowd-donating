@@ -30,9 +30,37 @@
             <div class="charity-aboutus-text">
               <h2 th:text="${association.name}"></h2>
               <p th:text="${association.description}"></p>
-              <ul class="charity-list-style-one" th:each="file : ${association.files}">
-                <li><a th:href="@{'/files/association/' + ${file.path}}" th:text="#{documentation}"></a></li>
-              </ul>
+
+              <h2 class="charity-section-heading mt-24 mb-24" th:text="#{documentation}"></h2>
+              <div th:each="file :${association.files}">
+                <th:block th:switch="${file.type}">
+                  <div th:case="'mp4'">
+                    <video controls>
+                      <source th:src="@{'/files/cases/' + ${file.path}}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <div th:case="'png'">
+                    <img th:src="@{'/files/cases/' + ${file.path}}" alt="">
+                  </div>
+                  <div th:case="'jpg'">
+                    <img th:src="@{'/files/cases/' + ${file.path}}" alt="">
+                  </div>
+                  <div th:case="'jpeg'">
+                    <img th:src="@{'/files/cases/' + ${file.path}}" alt="">
+                  </div>
+                  <div th:case="'pdf'">
+                    <object th:data="@{'/files/cases/' + ${file.path}}" type="application/pdf" class="object-embed">
+                      <a th:href="@{'/files/cases/' + ${file.path}}" target="_blank" class="link"
+                         th:text="${#strings.substring(file.path, #strings.indexOf(file.path, '_') + 1)}"></a>
+                    </object>
+                  </div>
+                  <div th:case="*">
+                    <a th:href="@{'/files/cases/' + ${file.path}}" target="_blank" class="link"
+                       th:text="${#strings.substring(file.path, #strings.indexOf(file.path, '_') + 1)}"></a>
+                  </div>
+                </th:block>
+              </div>
               <a th:href="@{/association/update}" class="charity-about-btn" th:text="#{update}"></a>
             </div>
           </div>

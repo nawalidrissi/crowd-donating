@@ -73,8 +73,19 @@
               <h2 class="charity-section-heading mt-24 mb-24" th:text="#{documentation}"></h2>
               <div th:each="file :${case.files}">
                 <th:block th:switch="${file.type}">
-                  <div th:case="'mp4'"></div>
+                  <div th:case="'mp4'">
+                    <video controls>
+                      <source th:src="@{'/files/cases/' + ${file.path}}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
                   <div th:case="'png'">
+                    <img th:src="@{'/files/cases/' + ${file.path}}" alt="">
+                  </div>
+                  <div th:case="'jpg'">
+                    <img th:src="@{'/files/cases/' + ${file.path}}" alt="">
+                  </div>
+                  <div th:case="'jpeg'">
                     <img th:src="@{'/files/cases/' + ${file.path}}" alt="">
                   </div>
                   <div th:case="'pdf'">
