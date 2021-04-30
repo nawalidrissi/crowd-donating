@@ -40,7 +40,9 @@ public class UserController {
     }
 
 	private void getProfileStats(ModelMap map, Association assoc) {
-		map.put("association", assoc);
+		map.put("association", assoc); 
+		
+		if(assoc != null) {
         List<Case> cases = publicServices.getCasesByAssociation(assoc.getId());
         map.put("cases", cases);
 		map.put("stats", publicServices.globalStatsForAssociation(cases));
@@ -48,7 +50,7 @@ public class UserController {
 		map.put("projects", publicServices.getProjectsByAssociation(assoc));
 		map.put("pstats", publicServices.globalProjectsStatsForAssociation(assoc));
 	}
-    
+	}
     @GetMapping("/association/profile/{id}")
     public String associationById(ModelMap map, @PathVariable long id, HttpServletResponse response) {
         Association assoc = userBusiness.getAssociationById(id);
